@@ -898,8 +898,9 @@ DASHBOARD_HTML = """
         const name = (service.name || '').toLowerCase();
         const desc = (service.description || '').toLowerCase();
         const port = String(service.port || '');
+        const type = (service.type || '').toLowerCase();
         const k = key.toLowerCase();
-        return name.includes(searchTerm) || desc.includes(searchTerm) || port.includes(searchTerm) || k.includes(searchTerm);
+        return name.includes(searchTerm) || desc.includes(searchTerm) || port.includes(searchTerm) || type.includes(searchTerm) || k.includes(searchTerm);
     }
 
     // === Render stats ===
