@@ -7,6 +7,8 @@
 **Author:** Brian Lee
 **Last Update:** Feb. 04, 2026
 
+![Dashboard Dark Mode](dashboard_dark.png)
+
 ---
 
 ## 목차
@@ -365,6 +367,14 @@ curl -X POST http://localhost:8080/api/langgraph/chat \
 ## 대시보드
 
 `http://localhost:8080` 접속 시 표시되는 웹 대시보드.
+
+### Dark Mode
+
+![Dashboard Dark Mode](dashboard_dark.png)
+
+### Light Mode
+
+![Dashboard Light Mode](dashboard_light.png)
 
 ### 레이아웃
 
