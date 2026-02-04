@@ -142,7 +142,17 @@ API_Gateway/
 **대시보드 기능:**
 - 다크/라이트 테마 토글 (`localStorage` 저장)
 - 서비스 검색/필터 (이름, 설명, 포트 매칭, 150ms 디바운스)
-- 응답시간 시각화 (색상 바: 초록 <50ms, 주황 <150ms, 빨강 >=150ms)
+- 상태 필터 (All/Online/Offline 버튼)
+- 테이블 정렬 (Service, Port, Response Time, Status 컬럼)
+- 서비스 상세 패널 (행 클릭 시 API 문서 확장)
+- 카테고리 그룹 뷰 (플랫/그룹 토글)
+- 응답시간 시각화 (색상 바 + 스파크라인 히스토리)
+- 상태 변경 토스트 알림 (Online/Offline 전환 감지)
+- Fetch 에러 배너 (데이터 수집 실패 시)
+- Offline 서비스 N/A 배지
+- 모바일 반응형 (768px/480px 브레이크포인트)
+- 키보드 단축키 (`/`, `R`, `D`, `?`, `Esc`)
+- 행 수 표시 `(N of M)` 형식
 - 30초 자동 새로고침 카운트다운 (SVG 원형 프로그레스)
 - Uptime 퍼센트 SVG 링
 - 접이식 섹션 (`localStorage` 상태 저장)
@@ -376,25 +386,72 @@ curl -X POST http://localhost:8080/api/langgraph/chat \
 
 ![Dashboard Light Mode](dashboard_light.png)
 
+### 테이블 정렬
+
+컬럼 헤더(Service, Port, Response Time, Status) 클릭으로 오름/내림차순 정렬.
+
+![Dashboard Sort](dashboard_sort.png)
+
+### 상태 필터
+
+All / Online / Offline 버튼으로 서비스 상태별 필터링. 필터된 행 수를 `(N of M)` 형식으로 표시.
+
+![Dashboard Filter](dashboard_filter.png)
+
+### 서비스 상세 패널
+
+테이블 행 클릭 시 서비스 키, 경로, 엔트리 파일, API 엔드포인트 문서를 보여주는 확장 패널.
+
+![Dashboard Detail](dashboard_detail.png)
+
+### 카테고리 그룹 뷰
+
+뷰 토글 버튼으로 Backend 서비스를 카테고리(AI Platforms, Infrastructure 등)별 그룹 뷰로 전환.
+
+![Dashboard Grouped](dashboard_grouped.png)
+
+### 모바일 반응형
+
+375px 모바일 뷰포트에서 stats 2칸 그리드, 네비바 줄바꿈, 테이블 첫 번째 컬럼 sticky.
+
+![Dashboard Mobile](dashboard_mobile.png)
+
+### 키보드 단축키
+
+`?` 키로 단축키 오버레이 표시. `/` 검색, `R` 새로고침, `D` 테마 전환, `Esc` 닫기.
+
+![Dashboard Shortcuts](dashboard_shortcuts.png)
+
 ### 레이아웃
 
-1. **상단 네비게이션 바** (sticky) - 로고, 검색창, 새로고침 카운트다운, 다크/라이트 토글
-2. **통계 바** (6칸) - Total, Backend, Frontend, Healthy, Unhealthy, Uptime%
-3. **Quick Links** - Health, Swagger, Services, ReDoc 바로가기
-4. **API Routing** - 접이식 라우팅 설명 (기본 접힘)
-5. **Backend Services 테이블** - 서비스명, 포트, Direct URL, Gateway URL, 응답시간, 상태
-6. **Frontend Services 테이블** - 서비스명, 타입, 포트, URL, 응답시간, 상태
-7. **Footer** - 버전, 포트, 마지막 갱신 시간
+1. **에러 배너** - Fetch 실패 시 네비바 위에 빨간 경고 배너 표시
+2. **상단 네비게이션 바** (sticky) - 로고, 검색창(`/` 단축키 힌트), 상태 필터(All/Online/Offline), 뷰 토글, 카운트다운, 테마 토글, 키보드 단축키 버튼
+3. **통계 바** (6칸, 반응형 3/2칸) - Total, Backend, Frontend, Healthy, Unhealthy, Uptime%
+4. **Quick Links** (반응형 2칸) - Health, Swagger, Services, ReDoc 바로가기
+5. **API Routing** - 접이식 라우팅 설명 (기본 접힘)
+6. **Backend Services 테이블** - 정렬 가능 헤더, 서비스명, 포트, Direct URL, Gateway URL, 응답시간(스파크라인), 상태, 클릭 시 상세 패널
+7. **Frontend Services 테이블** - 서비스명, 타입, 포트, URL, 응답시간(스파크라인), 상태, 클릭 시 상세 패널
+8. **토스트 알림** - 서비스 상태 변경(Online/Offline) 시 우하단 토스트
+9. **Footer** - 버전, 포트, 마지막 갱신 시간
 
 ### 기능
 
 | 기능 | 설명 |
 |------|------|
-| 다크/라이트 테마 | `localStorage`에 저장, 새로고침 시 유지 |
-| 검색/필터 | 서비스명, 설명, 포트 번호 매칭 (150ms 디바운스) |
-| 자동 새로고침 | 30초 간격, SVG 카운트다운 링 표시 |
-| 수동 새로고침 | 카운트다운 링 클릭 시 즉시 갱신 |
-| 응답시간 바 | 초록(<50ms), 주황(<150ms), 빨강(>=150ms) |
+| 다크/라이트 테마 | `localStorage`에 저장, 새로고침 시 유지 (`D` 키) |
+| 검색/필터 | 서비스명, 설명, 포트 번호 매칭 (150ms 디바운스, `/` 키 포커스) |
+| 상태 필터 | All / Online / Offline 버튼으로 상태별 필터링 |
+| 테이블 정렬 | Service, Port, Response Time, Status 컬럼 클릭 정렬 (▲▼) |
+| 서비스 상세 패널 | 행 클릭 시 서비스 정보 + API 엔드포인트 문서 확장 표시 |
+| 카테고리 그룹 뷰 | 플랫/그룹 뷰 토글, `localStorage` 저장 |
+| 응답시간 스파크라인 | 최근 10회 응답시간 이력을 인라인 SVG 차트로 표시 |
+| 상태 변경 토스트 | 서비스 Online/Offline 전환 시 우하단 슬라이드 알림 (5초) |
+| Fetch 에러 배너 | 헬스 데이터 수집 실패 시 상단 빨간 배너 표시 |
+| 자동 새로고침 | 30초 간격, SVG 카운트다운 링 표시 (`R` 키 즉시 갱신) |
+| 행 수 표시 | 필터 결과를 `(N of M)` 형식으로 섹션 헤더에 표시 |
+| Offline N/A 배지 | 미응답 서비스의 응답시간을 회색 라운드 `N/A` 배지로 표시 |
+| 모바일 반응형 | 768px/480px 브레이크포인트, stats/links 그리드 조정, sticky 컬럼 |
+| 키보드 단축키 | `/` 검색, `R` 새로고침, `D` 테마, `?` 도움말, `Esc` 닫기 |
 | Uptime 링 | 전체 서비스 중 Healthy 비율을 원형 프로그레스로 표시 |
 | 접이식 섹션 | 열기/닫기 상태 `localStorage` 저장 |
 | 스켈레톤 로딩 | 첫 데이터 로딩 전 shimmer 애니메이션 |
