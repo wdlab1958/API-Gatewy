@@ -565,9 +565,137 @@ DASHBOARD_HTML = """
         .uptime-ring-fill { transition: stroke-dashoffset 0.6s ease; }
         /* Footer */
         .footer { text-align: center; padding: 24px; font-size: 0.75rem; color: var(--text-tertiary); border-top: 1px solid var(--border-color); }
+        /* N/A badge (F11) */
+        .na-badge {
+            display: inline-block; font-size: 0.65rem; font-weight: 600;
+            padding: 2px 8px; border-radius: 9999px;
+            background: var(--bg-tertiary); color: var(--text-tertiary);
+            border: 1px solid var(--border-color);
+        }
+        /* Sort arrows (F1) */
+        .sort-arrow { font-size: 0.6rem; margin-left: 4px; color: var(--text-tertiary); }
+        .sort-arrow.active { color: var(--accent); }
+        .tbl th.sortable { cursor: pointer; user-select: none; }
+        .tbl th.sortable:hover { color: var(--text-secondary); }
+        /* Filter buttons (F2) */
+        .filter-group { display: flex; gap: 2px; background: var(--bg-tertiary); border-radius: 8px; padding: 2px; border: 1px solid var(--border-color); }
+        .filter-btn {
+            padding: 4px 12px; border: none; border-radius: 6px; font-size: 0.75rem;
+            font-weight: 500; cursor: pointer; transition: all 0.2s;
+            background: transparent; color: var(--text-tertiary); font-family: 'Inter', sans-serif;
+        }
+        .filter-btn:hover { color: var(--text-secondary); }
+        .filter-btn.active { background: var(--accent); color: #fff; }
+        /* Toast (F4) */
+        #toast-container {
+            position: fixed; bottom: 24px; right: 24px; z-index: 100;
+            display: flex; flex-direction: column; gap: 8px; pointer-events: none;
+        }
+        .toast {
+            pointer-events: auto; padding: 12px 20px; border-radius: 10px;
+            font-size: 0.85rem; font-weight: 500; color: #fff;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            animation: toastIn 0.3s ease, toastOut 0.3s ease 4.7s forwards;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .toast-online { background: var(--success); }
+        .toast-offline { background: var(--danger); }
+        @keyframes toastIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes toastOut { from { opacity: 1; } to { opacity: 0; transform: translateX(100%); } }
+        /* Detail panel (F3) */
+        .detail-panel {
+            background: var(--bg-tertiary); border-left: 3px solid var(--accent);
+            padding: 16px 20px; animation: detailIn 0.2s ease;
+        }
+        .detail-panel .ep-badge {
+            display: inline-block; padding: 2px 8px; border-radius: 4px;
+            font-size: 0.7rem; font-weight: 600; font-family: 'JetBrains Mono', monospace;
+            margin-right: 6px;
+        }
+        .ep-GET { background: rgba(34,197,94,0.15); color: var(--success); }
+        .ep-POST { background: rgba(59,130,246,0.15); color: var(--accent); }
+        .ep-PUT { background: rgba(245,158,11,0.15); color: var(--warning); }
+        .ep-DELETE { background: rgba(239,68,68,0.15); color: var(--danger); }
+        .ep-PATCH { background: rgba(167,139,250,0.15); color: #a78bfa; }
+        @keyframes detailIn { from { opacity: 0; max-height: 0; } to { opacity: 1; max-height: 400px; } }
+        .tbl tbody tr.clickable-row { cursor: pointer; }
+        .tbl tbody tr.row-expanded { background: var(--bg-tertiary); }
+        /* Error banner (F10) */
+        .error-banner {
+            background: var(--danger); color: #fff; text-align: center;
+            padding: 10px 24px; font-size: 0.85rem; font-weight: 500;
+            display: none; align-items: center; justify-content: center; gap: 8px;
+            animation: bannerIn 0.3s ease;
+        }
+        .error-banner.show { display: flex; }
+        @keyframes bannerIn { from { opacity: 0; transform: translateY(-100%); } to { opacity: 1; transform: translateY(0); } }
+        /* Keyboard shortcuts overlay (F8) */
+        .shortcuts-overlay {
+            position: fixed; inset: 0; z-index: 200;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+            display: none; align-items: center; justify-content: center;
+        }
+        .shortcuts-overlay.show { display: flex; }
+        .shortcuts-modal {
+            background: var(--bg-secondary); border: 1px solid var(--border-color);
+            border-radius: 16px; padding: 32px; max-width: 420px; width: 90%;
+            box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+        }
+        .shortcuts-modal h3 { margin: 0 0 20px; font-size: 1rem; font-weight: 600; }
+        .shortcut-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 8px 0; border-bottom: 1px solid var(--border-color);
+        }
+        .shortcut-row:last-child { border-bottom: none; }
+        .shortcut-key {
+            display: inline-block; padding: 2px 10px; border-radius: 6px;
+            background: var(--bg-tertiary); border: 1px solid var(--border-color);
+            font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; font-weight: 500;
+        }
+        /* View toggle (F6) */
+        .view-toggle {
+            background: var(--bg-tertiary); border: 1px solid var(--border-color);
+            border-radius: 8px; padding: 6px 10px; cursor: pointer;
+            color: var(--text-secondary); font-size: 0.9rem; transition: all 0.2s;
+        }
+        .view-toggle:hover { border-color: var(--accent); color: var(--text-primary); }
+        /* Category group header (F6) */
+        .category-header {
+            padding: 10px 16px; background: var(--bg-tertiary); border-bottom: 1px solid var(--border-color);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .category-header .cat-icon { color: var(--accent); font-size: 0.85rem; }
+        .category-header .cat-name { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); }
+        .category-header .cat-count { font-size: 0.7rem; color: var(--text-tertiary); }
+        /* Sparkline (F5) */
+        .sparkline-wrap { display: flex; align-items: center; gap: 6px; }
+        .sparkline-svg { overflow: visible; }
+        /* Mobile responsive (F7) */
+        @media (max-width: 768px) {
+            #stats-bar { grid-template-columns: repeat(3, 1fr) !important; }
+            .qlink-grid { grid-template-columns: repeat(2, 1fr) !important; }
+            .navbar {
+                flex-wrap: wrap; height: auto; padding: 10px 16px; gap: 8px;
+            }
+            .search-box { width: 160px; }
+            .filter-group { display: none; }
+            .tbl th:first-child, .tbl td:first-child { position: sticky; left: 0; z-index: 2; background: var(--bg-secondary); }
+            .tbl tbody tr:hover td:first-child { background: var(--bg-tertiary); }
+        }
+        @media (max-width: 480px) {
+            #stats-bar { grid-template-columns: repeat(2, 1fr) !important; }
+            .search-box { width: 120px; }
+            .stat-value { font-size: 1.5rem; }
+        }
     </style>
 </head>
 <body>
+    <!-- Error Banner (F10) -->
+    <div id="error-banner" class="error-banner">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span>Failed to fetch health data. Retrying...</span>
+    </div>
+
     <!-- Navbar -->
     <nav class="navbar">
         <div style="display:flex;align-items:center;gap:12px;">
@@ -576,7 +704,17 @@ DASHBOARD_HTML = """
             <span style="font-size:0.7rem;color:var(--text-tertiary);padding:2px 8px;border:1px solid var(--border-color);border-radius:9999px;">v2.0</span>
         </div>
         <div style="display:flex;align-items:center;gap:12px;">
-            <input type="text" id="search-input" class="search-box" placeholder="Search services...">
+            <input type="text" id="search-input" class="search-box" placeholder="Search services... ( / )">
+            <!-- Status filter (F2) -->
+            <div class="filter-group">
+                <button class="filter-btn active" id="filter-all" onclick="setStatusFilter('all')">All</button>
+                <button class="filter-btn" id="filter-online" onclick="setStatusFilter('online')">Online</button>
+                <button class="filter-btn" id="filter-offline" onclick="setStatusFilter('offline')">Offline</button>
+            </div>
+            <!-- View toggle (F6) -->
+            <button class="view-toggle" id="view-toggle" onclick="toggleViewMode()" title="Toggle grouped view">
+                <i class="fas fa-list" id="view-icon"></i>
+            </button>
             <!-- Countdown ring -->
             <div class="countdown-ring" id="countdown-ring" onclick="refreshNow()" title="Click to refresh now">
                 <svg width="32" height="32" viewBox="0 0 36 36">
@@ -592,8 +730,27 @@ DASHBOARD_HTML = """
             <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">
                 <i class="fas fa-moon" id="theme-icon"></i>
             </button>
+            <!-- Keyboard hint (F8) -->
+            <button class="theme-toggle" onclick="toggleShortcutsOverlay()" title="Keyboard shortcuts">
+                <i class="fas fa-keyboard"></i>
+            </button>
         </div>
     </nav>
+
+    <!-- Toast container (F4) -->
+    <div id="toast-container"></div>
+
+    <!-- Keyboard shortcuts overlay (F8) -->
+    <div id="shortcuts-overlay" class="shortcuts-overlay" onclick="if(event.target===this)toggleShortcutsOverlay()">
+        <div class="shortcuts-modal">
+            <h3><i class="fas fa-keyboard" style="margin-right:8px;color:var(--accent);"></i>Keyboard Shortcuts</h3>
+            <div class="shortcut-row"><span>Focus search</span><span class="shortcut-key">/</span></div>
+            <div class="shortcut-row"><span>Refresh data</span><span class="shortcut-key">R</span></div>
+            <div class="shortcut-row"><span>Toggle theme</span><span class="shortcut-key">D</span></div>
+            <div class="shortcut-row"><span>Show shortcuts</span><span class="shortcut-key">?</span></div>
+            <div class="shortcut-row"><span>Close / Clear search</span><span class="shortcut-key">Esc</span></div>
+        </div>
+    </div>
 
     <div style="max-width:1200px;margin:0 auto;padding:24px;">
         <!-- Stats Bar -->
@@ -632,7 +789,7 @@ DASHBOARD_HTML = """
         </div>
 
         <!-- Quick Links -->
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;">
+        <div class="qlink-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;">
             <a href="/health" class="qlink">
                 <i class="fas fa-heart-pulse" style="font-size:1.3rem;color:var(--success);margin-bottom:8px;"></i>
                 <span style="font-size:0.85rem;font-weight:500;color:var(--text-primary);">Health</span>
@@ -697,15 +854,15 @@ DASHBOARD_HTML = """
             </div>
             <div class="collapsible-content open" id="section-backend">
                 <div style="overflow-x:auto;">
-                    <table class="tbl">
+                    <table class="tbl" id="backend-tbl">
                         <thead>
                             <tr>
-                                <th>Service</th>
-                                <th>Port</th>
+                                <th class="sortable" onclick="toggleSort('backend','name')">Service <span class="sort-arrow" id="sort-backend-name"></span></th>
+                                <th class="sortable" onclick="toggleSort('backend','port')">Port <span class="sort-arrow" id="sort-backend-port"></span></th>
                                 <th>Direct URL</th>
                                 <th>Gateway</th>
-                                <th>Response Time</th>
-                                <th style="text-align:center;">Status</th>
+                                <th class="sortable" onclick="toggleSort('backend','response_time')">Response Time <span class="sort-arrow" id="sort-backend-response_time"></span></th>
+                                <th class="sortable" style="text-align:center;" onclick="toggleSort('backend','status')">Status <span class="sort-arrow" id="sort-backend-status"></span></th>
                             </tr>
                         </thead>
                         <tbody id="backend-table">
@@ -730,15 +887,15 @@ DASHBOARD_HTML = """
             </div>
             <div class="collapsible-content open" id="section-frontend">
                 <div style="overflow-x:auto;">
-                    <table class="tbl">
+                    <table class="tbl" id="frontend-tbl">
                         <thead>
                             <tr>
-                                <th>Service</th>
+                                <th class="sortable" onclick="toggleSort('frontend','name')">Service <span class="sort-arrow" id="sort-frontend-name"></span></th>
                                 <th>Type</th>
-                                <th>Port</th>
+                                <th class="sortable" onclick="toggleSort('frontend','port')">Port <span class="sort-arrow" id="sort-frontend-port"></span></th>
                                 <th>URL</th>
-                                <th>Response Time</th>
-                                <th style="text-align:center;">Status</th>
+                                <th class="sortable" onclick="toggleSort('frontend','response_time')">Response Time <span class="sort-arrow" id="sort-frontend-response_time"></span></th>
+                                <th class="sortable" style="text-align:center;" onclick="toggleSort('frontend','status')">Status <span class="sort-arrow" id="sort-frontend-status"></span></th>
                             </tr>
                         </thead>
                         <tbody id="frontend-table">
@@ -766,12 +923,27 @@ DASHBOARD_HTML = """
     const backendServices = BACKEND_SERVICES_JSON;
     const frontendServices = FRONTEND_SERVICES_JSON;
     const serviceCategories = SERVICE_CATEGORIES_JSON;
+    const apiDocs = API_DOCS_JSON;
     let healthData = null;
     let lastFetchTime = null;
     let countdownValue = 30;
     let countdownInterval = null;
     let searchTerm = '';
     let searchTimeout = null;
+    // F1: Sort
+    let sortConfig = { backend: { key: null, dir: 'asc' }, frontend: { key: null, dir: 'asc' } };
+    // F2: Status filter
+    let statusFilter = 'all';
+    // F4: Toast - previous health data
+    let prevHealthData = null;
+    // F5: Sparkline history
+    let rtHistory = {};
+    // F6: View mode
+    let viewMode = localStorage.getItem('gw-view') || 'flat';
+    // F10: Fetch error
+    let fetchError = false;
+    // F3: Expanded detail row
+    let expandedRow = null;
 
     // === Theme ===
     function initTheme() {
@@ -804,7 +976,6 @@ DASHBOARD_HTML = """
                 el.classList.remove('open');
                 chevron.classList.remove('open');
             }
-            // defaults: routing=closed, backend/frontend=open (already set in HTML)
         });
     }
     function toggleSection(id) {
@@ -875,18 +1046,278 @@ DASHBOARD_HTML = """
         return ms.toFixed(0) + 'ms';
     }
 
-    // === Fetch health ===
+    // === F1: Sort functions ===
+    function sortServices(entries, tableType) {
+        const cfg = sortConfig[tableType];
+        if (!cfg || !cfg.key) return entries;
+        const k = cfg.key;
+        const dir = cfg.dir === 'asc' ? 1 : -1;
+        return entries.slice().sort((a, b) => {
+            let va = a[1][k], vb = b[1][k];
+            if (k === 'name') { va = (va || '').toLowerCase(); vb = (vb || '').toLowerCase(); }
+            if (k === 'status') { va = va === 'healthy' ? 1 : 0; vb = vb === 'healthy' ? 1 : 0; }
+            if (k === 'response_time') { va = va === null ? 99999 : va; vb = vb === null ? 99999 : vb; }
+            if (k === 'port') { va = Number(va) || 0; vb = Number(vb) || 0; }
+            if (va < vb) return -1 * dir;
+            if (va > vb) return 1 * dir;
+            return 0;
+        });
+    }
+    function toggleSort(tableType, columnKey) {
+        const cfg = sortConfig[tableType];
+        if (cfg.key === columnKey) {
+            cfg.dir = cfg.dir === 'asc' ? 'desc' : 'asc';
+        } else {
+            cfg.key = columnKey;
+            cfg.dir = 'asc';
+        }
+        updateSortArrows();
+        renderTables();
+    }
+    function updateSortArrows() {
+        ['backend', 'frontend'].forEach(t => {
+            ['name', 'port', 'response_time', 'status'].forEach(k => {
+                const el = document.getElementById('sort-' + t + '-' + k);
+                if (!el) return;
+                const cfg = sortConfig[t];
+                if (cfg.key === k) {
+                    el.className = 'sort-arrow active';
+                    el.textContent = cfg.dir === 'asc' ? ' ▲' : ' ▼';
+                } else {
+                    el.className = 'sort-arrow';
+                    el.textContent = ' ▲▼';
+                }
+            });
+        });
+    }
+
+    // === F2: Status filter ===
+    function setStatusFilter(value) {
+        statusFilter = value;
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById('filter-' + value).classList.add('active');
+        renderTables();
+    }
+    function matchesStatusFilter(svc) {
+        if (statusFilter === 'all') return true;
+        if (statusFilter === 'online') return svc.status === 'healthy';
+        if (statusFilter === 'offline') return svc.status !== 'healthy';
+        return true;
+    }
+
+    // === F4: Toast notifications ===
+    function detectStatusChanges() {
+        if (!prevHealthData || !healthData) return;
+        ['backend', 'frontend'].forEach(type => {
+            const prev = prevHealthData[type] || {};
+            const curr = healthData[type] || {};
+            Object.keys(curr).forEach(key => {
+                const prevStatus = prev[key] ? prev[key].status : null;
+                const currStatus = curr[key].status;
+                if (prevStatus && prevStatus !== currStatus) {
+                    const name = curr[key].name || key;
+                    if (currStatus === 'healthy') {
+                        showToast(name + ' is now Online', 'online');
+                    } else {
+                        showToast(name + ' went Offline', 'offline');
+                    }
+                }
+            });
+        });
+    }
+    function showToast(message, type) {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = 'toast toast-' + type;
+        toast.innerHTML = '<i class="fas ' + (type === 'online' ? 'fa-check-circle' : 'fa-times-circle') + '"></i> ' + esc(message);
+        container.appendChild(toast);
+        setTimeout(() => { toast.remove(); }, 5000);
+    }
+
+    // === F5: Sparkline ===
+    function updateRtHistory() {
+        if (!healthData) return;
+        ['backend', 'frontend'].forEach(type => {
+            Object.entries(healthData[type] || {}).forEach(([key, svc]) => {
+                const hKey = type + ':' + key;
+                if (!rtHistory[hKey]) rtHistory[hKey] = [];
+                rtHistory[hKey].push(svc.response_time);
+                if (rtHistory[hKey].length > 10) rtHistory[hKey].shift();
+            });
+        });
+    }
+    function renderSparkline(historyKey) {
+        const data = rtHistory[historyKey];
+        if (!data || data.length < 2) return '';
+        const valid = data.map(v => v === null ? 0 : v);
+        const max = Math.max(...valid, 1);
+        const w = 60, h = 20;
+        const points = valid.map((v, i) => {
+            const x = (i / (valid.length - 1)) * w;
+            const y = h - (v / max) * h;
+            return x.toFixed(1) + ',' + y.toFixed(1);
+        }).join(' ');
+        return '<svg class="sparkline-svg" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '">' +
+            '<polyline points="' + points + '" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>' +
+        '</svg>';
+    }
+
+    // === F10: Error banner ===
+    function showErrorBanner() {
+        document.getElementById('error-banner').classList.add('show');
+    }
+    function hideErrorBanner() {
+        document.getElementById('error-banner').classList.remove('show');
+    }
+
+    // === F3: Detail panel ===
+    function toggleDetail(type, key) {
+        const id = type + ':' + key;
+        expandedRow = (expandedRow === id) ? null : id;
+        renderTables();
+    }
+    function renderDetailPanel(type, key, svc) {
+        const docs = apiDocs[key];
+        let html = '<tr class="detail-row"><td colspan="6" style="padding:0;"><div class="detail-panel">';
+        html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">';
+        // Left: info
+        html += '<div>';
+        html += '<div style="font-size:0.75rem;color:var(--text-tertiary);margin-bottom:4px;">Service Key</div>';
+        html += '<div style="font-family:JetBrains Mono,monospace;font-size:0.85rem;margin-bottom:12px;">' + esc(key) + '</div>';
+        if (svc.path) {
+            html += '<div style="font-size:0.75rem;color:var(--text-tertiary);margin-bottom:4px;">Path</div>';
+            html += '<div style="font-family:JetBrains Mono,monospace;font-size:0.8rem;word-break:break-all;margin-bottom:12px;">' + esc(svc.path) + '</div>';
+        }
+        if (svc.entry) {
+            html += '<div style="font-size:0.75rem;color:var(--text-tertiary);margin-bottom:4px;">Entry File</div>';
+            html += '<div style="font-family:JetBrains Mono,monospace;font-size:0.8rem;">' + esc(svc.entry) + '</div>';
+        }
+        if (svc.type) {
+            html += '<div style="font-size:0.75rem;color:var(--text-tertiary);margin-bottom:4px;margin-top:12px;">Framework</div>';
+            html += '<div style="font-size:0.85rem;">' + esc(svc.type) + '</div>';
+        }
+        html += '</div>';
+        // Right: API docs
+        html += '<div>';
+        if (docs && docs.endpoints && docs.endpoints.length > 0) {
+            html += '<div style="font-size:0.75rem;color:var(--text-tertiary);margin-bottom:8px;">API Endpoints</div>';
+            docs.endpoints.forEach(ep => {
+                html += '<div style="margin-bottom:6px;display:flex;align-items:center;gap:6px;">';
+                html += '<span class="ep-badge ep-' + ep.method + '">' + ep.method + '</span>';
+                html += '<span style="font-family:JetBrains Mono,monospace;font-size:0.8rem;">' + esc(ep.path) + '</span>';
+                html += '<span style="font-size:0.75rem;color:var(--text-tertiary);margin-left:4px;">' + esc(ep.description) + '</span>';
+                html += '</div>';
+            });
+        } else {
+            html += '<div style="font-size:0.8rem;color:var(--text-tertiary);">No API documentation available</div>';
+        }
+        html += '</div>';
+        html += '</div></div></td></tr>';
+        return html;
+    }
+
+    // === F6: Grouped view ===
+    function toggleViewMode() {
+        viewMode = viewMode === 'flat' ? 'grouped' : 'flat';
+        localStorage.setItem('gw-view', viewMode);
+        updateViewIcon();
+        renderTables();
+    }
+    function updateViewIcon() {
+        const icon = document.getElementById('view-icon');
+        icon.className = viewMode === 'flat' ? 'fas fa-list' : 'fas fa-layer-group';
+    }
+    function renderGroupedBackend(entries) {
+        let html = '';
+        const catEntries = {};
+        // Map services to categories
+        Object.entries(serviceCategories).forEach(([catName, cat]) => {
+            catEntries[catName] = [];
+            cat.services.forEach(sKey => {
+                const entry = entries.find(e => e[0] === sKey);
+                if (entry) catEntries[catName].push(entry);
+            });
+        });
+        // Uncategorized
+        const categorized = new Set();
+        Object.values(serviceCategories).forEach(cat => cat.services.forEach(s => categorized.add(s)));
+        const uncategorized = entries.filter(e => !categorized.has(e[0]));
+        if (uncategorized.length > 0) catEntries['Other'] = uncategorized;
+
+        Object.entries(catEntries).forEach(([catName, svcs]) => {
+            if (svcs.length === 0) return;
+            const cat = serviceCategories[catName];
+            const iconMap = { cube: 'fa-cube', shield: 'fa-shield-halved', heart: 'fa-heart', server: 'fa-server', 'message-circle': 'fa-comment', database: 'fa-database', 'file-text': 'fa-file-lines' };
+            const iconClass = cat ? (iconMap[cat.icon] || 'fa-folder') : 'fa-folder';
+            html += '<tr><td colspan="6" style="padding:0;">' +
+                '<div class="category-header"><i class="fas ' + iconClass + ' cat-icon"></i><span class="cat-name">' + esc(catName) + '</span><span class="cat-count">(' + svcs.length + ')</span></div>' +
+                '</td></tr>';
+            svcs.forEach(([key, svc]) => {
+                html += renderBackendRow(key, svc);
+                if (expandedRow === 'backend:' + key) {
+                    html += renderDetailPanel('backend', key, svc);
+                }
+            });
+        });
+        return html;
+    }
+
+    // === F8: Keyboard shortcuts ===
+    function toggleShortcutsOverlay() {
+        const el = document.getElementById('shortcuts-overlay');
+        el.classList.toggle('show');
+    }
+    function initKeyboardShortcuts() {
+        document.addEventListener('keydown', function(e) {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                if (e.key === 'Escape') {
+                    e.target.value = '';
+                    searchTerm = '';
+                    e.target.blur();
+                    renderTables();
+                }
+                return;
+            }
+            if (e.key === '/') {
+                e.preventDefault();
+                document.getElementById('search-input').focus();
+            } else if (e.key === 'r' || e.key === 'R') {
+                refreshNow();
+            } else if (e.key === 'd' || e.key === 'D') {
+                toggleTheme();
+            } else if (e.key === '?') {
+                toggleShortcutsOverlay();
+            } else if (e.key === 'Escape') {
+                const overlay = document.getElementById('shortcuts-overlay');
+                if (overlay.classList.contains('show')) {
+                    overlay.classList.remove('show');
+                }
+            }
+        });
+    }
+
+    // === Fetch health (modified: F4, F5, F10) ===
     async function fetchHealth() {
         try {
+            prevHealthData = healthData ? JSON.parse(JSON.stringify(healthData)) : null;
             const res = await fetch('/health');
             healthData = await res.json();
             lastFetchTime = Date.now();
             countdownValue = 30;
             startCountdown();
+            // F10: clear error
+            if (fetchError) { fetchError = false; hideErrorBanner(); }
+            // F5: update history
+            updateRtHistory();
+            // F4: detect changes
+            detectStatusChanges();
             renderStats();
             renderTables();
         } catch (err) {
             console.error('Health fetch failed:', err);
+            // F10: show error
+            fetchError = true;
+            showErrorBanner();
             countdownValue = 30;
             startCountdown();
         }
@@ -933,62 +1364,88 @@ DASHBOARD_HTML = """
         document.getElementById('footer-time').textContent = new Date().toLocaleString('ko-KR');
     }
 
-    // === Render tables ===
+    // === Render single backend row (reusable) ===
+    function renderBackendRow(key, svc) {
+        const isH = svc.status === 'healthy';
+        const rt = svc.response_time;
+        const hKey = 'backend:' + key;
+        const expanded = expandedRow === hKey;
+        return '<tr class="clickable-row' + (expanded ? ' row-expanded' : '') + '" onclick="toggleDetail(\\'backend\\',\\'' + key + '\\')">' +
+            '<td><div style="font-weight:500;">' + esc(svc.name) + '</div><div style="font-size:0.75rem;color:var(--text-tertiary);">' + esc(svc.description || '') + '</div></td>' +
+            '<td><span style="font-family:JetBrains Mono,monospace;font-size:0.8rem;color:var(--warning);">' + svc.port + '</span></td>' +
+            '<td><a href="http://localhost:' + svc.port + '" target="_blank" onclick="event.stopPropagation()" style="color:var(--accent);text-decoration:none;font-family:JetBrains Mono,monospace;font-size:0.8rem;">localhost:' + svc.port + '</a></td>' +
+            '<td><code style="font-size:0.8rem;color:var(--success);font-family:JetBrains Mono,monospace;">/api/' + key + '/</code></td>' +
+            '<td>' + renderRTCell(rt, hKey) + '</td>' +
+            '<td style="text-align:center;"><span class="dot ' + (isH ? 'dot-healthy' : 'dot-unhealthy') + '"></span> <span style="font-size:0.8rem;color:' + (isH ? 'var(--success)' : 'var(--danger)') + ';">' + (isH ? 'Online' : 'Offline') + '</span></td>' +
+        '</tr>';
+    }
+
+    // === Render tables (modified: F1, F2, F3, F5, F6, F9) ===
     function renderTables() {
         if (!healthData) return;
+        updateSortArrows();
 
         // Backend
         const bt = document.getElementById('backend-table');
+        let bEntries = Object.entries(healthData.backend || {}).filter(([key, svc]) => matchesSearch(svc, key) && matchesStatusFilter(svc));
+        bEntries = sortServices(bEntries, 'backend');
+        const bTotal = Object.keys(healthData.backend || {}).length;
         let bRows = '';
-        let bCount = 0;
-        Object.entries(healthData.backend || {}).forEach(([key, svc]) => {
-            if (!matchesSearch(svc, key)) return;
-            bCount++;
-            const isH = svc.status === 'healthy';
-            const rt = svc.response_time;
-            bRows += '<tr>' +
-                '<td><div style="font-weight:500;">' + esc(svc.name) + '</div><div style="font-size:0.75rem;color:var(--text-tertiary);">' + esc(svc.description || '') + '</div></td>' +
-                '<td><span style="font-family:JetBrains Mono,monospace;font-size:0.8rem;color:var(--warning);">' + svc.port + '</span></td>' +
-                '<td><a href="http://localhost:' + svc.port + '" target="_blank" style="color:var(--accent);text-decoration:none;font-family:JetBrains Mono,monospace;font-size:0.8rem;">localhost:' + svc.port + '</a></td>' +
-                '<td><code style="font-size:0.8rem;color:var(--success);font-family:JetBrains Mono,monospace;">/api/' + key + '/</code></td>' +
-                '<td>' + renderRTCell(rt) + '</td>' +
-                '<td style="text-align:center;"><span class="dot ' + (isH ? 'dot-healthy' : 'dot-unhealthy') + '"></span> <span style="font-size:0.8rem;color:' + (isH ? 'var(--success)' : 'var(--danger)') + ';">' + (isH ? 'Online' : 'Offline') + '</span></td>' +
-            '</tr>';
-        });
+
+        if (viewMode === 'grouped') {
+            bRows = renderGroupedBackend(bEntries);
+        } else {
+            bEntries.forEach(([key, svc]) => {
+                bRows += renderBackendRow(key, svc);
+                if (expandedRow === 'backend:' + key) {
+                    bRows += renderDetailPanel('backend', key, svc);
+                }
+            });
+        }
         bt.innerHTML = bRows || '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text-tertiary);">No matching services</td></tr>';
-        document.getElementById('backend-count').textContent = '(' + bCount + ')';
+        document.getElementById('backend-count').textContent = '(' + bEntries.length + ' of ' + bTotal + ')';
 
         // Frontend
         const ft = document.getElementById('frontend-table');
+        let fEntries = Object.entries(healthData.frontend || {}).filter(([key, svc]) => matchesSearch(svc, key) && matchesStatusFilter(svc));
+        fEntries = sortServices(fEntries, 'frontend');
+        const fTotal = Object.keys(healthData.frontend || {}).length;
         let fRows = '';
-        let fCount = 0;
-        Object.entries(healthData.frontend || {}).forEach(([key, svc]) => {
-            if (!matchesSearch(svc, key)) return;
-            fCount++;
+        fEntries.forEach(([key, svc]) => {
             const isH = svc.status === 'healthy';
             const rt = svc.response_time;
-            fRows += '<tr>' +
+            const hKey = 'frontend:' + key;
+            const expanded = expandedRow === hKey;
+            fRows += '<tr class="clickable-row' + (expanded ? ' row-expanded' : '') + '" onclick="toggleDetail(\\'frontend\\',\\'' + key + '\\')">' +
                 '<td><div style="font-weight:500;">' + esc(svc.name) + '</div><div style="font-size:0.75rem;color:var(--text-tertiary);">' + esc(svc.description || '') + '</div></td>' +
                 '<td><span style="font-size:0.75rem;padding:2px 8px;border-radius:9999px;background:var(--bg-tertiary);border:1px solid var(--border-color);">' + esc(svc.type || 'Web') + '</span></td>' +
                 '<td><span style="font-family:JetBrains Mono,monospace;font-size:0.8rem;color:var(--warning);">' + svc.port + '</span></td>' +
-                '<td><a href="http://localhost:' + svc.port + '" target="_blank" style="color:var(--accent);text-decoration:none;font-family:JetBrains Mono,monospace;font-size:0.8rem;">localhost:' + svc.port + '</a></td>' +
-                '<td>' + renderRTCell(rt) + '</td>' +
+                '<td><a href="http://localhost:' + svc.port + '" target="_blank" onclick="event.stopPropagation()" style="color:var(--accent);text-decoration:none;font-family:JetBrains Mono,monospace;font-size:0.8rem;">localhost:' + svc.port + '</a></td>' +
+                '<td>' + renderRTCell(rt, hKey) + '</td>' +
                 '<td style="text-align:center;"><span class="dot ' + (isH ? 'dot-healthy' : 'dot-unhealthy') + '"></span> <span style="font-size:0.8rem;color:' + (isH ? 'var(--success)' : 'var(--danger)') + ';">' + (isH ? 'Online' : 'Offline') + '</span></td>' +
             '</tr>';
+            if (expanded) {
+                fRows += renderDetailPanel('frontend', key, svc);
+            }
         });
         ft.innerHTML = fRows || '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text-tertiary);">No matching services</td></tr>';
-        document.getElementById('frontend-count').textContent = '(' + fCount + ')';
+        document.getElementById('frontend-count').textContent = '(' + fEntries.length + ' of ' + fTotal + ')';
     }
 
-    function renderRTCell(ms) {
+    // === Render RT cell (modified: F5 sparkline, F11 N/A badge) ===
+    function renderRTCell(ms, historyKey) {
         if (ms === null || ms === undefined) {
-            return '<span style="font-size:0.75rem;color:var(--text-tertiary);">--</span>';
+            return '<span class="na-badge">N/A</span>';
         }
-        return '<div style="display:flex;align-items:center;gap:8px;">' +
-            '<div style="flex:1;background:var(--bg-tertiary);border-radius:3px;height:6px;max-width:80px;">' +
-                '<div class="rt-bar ' + rtClass(ms) + '" style="width:' + rtWidth(ms) + '%;"></div>' +
+        const sparkline = historyKey ? renderSparkline(historyKey) : '';
+        return '<div class="sparkline-wrap">' +
+            '<div style="display:flex;align-items:center;gap:8px;flex:1;">' +
+                '<div style="flex:1;background:var(--bg-tertiary);border-radius:3px;height:6px;max-width:80px;">' +
+                    '<div class="rt-bar ' + rtClass(ms) + '" style="width:' + rtWidth(ms) + '%;"></div>' +
+                '</div>' +
+                '<span style="font-size:0.75rem;font-family:JetBrains Mono,monospace;color:var(--text-secondary);min-width:42px;">' + rtLabel(ms) + '</span>' +
             '</div>' +
-            '<span style="font-size:0.75rem;font-family:JetBrains Mono,monospace;color:var(--text-secondary);min-width:42px;">' + rtLabel(ms) + '</span>' +
+            sparkline +
         '</div>';
     }
 
@@ -1001,6 +1458,8 @@ DASHBOARD_HTML = """
     // === Init ===
     initTheme();
     initSections();
+    updateViewIcon();
+    initKeyboardShortcuts();
     fetchHealth();
     </script>
 </body>
@@ -1023,6 +1482,9 @@ async def root():
     ).replace(
         "SERVICE_CATEGORIES_JSON",
         json.dumps(SERVICE_CATEGORIES)
+    ).replace(
+        "API_DOCS_JSON",
+        json.dumps(API_DOCS)
     )
     return HTMLResponse(content=html)
 
