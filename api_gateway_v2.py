@@ -13,7 +13,7 @@ Features:
 - Backend/Frontend Service Management
 - Real-time Status Monitoring
 
-Update: Feb. 01, 2026
+Update: Feb. 15, 2026
 Editor: Brian Lee
 """
 
@@ -44,14 +44,14 @@ BACKEND_SERVICES = {
         "port": 4002,
         "name": "TruthLens (DeepFake Detection)",
         "description": "Deepfake detection and analysis system",
-        "path": "/home/ubuntu-02/ai_project/DeepFake-main",
+        "path": "/home/ubuntu-02/ai_project/TruthLens",
         "entry": "src/main.py"
     },
     "a3_adep": {
         "port": 4003,
         "name": "A3-ADEP Agent Platform",
         "description": "Agent-based AI system with task orchestration",
-        "path": "/home/ubuntu-02/ai_project/a3-adep",
+        "path": "/home/ubuntu-02/ai_project/A3-ADEP",
         "entry": "backend/main.py"
     },
     "a3de": {
@@ -65,8 +65,8 @@ BACKEND_SERVICES = {
         "port": 4005,
         "name": "AI CareLink Platform",
         "description": "Healthcare/caregiving AI platform",
-        "path": "/home/ubuntu-02/ai_project/ai_carelink",
-        "entry": "backend/main.py"
+        "path": "/home/ubuntu-02/ai_project/AiCarelink",
+        "entry": "backend/app/main.py"
     },
     "cluster": {
         "port": 4006,
@@ -77,9 +77,9 @@ BACKEND_SERVICES = {
     },
     "consulting": {
         "port": 4007,
-        "name": "AI Consulting Assistant",
-        "description": "Security consulting AI assistant",
-        "path": "/home/ubuntu-02/ai_project/ai_consulting",
+        "name": "AiNex (AI Consulting)",
+        "description": "Multi-agent AI consulting assistant platform",
+        "path": "/home/ubuntu-02/ai_project/AiNex",
         "entry": "main.py"
     },
     "factory": {
@@ -100,7 +100,7 @@ BACKEND_SERVICES = {
         "port": 4010,
         "name": "AgentForge (LangGraph)",
         "description": "AI LangGraph platform for agent workflows",
-        "path": "/home/ubuntu-02/ai_project/ai_langgraph",
+        "path": "/home/ubuntu-02/ai_project/AgentForge",
         "entry": "api/main.py"
     },
     "multimodals": {
@@ -114,7 +114,7 @@ BACKEND_SERVICES = {
         "port": 4012,
         "name": "AIALBM Memory Platform",
         "description": "AIALB AI platform with memory",
-        "path": "/home/ubuntu-02/ai_project/aialbm",
+        "path": "/home/ubuntu-02/ai_project/AIALBM",
         "entry": "app/main.py"
     },
     "enterprise": {
@@ -138,6 +138,34 @@ BACKEND_SERVICES = {
         "path": "/home/ubuntu-02/ai_project/Cluster-Master",
         "entry": "src/server.py"
     },
+    "aegis": {
+        "port": 4015,
+        "name": "AEGIS Platform",
+        "description": "AI-Enhanced Guardian Intelligence System",
+        "path": "/home/ubuntu-02/ai_project/AEGIS",
+        "entry": "apps/api/main.py"
+    },
+    "nexusai": {
+        "port": 4016,
+        "name": "NexusAI Platform",
+        "description": "Multi-agent AI platform with conversations, documents, and workflows",
+        "path": "/home/ubuntu-02/ai_project/NexusAI",
+        "entry": "apps/api/main.py"
+    },
+    "ascm": {
+        "port": 8006,
+        "name": "ASCM Platform",
+        "description": "AI SaaS Service Platform Control System - Unified management for AI platforms",
+        "path": "/home/ubuntu-02/ai_project/ASCM",
+        "entry": "ASCM-main/run_services.py"
+    },
+    "aimes": {
+        "port": 18080,
+        "name": "AIMES Platform",
+        "description": "AI Manufacturing Execution System - Smart factory production management",
+        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven",
+        "entry": "AIMES-Food/services/api-gateway/src/index.js"
+    },
 }
 
 FRONTEND_SERVICES = {
@@ -145,7 +173,7 @@ FRONTEND_SERVICES = {
         "port": 8001,
         "name": "TruthLens Web",
         "description": "DeepFake detection web interface",
-        "path": "/home/ubuntu-02/ai_project/DeepFake-main/webpage_truthlens",
+        "path": "/home/ubuntu-02/ai_project/TruthLens/webpage_truthlens",
         "type": "Next.js"
     },
     "webpage_ainex": {
@@ -159,7 +187,7 @@ FRONTEND_SERVICES = {
         "port": 3001,
         "name": "AiNex Home",
         "description": "AiNex & AgentForge homepage",
-        "path": "/home/ubuntu-02/ai_project/AiNex_Home-main",
+        "path": "/home/ubuntu-02/ai_project/webpage_ainex_forge",
         "type": "Next.js"
     },
     "cluster_master_web": {
@@ -187,21 +215,21 @@ FRONTEND_SERVICES = {
         "port": 3005,
         "name": "AI Homepage",
         "description": "AI Project homepage",
-        "path": "/home/ubuntu-02/ai_project/ai_homepage",
+        "path": "/home/ubuntu-02/ai_project/webpage_ai_project",
         "type": "Next.js"
     },
     "carelink_frontend": {
         "port": 5005,
         "name": "AI CareLink UI",
         "description": "AI CareLink frontend application",
-        "path": "/home/ubuntu-02/ai_project/ai_carelink/frontend",
+        "path": "/home/ubuntu-02/ai_project/AiCarelink/frontend",
         "type": "Next.js"
     },
     "langgraph_frontend": {
         "port": 5010,
         "name": "AgentForge UI",
         "description": "AgentForge frontend application",
-        "path": "/home/ubuntu-02/ai_project/ai_langgraph/frontend",
+        "path": "/home/ubuntu-02/ai_project/AgentForge/frontend",
         "type": "React/Vite"
     },
     "enterprise_frontend": {
@@ -215,7 +243,7 @@ FRONTEND_SERVICES = {
         "port": 5015,
         "name": "Unified Portal",
         "description": "Unified portal frontend",
-        "path": "/home/ubuntu-02/ai_project/unified_portal",
+        "path": "/home/ubuntu-02/ai_project/Ai_Unified_Portal",
         "type": "React/Vite"
     },
     "a3de_frontend": {
@@ -224,6 +252,41 @@ FRONTEND_SERVICES = {
         "description": "A3-ADE frontend application",
         "path": "/home/ubuntu-02/ai_project/a3de/frontend",
         "type": "React/Vite"
+    },
+    "aegis_frontend": {
+        "port": 3006,
+        "name": "AEGIS Web",
+        "description": "AEGIS platform web interface",
+        "path": "/home/ubuntu-02/ai_project/AEGIS/apps/web",
+        "type": "Next.js"
+    },
+    "nexusai_frontend": {
+        "port": 3007,
+        "name": "NexusAI Web",
+        "description": "NexusAI platform web interface",
+        "path": "/home/ubuntu-02/ai_project/NexusAI/apps/web",
+        "type": "Next.js"
+    },
+    "webpage_aegis": {
+        "port": 8003,
+        "name": "AEGIS Homepage",
+        "description": "AEGIS marketing/documentation webpage",
+        "path": "/home/ubuntu-02/ai_project/webpage_AEGIS",
+        "type": "Static"
+    },
+    "ascm_dashboard": {
+        "port": 3010,
+        "name": "ASCM Admin Dashboard",
+        "description": "ASCM platform administration and management dashboard",
+        "path": "/home/ubuntu-02/ai_project/ASCM/ASCM-main/admin-dashboard",
+        "type": "Next.js"
+    },
+    "webpage_aimes": {
+        "port": 8004,
+        "name": "AIMES Homepage",
+        "description": "AIMES Manufacturing Execution System webpage",
+        "path": "/home/ubuntu-02/ai_project/webpage_AIMES",
+        "type": "Static"
     },
 }
 
@@ -282,13 +345,61 @@ API_DOCS = {
             {"method": "GET", "path": "/api/scheduler/jobs", "description": "List scheduled jobs"},
         ]
     },
+    "aegis": {
+        "endpoints": [
+            {"method": "GET", "path": "/health", "description": "Service health check"},
+            {"method": "POST", "path": "/llm/chat", "description": "LLM chat conversation"},
+            {"method": "GET", "path": "/agents", "description": "List available agents"},
+            {"method": "GET", "path": "/projects", "description": "List projects"},
+            {"method": "GET", "path": "/dashboard", "description": "Dashboard data"},
+        ]
+    },
+    "nexusai": {
+        "endpoints": [
+            {"method": "GET", "path": "/health", "description": "Service health check"},
+            {"method": "POST", "path": "/auth/login", "description": "User authentication"},
+            {"method": "GET", "path": "/agents", "description": "List agents"},
+            {"method": "POST", "path": "/conversations", "description": "Create conversation"},
+            {"method": "GET", "path": "/documents", "description": "List documents"},
+            {"method": "POST", "path": "/tasks", "description": "Create task"},
+        ]
+    },
+    "ascm": {
+        "endpoints": [
+            {"method": "GET", "path": "/health", "description": "Gateway health check"},
+            {"method": "GET", "path": "/health/services", "description": "All ASCM services health status"},
+            {"method": "POST", "path": "/auth/login", "description": "Admin authentication"},
+            {"method": "GET", "path": "/auth/me", "description": "Current authenticated user info"},
+            {"method": "GET", "path": "/api/v1/platforms", "description": "List managed AI platforms"},
+            {"method": "GET", "path": "/api/v1/customers/customers", "description": "List customers"},
+            {"method": "GET", "path": "/api/v1/customers/customers/stats", "description": "Customer statistics"},
+            {"method": "GET", "path": "/api/v1/subscriptions/subscriptions", "description": "List subscriptions"},
+            {"method": "GET", "path": "/api/v1/subscriptions/subscriptions/stats", "description": "Subscription statistics"},
+            {"method": "GET", "path": "/api/v1/billing/invoices", "description": "List invoices"},
+            {"method": "GET", "path": "/api/v1/billing/invoices/stats", "description": "Invoice statistics"},
+            {"method": "GET", "path": "/api/v1/monitoring/metrics", "description": "System metrics (CPU, memory, disk)"},
+            {"method": "GET", "path": "/api/v1/monitoring/alerts", "description": "List alerts"},
+            {"method": "GET", "path": "/api/v1/analytics/dashboard", "description": "Analytics dashboard summary"},
+            {"method": "GET", "path": "/api/v1/analytics/revenue/mrr", "description": "Monthly Recurring Revenue"},
+        ]
+    },
+    "aimes": {
+        "endpoints": [
+            {"method": "GET", "path": "/health", "description": "Gateway health check"},
+            {"method": "GET", "path": "/api/production", "description": "Production line status"},
+            {"method": "GET", "path": "/api/quality", "description": "Quality inspection data"},
+            {"method": "GET", "path": "/api/inventory", "description": "Inventory management"},
+            {"method": "GET", "path": "/api/traceability", "description": "Product traceability"},
+            {"method": "POST", "path": "/api/haccp", "description": "HACCP compliance check"},
+        ]
+    },
 }
 
 # Service Categories for grouped view
 SERVICE_CATEGORIES = {
     "AI Platforms": {
         "icon": "cube",
-        "services": ["a3_adep", "a3de", "langgraph", "aialbm", "enterprise"]
+        "services": ["a3_adep", "a3de", "langgraph", "aialbm", "enterprise", "aegis", "nexusai"]
     },
     "Detection & Analysis": {
         "icon": "shield",
@@ -313,6 +424,14 @@ SERVICE_CATEGORIES = {
     "Compliance": {
         "icon": "file-text",
         "services": ["labor"]
+    },
+    "SaaS Management": {
+        "icon": "settings",
+        "services": ["ascm"]
+    },
+    "Manufacturing": {
+        "icon": "industry",
+        "services": ["aimes"]
     },
 }
 
@@ -1247,7 +1366,7 @@ DASHBOARD_HTML = """
         Object.entries(catEntries).forEach(([catName, svcs]) => {
             if (svcs.length === 0) return;
             const cat = serviceCategories[catName];
-            const iconMap = { cube: 'fa-cube', shield: 'fa-shield-halved', heart: 'fa-heart', server: 'fa-server', 'message-circle': 'fa-comment', database: 'fa-database', 'file-text': 'fa-file-lines' };
+            const iconMap = { cube: 'fa-cube', shield: 'fa-shield-halved', heart: 'fa-heart', server: 'fa-server', 'message-circle': 'fa-comment', database: 'fa-database', 'file-text': 'fa-file-lines', settings: 'fa-gear', industry: 'fa-industry' };
             const iconClass = cat ? (iconMap[cat.icon] || 'fa-folder') : 'fa-folder';
             html += '<tr><td colspan="6" style="padding:0;">' +
                 '<div class="category-header"><i class="fas ' + iconClass + ' cat-icon"></i><span class="cat-name">' + esc(catName) + '</span><span class="cat-count">(' + svcs.length + ')</span></div>' +
