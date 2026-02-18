@@ -1001,6 +1001,20 @@ DASHBOARD_HTML = """
         @keyframes detailIn { from { opacity: 0; max-height: 0; } to { opacity: 1; max-height: 400px; } }
         .tbl tbody tr.clickable-row { cursor: pointer; }
         .tbl tbody tr.row-expanded { background: var(--bg-tertiary); }
+        /* Open button */
+        .open-btn {
+            display: inline-block;
+            padding: 4px 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border-radius: 6px;
+            background: var(--accent);
+            color: #fff;
+            text-decoration: none;
+            transition: opacity 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        .open-btn:hover { opacity: 0.85; }
         /* Error banner (F10) */
         .error-banner {
             background: var(--danger); color: #fff; text-align: center;
@@ -1244,10 +1258,11 @@ DASHBOARD_HTML = """
                                 <th>Gateway</th>
                                 <th class="sortable" onclick="toggleSort('backend','response_time')">Response Time <span class="sort-arrow" id="sort-backend-response_time"></span></th>
                                 <th class="sortable" style="text-align:center;" onclick="toggleSort('backend','status')">Status <span class="sort-arrow" id="sort-backend-status"></span></th>
+                                <th style="text-align:center;">Action</th>
                             </tr>
                         </thead>
                         <tbody id="backend-table">
-                            <tr><td colspan="6" style="padding:24px;text-align:center;">
+                            <tr><td colspan="7" style="padding:24px;text-align:center;">
                                 <div style="display:flex;flex-direction:column;gap:8px;">
                                     <div class="skeleton" style="height:16px;width:80%;margin:0 auto;"></div>
                                     <div class="skeleton" style="height:16px;width:60%;margin:0 auto;"></div>
@@ -1277,10 +1292,11 @@ DASHBOARD_HTML = """
                                 <th>URL</th>
                                 <th class="sortable" onclick="toggleSort('frontend','response_time')">Response Time <span class="sort-arrow" id="sort-frontend-response_time"></span></th>
                                 <th class="sortable" style="text-align:center;" onclick="toggleSort('frontend','status')">Status <span class="sort-arrow" id="sort-frontend-status"></span></th>
+                                <th style="text-align:center;">Action</th>
                             </tr>
                         </thead>
                         <tbody id="frontend-table">
-                            <tr><td colspan="6" style="padding:24px;text-align:center;">
+                            <tr><td colspan="7" style="padding:24px;text-align:center;">
                                 <div style="display:flex;flex-direction:column;gap:8px;">
                                     <div class="skeleton" style="height:16px;width:80%;margin:0 auto;"></div>
                                     <div class="skeleton" style="height:16px;width:60%;margin:0 auto;"></div>
@@ -1559,7 +1575,7 @@ DASHBOARD_HTML = """
     }
     function renderDetailPanel(type, key, svc) {
         const docs = apiDocs[key];
-        let html = '<tr class="detail-row"><td colspan="6" style="padding:0;"><div class="detail-panel">';
+        let html = '<tr class="detail-row"><td colspan="7" style="padding:0;"><div class="detail-panel">';
         html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">';
         // Left: info
         html += '<div>';
@@ -1630,7 +1646,7 @@ DASHBOARD_HTML = """
             const cat = serviceCategories[catName];
             const iconMap = { cube: 'fa-cube', shield: 'fa-shield-halved', heart: 'fa-heart', server: 'fa-server', 'message-circle': 'fa-comment', database: 'fa-database', 'file-text': 'fa-file-lines', settings: 'fa-gear', industry: 'fa-industry' };
             const iconClass = cat ? (iconMap[cat.icon] || 'fa-folder') : 'fa-folder';
-            html += '<tr><td colspan="6" style="padding:0;">' +
+            html += '<tr><td colspan="7" style="padding:0;">' +
                 '<div class="category-header"><i class="fas ' + iconClass + ' cat-icon"></i><span class="cat-name">' + esc(catName) + '</span><span class="cat-count">(' + svcs.length + ')</span></div>' +
                 '</td></tr>';
             svcs.forEach(([key, svc]) => {
@@ -1758,6 +1774,7 @@ DASHBOARD_HTML = """
             '<td><code style="font-size:0.8rem;color:var(--success);font-family:JetBrains Mono,monospace;">/api/' + key + '/</code></td>' +
             '<td>' + renderRTCell(rt, hKey) + '</td>' +
             '<td style="text-align:center;"><span class="dot ' + (isH ? 'dot-healthy' : 'dot-unhealthy') + '"></span> <span style="font-size:0.8rem;color:' + (isH ? 'var(--success)' : 'var(--danger)') + ';">' + (isH ? 'Online' : 'Offline') + '</span></td>' +
+            '<td style="text-align:center;"><a href="http://localhost:' + svc.port + '" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="open-btn">Open</a></td>' +
         '</tr>';
     }
 
@@ -1783,7 +1800,7 @@ DASHBOARD_HTML = """
                 }
             });
         }
-        bt.innerHTML = bRows || '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text-tertiary);">No matching services</td></tr>';
+        bt.innerHTML = bRows || '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text-tertiary);">No matching services</td></tr>';
         document.getElementById('backend-count').textContent = '(' + bEntries.length + ' of ' + bTotal + ')';
 
         // Frontend
@@ -1804,12 +1821,13 @@ DASHBOARD_HTML = """
                 '<td><a href="http://localhost:' + svc.port + '" target="_blank" onclick="event.stopPropagation()" style="color:var(--accent);text-decoration:none;font-family:JetBrains Mono,monospace;font-size:0.8rem;">localhost:' + svc.port + '</a></td>' +
                 '<td>' + renderRTCell(rt, hKey) + '</td>' +
                 '<td style="text-align:center;"><span class="dot ' + (isH ? 'dot-healthy' : 'dot-unhealthy') + '"></span> <span style="font-size:0.8rem;color:' + (isH ? 'var(--success)' : 'var(--danger)') + ';">' + (isH ? 'Online' : 'Offline') + '</span></td>' +
+                '<td style="text-align:center;"><a href="http://localhost:' + svc.port + '" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="open-btn">Open</a></td>' +
             '</tr>';
             if (expanded) {
                 fRows += renderDetailPanel('frontend', key, svc);
             }
         });
-        ft.innerHTML = fRows || '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text-tertiary);">No matching services</td></tr>';
+        ft.innerHTML = fRows || '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text-tertiary);">No matching services</td></tr>';
         document.getElementById('frontend-count').textContent = '(' + fEntries.length + ' of ' + fTotal + ')';
     }
 
