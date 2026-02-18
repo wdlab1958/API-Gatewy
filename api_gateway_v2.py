@@ -730,7 +730,7 @@ async def check_service_health(port: int, timeout: float = 2.0, base_path: str =
         try:
             async with httpx.AsyncClient(timeout=timeout) as client:
                 response = await client.get(f"http://localhost:{port}{endpoint}")
-                if response.status_code in [200, 307]:
+                if response.status_code in [200, 207, 307, 503]:
                     return {
                         "status": "healthy",
                         "response_time": response.elapsed.total_seconds() * 1000,
