@@ -1,11 +1,11 @@
 # AI Project API Gateway
 
-> 37개 마이크로서비스(Backend 19 + Frontend 17 + Gateway 1)를 단일 엔드포인트로 통합 관리하는 API Gateway
+> 62개 마이크로서비스(Backend 31 + Frontend 30 + Gateway 1)를 단일 엔드포인트로 통합 관리하는 API Gateway
 
 **Version:** 2.0.0
 **Port:** 8080
 **Author:** Brian Lee
-**Last Update:** Feb. 15, 2026
+**Last Update:** Feb. 18, 2026
 
 ![Dashboard Dark Mode](dashboard_dark.png)
 
@@ -62,9 +62,9 @@ AI Project API Gateway는 다수의 AI/ML 마이크로서비스를 하나의 진
               ┌───────────────────┼───────────────────┐
               │                   │                    │
      ┌────────┴────────┐ ┌───────┴───────┐  ┌────────┴────────┐
-     │  Backend (19)   │ │ Frontend (17) │  │   Static Sites  │
-     │  :4001 - :4016  │ │ :3001 - :5015 │  │   :8001 - :8004 │
-     │  :8200, :18080  │ │               │  │                 │
+     │  Backend (31)   │ │ Frontend (30) │  │   Static Sites  │
+     │  :4001 - :4019  │ │ :3001 - :5183 │  │   :8001 - :8009 │
+     │  :8200,:18-58K  │ │               │  │                 │
      └─────────────────┘ └───────────────┘  └─────────────────┘
 ```
 
@@ -76,7 +76,7 @@ AI Project API Gateway는 다수의 AI/ML 마이크로서비스를 하나의 진
 # Gateway만 시작
 ./start_gateway.sh
 
-# 전체 서비스(37개) + Gateway 시작
+# 전체 서비스(62개) + Gateway 시작
 ./start_all_services.sh
 
 # 서비스 상태 확인
@@ -90,12 +90,12 @@ AI Project API Gateway는 다수의 AI/ML 마이크로서비스를 하나의 진
 
 | 항목 | URL |
 |------|-----|
-| 대시보드 | http://localhost:8080 |
-| 헬스 체크 | http://localhost:8080/health |
-| Swagger UI | http://localhost:8080/swagger |
-| ReDoc | http://localhost:8080/redoc |
-| 서비스 목록 (JSON) | http://localhost:8080/services |
-| API 문서 | http://localhost:8080/docs/api |
+| 대시보드 | <http://localhost:8080> |
+| 헬스 체크 | <http://localhost:8080/health> |
+| Swagger UI | <http://localhost:8080/swagger> |
+| ReDoc | <http://localhost:8080/redoc> |
+| 서비스 목록 (JSON) | <http://localhost:8080/services> |
+| API 문서 | <http://localhost:8080/docs/api> |
 
 ---
 
@@ -129,9 +129,9 @@ API_Gateway/
 
 | 섹션 | 설명 |
 |------|------|
-| `BACKEND_SERVICES` | 19개 백엔드 서비스 정의 (이름, 포트, 경로, 진입점) |
-| `FRONTEND_SERVICES` | 17개 프론트엔드 서비스 정의 (이름, 포트, 타입) |
-| `API_DOCS` | 주요 서비스별 API 엔드포인트 문서 (deepfake, carelink, cluster 등 11개) |
+| `BACKEND_SERVICES` | 31개 백엔드 서비스 정의 (이름, 포트, 경로, 진입점) |
+| `FRONTEND_SERVICES` | 30개 프론트엔드 서비스 정의 (이름, 포트, 타입) |
+| `API_DOCS` | 주요 서비스별 API 엔드포인트 문서 (deepfake, carelink, aimes_food 등 20개) |
 | `SERVICE_CATEGORIES` | 서비스 카테고리 분류 (AI Platforms, Detection, Healthcare 등 9개 그룹) |
 | `check_service_health()` | 개별 서비스 헬스 체크 (`/health`, `/api/health`, `/`, `/api/` 순서로 시도) |
 | `check_all_services()` | 전체 서비스 병렬 헬스 체크 (`asyncio.gather`) |
@@ -140,6 +140,7 @@ API_Gateway/
 | `proxy_request()` | `/api/{service}/{path}` 리버스 프록시 - 모든 HTTP 메서드 지원 |
 
 **대시보드 기능:**
+
 - 다크/라이트 테마 토글 (`localStorage` 저장)
 - 서비스 검색/필터 (이름, 설명, 포트 매칭, 150ms 디바운스)
 - 상태 필터 (All/Online/Offline 버튼)
@@ -159,6 +160,7 @@ API_Gateway/
 - 스켈레톤 로딩 애니메이션
 
 **실행:**
+
 ```bash
 python3 api_gateway_v2.py
 # 또는
@@ -191,6 +193,7 @@ v1.0 게이트웨이. v2.0으로 대체되어 더 이상 사용하지 않으나 
 API Gateway만 시작하는 스크립트. 백엔드/프론트엔드 서비스는 시작하지 않는다.
 
 **동작 순서:**
+
 1. 기존 Gateway 프로세스 중복 실행 여부 확인
 2. Python 의존성 검사 및 자동 설치 (`fastapi`, `httpx`, `uvicorn[standard]`)
 3. `nohup`으로 백그라운드 실행
@@ -207,9 +210,10 @@ API Gateway만 시작하는 스크립트. 백엔드/프론트엔드 서비스는
 
 #### `start_all_services.sh` - 전체 서비스 일괄 시작
 
-37개 서비스(Backend 19 + Frontend 17 + Gateway 1)를 순차적으로 시작한다.
+62개 서비스(Backend 31 + Frontend 30 + Gateway 1)를 순차적으로 시작한다.
 
 **동작 순서:**
+
 1. 각 서비스의 포트 사용 여부 확인 (이미 사용 중이면 SKIP)
 2. 서비스별 작업 디렉토리로 이동 후 `nohup`으로 백그라운드 실행
 3. PID 확인으로 기동 성공/실패 판정
@@ -222,11 +226,14 @@ API Gateway만 시작하는 스크립트. 백엔드/프론트엔드 서비스는
 | Streamlit | dataset_gen | `streamlit run main.py --server.port 4001` |
 | Uvicorn | deepfake, a3_adep, a3de, carelink 등 14개 | `uvicorn {module}:app --host 0.0.0.0 --port {port}` |
 | Flask-SocketIO | multimodals | `python -c "import app; socketio.run(...)"`|
-| Python HTTP | truthlens, webpage_ainex, webpage_aegis | `python3 -m http.server {port}` |
+| Docker | aimes_food | `docker compose up -d` |
+| Node.js | aimes_agricultural 등 10개 AIMES GW | `env PORT={port} node src/index.js` |
+| Python HTTP | truthlens, webpage_ainex 등 5개 | `python3 -m http.server {port}` |
 | Next.js | ainex_home, cluster_master_web 등 8개 | `npx next dev -p {port}` |
-| Vite | langgraph_frontend, enterprise_frontend 등 4개 | `node vite.js --port {port} --host` |
+| Vite | langgraph_frontend 등 4개 + AIMES 11개 | `npx vite --port {port} --host` |
 
 **출력 예시:**
+
 ```
   [OK]   deepfake (port 4002, PID 12345)
   [SKIP] cluster (port 4006 already in use)
@@ -242,6 +249,7 @@ API Gateway만 시작하는 스크립트. 백엔드/프론트엔드 서비스는
 모든 관련 프로세스를 타입별로 종료한다.
 
 **종료 대상 (순서):**
+
 1. Streamlit 서버 (`pkill -f "streamlit run"`)
 2. Python HTTP 서버 (`pkill -f "python3 -m http.server"`)
 3. Uvicorn 서버 (`pkill -f "uvicorn"`)
@@ -249,22 +257,24 @@ API Gateway만 시작하는 스크립트. 백엔드/프론트엔드 서비스는
 5. Node.js 개발 서버 (`npm run dev`, `next dev`, `next-server`, `vite`)
 6. API Gateway (`pkill -f "api_gateway_v2"`)
 
-종료 후 37개 포트를 순회하며 아직 사용 중인 포트가 있는지 확인하고 경고를 출력한다.
+종료 후 62개 포트를 순회하며 아직 사용 중인 포트가 있는지 확인하고 경고를 출력한다.
 
 ---
 
 #### `status_services.sh` - 서비스 상태 확인
 
-37개 서비스의 실행 상태를 포트 기반으로 확인하고 색상 표시한다.
+62개 서비스의 실행 상태를 포트 기반으로 확인하고 색상 표시한다.
 
 **동작:**
+
 1. `ss -tlnp`로 각 서비스 포트 리스닝 여부 확인
-2. Backend(19) / Frontend(17) / Gateway(1) 섹션별 표시
+2. Backend(31) / Frontend(30) / Gateway(1) 섹션별 표시
 3. UP(초록) / DOWN(빨강) 색상 구분
 4. Gateway `/health` API 호출로 실제 헬스 체크 결과 비교
 5. Unhealthy 서비스 목록 별도 표시
 
 **출력 예시:**
+
 ```
 [Backend Services]
 ------------------------------------------
@@ -297,7 +307,6 @@ Summary: 30 up / 3 down / 33 total
 | `a3_adep` | A3-ADEP Agent Platform | 4003 | AI Platforms | 에이전트 기반 AI 작업 오케스트레이션 |
 | `a3de` | A3-ADE Dev Environment | 4004 | AI Platforms | A3 Security 개발 환경 |
 | `carelink` | AI CareLink Platform | 4005 | Healthcare | 헬스케어/간병 AI 플랫폼 |
-| `cluster` | AI Cluster PC | 4006 | Infrastructure | 클러스터 PC 관리 시스템 |
 | `consulting` | AiNex (AI Consulting) | 4007 | Assistants | 멀티에이전트 AI 컨설팅 어시스턴트 플랫폼 |
 | `factory` | AI Factory | 4008 | Infrastructure | AI 팩토리 엔터프라이즈 생산 시스템 |
 | `labor` | AI Labor Compliance | 4009 | Compliance | 노동법 컴플라이언스 AI 시스템 |
@@ -310,7 +319,20 @@ Summary: 30 up / 3 down / 33 total
 | `aegis` | AEGIS Platform | 4015 | AI Platforms | AI-Enhanced Guardian Intelligence System |
 | `nexusai` | NexusAI Platform | 4016 | AI Platforms | 멀티에이전트 AI 플랫폼 (대화, 문서, 워크플로우) |
 | `ascm` | ASCM Platform | 8006 | SaaS Management | AI SaaS 서비스 플랫폼 통합 관리 시스템 |
-| `aimes` | AIMES Platform | 18080 | Manufacturing | AI 제조실행시스템 - 스마트팩토리 생산관리 |
+| `aimes_food` | AIMES Food | 18080 | Manufacturing | AI MES 식품 제조 - HACCP 준수 및 생산관리 |
+| `aimes_agricultural` | AIMES Agricultural | 28080 | Manufacturing | AI MES 농산물 제조 - 작물 가공 및 공급망 |
+| `aimes_automotive` | AIMES Automotive | 58080 | Manufacturing | AI MES 자동차 제조 - 차량 조립 및 품질관리 |
+| `aimes_battery` | AIMES Battery | 40080 | Manufacturing | AI MES 배터리 제조 - 셀 생산 및 안전 테스트 |
+| `aimes_chemical` | AIMES Chemical | 39080 | Manufacturing | AI MES 화학 제조 - 공정 제어 및 안전 관리 |
+| `aimes_cosmetics` | AIMES Cosmetics | 20080 | Manufacturing | AI MES 화장품 제조 - 제형 및 품질 보증 |
+| `aimes_electronics` | AIMES Electronics | 48080 | Manufacturing | AI MES 전자 제조 - PCB 조립 및 테스트 |
+| `aimes_medical` | AIMES Medical | 29080 | Manufacturing | AI MES 의료기기 제조 - FDA 준수 및 멸균 |
+| `aimes_metal` | AIMES Metal | 49080 | Manufacturing | AI MES 금속 제조 - 제련, 주조 및 마감 |
+| `aimes_pharmaceutical` | AIMES Pharmaceutical | 38080 | Manufacturing | AI MES 제약 제조 - GMP 준수 및 배치 추적 |
+| `aimes_textile` | AIMES Textile | 50080 | Manufacturing | AI MES 섬유 제조 - 직조, 염색 및 품질관리 |
+| `anti_deepfake` | Anti-Deep-Fake | 4017 | Detection | 고급 딥페이크 탐지 및 방지 시스템 |
+| `autogit` | AutoGit | 4018 | Infrastructure | Git 자동화 및 저장소 관리 |
+| `stt_tts` | STT-to-TTS | 4019 | Data & ML | 음성-텍스트-음성 변환 서비스 |
 
 ### Frontend Services
 
@@ -322,7 +344,6 @@ Summary: 30 up / 3 down / 33 total
 | `cluster_master_web` | Cluster Master Web | 3002 | Next.js | Cluster Master 웹페이지 |
 | `aialbm_web` | AIALBM Web | 3003 | Next.js | AIALBM 웹페이지 |
 | `carelink_web` | CareLink Web | 3004 | Next.js | CareLink 웹페이지 |
-| `ai_homepage` | AI Homepage | 3005 | Next.js | AI Project 홈페이지 |
 | `carelink_frontend` | AI CareLink UI | 5005 | Next.js | AI CareLink 프론트엔드 |
 | `langgraph_frontend` | AgentForge UI | 5010 | React/Vite | AgentForge 프론트엔드 |
 | `enterprise_frontend` | Enterprise Factory UI | 5013 | React/Vite | Enterprise Factory 프론트엔드 |
@@ -333,6 +354,20 @@ Summary: 30 up / 3 down / 33 total
 | `webpage_aegis` | AEGIS Homepage | 8003 | Static | AEGIS 마케팅/문서 웹페이지 |
 | `ascm_dashboard` | ASCM Admin Dashboard | 3010 | Next.js | ASCM 플랫폼 관리 대시보드 |
 | `webpage_aimes` | AIMES Homepage | 8004 | Static | AIMES 제조실행시스템 웹페이지 |
+| `webpage_eleven_aimes` | Eleven AIMES Homepage | 8005 | Static | AIMES Eleven 스마트팩토리 포트폴리오 웹페이지 |
+| `webpage_nexusai` | NexusAI Homepage | 8009 | Static | NexusAI 플랫폼 포트폴리오 웹페이지 |
+| `webpage_all_project` | All Projects Homepage | 3008 | Next.js | WDLab1958 전체 프로젝트 통합 홈페이지 |
+| `aimes_agricultural_web` | AIMES Agricultural Web | 5173 | React/Vite | AIMES 농산물 MES 프론트엔드 |
+| `aimes_automotive_web` | AIMES Automotive Web | 5174 | React/Vite | AIMES 자동차 MES 프론트엔드 |
+| `aimes_battery_web` | AIMES Battery Web | 5175 | React/Vite | AIMES 배터리 MES 프론트엔드 |
+| `aimes_chemical_web` | AIMES Chemical Web | 5176 | React/Vite | AIMES 화학 MES 프론트엔드 |
+| `aimes_cosmetics_web` | AIMES Cosmetics Web | 5177 | React/Vite | AIMES 화장품 MES 프론트엔드 |
+| `aimes_electronics_web` | AIMES Electronics Web | 5178 | React/Vite | AIMES 전자 MES 프론트엔드 |
+| `aimes_food_web` | AIMES Food Web | 5179 | React/Vite | AIMES 식품 MES 프론트엔드 |
+| `aimes_medical_web` | AIMES Medical Web | 5180 | React/Vite | AIMES 의료기기 MES 프론트엔드 |
+| `aimes_metal_web` | AIMES Metal Web | 5181 | React/Vite | AIMES 금속 MES 프론트엔드 |
+| `aimes_pharmaceutical_web` | AIMES Pharmaceutical Web | 5182 | React/Vite | AIMES 제약 MES 프론트엔드 |
+| `aimes_textile_web` | AIMES Textile Web | 5183 | React/Vite | AIMES 섬유 MES 프론트엔드 |
 
 ---
 
