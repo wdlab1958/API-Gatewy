@@ -154,6 +154,7 @@ API_Gateway/
 - 모바일 반응형 (768px/480px 브레이크포인트)
 - 키보드 단축키 (`/`, `R`, `D`, `?`, `Esc`)
 - 행 수 표시 `(N of M)` 형식
+- **Open 버튼** - 각 서비스 행의 Action 컬럼에서 클릭 시 해당 서비스를 새 브라우저 탭으로 열기
 - 30초 자동 새로고침 카운트다운 (SVG 원형 프로그레스)
 - Uptime 퍼센트 SVG 링
 - 접이식 섹션 (`localStorage` 상태 저장)
@@ -473,8 +474,8 @@ All / Online / Offline 버튼으로 서비스 상태별 필터링. 필터된 행
 3. **통계 바** (6칸, 반응형 3/2칸) - Total, Backend, Frontend, Healthy, Unhealthy, Uptime%
 4. **Quick Links** (반응형 2칸) - Health, Swagger, Services, ReDoc 바로가기
 5. **API Routing** - 접이식 라우팅 설명 (기본 접힘)
-6. **Backend Services 테이블** - 정렬 가능 헤더, 서비스명, 포트, Direct URL, Gateway URL, 응답시간(스파크라인), 상태, 클릭 시 상세 패널
-7. **Frontend Services 테이블** - 서비스명, 타입, 포트, URL, 응답시간(스파크라인), 상태, 클릭 시 상세 패널
+6. **Backend Services 테이블** - 정렬 가능 헤더, 서비스명, 포트, Direct URL, Gateway URL, 응답시간(스파크라인), 상태, Open 버튼, 클릭 시 상세 패널
+7. **Frontend Services 테이블** - 서비스명, 타입, 포트, URL, 응답시간(스파크라인), 상태, Open 버튼, 클릭 시 상세 패널
 8. **토스트 알림** - 서비스 상태 변경(Online/Offline) 시 우하단 토스트
 9. **Footer** - 버전, 포트, 마지막 갱신 시간
 
@@ -497,6 +498,7 @@ All / Online / Offline 버튼으로 서비스 상태별 필터링. 필터된 행
 | 모바일 반응형 | 768px/480px 브레이크포인트, stats/links 그리드 조정, sticky 컬럼 |
 | 키보드 단축키 | `/` 검색, `R` 새로고침, `D` 테마, `?` 도움말, `Esc` 닫기 |
 | Uptime 링 | 전체 서비스 중 Healthy 비율을 원형 프로그레스로 표시 |
+| Open 버튼 | 각 서비스 행에 Open 버튼 표시, 클릭 시 `localhost:{port}`를 새 탭으로 열기 (`stopPropagation`으로 상세 패널과 독립 동작) |
 | 접이식 섹션 | 열기/닫기 상태 `localStorage` 저장 |
 | 스켈레톤 로딩 | 첫 데이터 로딩 전 shimmer 애니메이션 |
 | 마지막 체크 시간 | "N초 전" 형식, 1초마다 자동 갱신 |
