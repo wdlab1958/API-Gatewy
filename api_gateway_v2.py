@@ -68,13 +68,6 @@ BACKEND_SERVICES = {
         "path": "/home/ubuntu-02/ai_project/AiCarelink",
         "entry": "backend/app/main.py"
     },
-    "cluster": {
-        "port": 4006,
-        "name": "AI Cluster PC",
-        "description": "Cluster PC management system",
-        "path": "/home/ubuntu-02/ai_project/ai_cluster_pc",
-        "entry": "src/server.py"
-    },
     "consulting": {
         "port": 4007,
         "name": "AiNex (AI Consulting)",
@@ -159,12 +152,103 @@ BACKEND_SERVICES = {
         "path": "/home/ubuntu-02/ai_project/ASCM",
         "entry": "ASCM-main/run_services.py"
     },
-    "aimes": {
+    "aimes_food": {
         "port": 18080,
-        "name": "AIMES Platform",
-        "description": "AI Manufacturing Execution System - Smart factory production management",
-        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven",
-        "entry": "AIMES-Food/services/api-gateway/src/index.js"
+        "name": "AIMES Food",
+        "description": "AI MES for Food manufacturing - HACCP compliance & production management",
+        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Food",
+        "entry": "services/api-gateway/src/index.js"
+    },
+    "aimes_agricultural": {
+        "port": 28080,
+        "name": "AIMES Agricultural",
+        "description": "AI MES for Agricultural manufacturing - crop processing & supply chain",
+        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Agricultural",
+        "entry": "services/api-gateway/src/index.js"
+    },
+    "aimes_automotive": {
+        "port": 58080,
+        "name": "AIMES Automotive",
+        "description": "AI MES for Automotive manufacturing - vehicle assembly & quality control",
+        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Automotive",
+        "entry": "services/api-gateway/src/index.js"
+    },
+    "aimes_battery": {
+        "port": 40080,
+        "name": "AIMES Battery",
+        "description": "AI MES for Battery manufacturing - cell production & safety testing",
+        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Battery",
+        "entry": "index.js"
+    },
+    "aimes_chemical": {
+        "port": 39080,
+        "name": "AIMES Chemical",
+        "description": "AI MES for Chemical manufacturing - process control & safety management",
+        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Chemical",
+        "entry": "services/api-gateway/src/index.js"
+    },
+    "aimes_cosmetics": {
+        "port": 20080,
+        "name": "AIMES Cosmetics",
+        "description": "AI MES for Cosmetics manufacturing - formulation & quality assurance",
+        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Cosmetics",
+        "entry": "services/api-gateway/src/index.js"
+    },
+    "aimes_electronics": {
+        "port": 48080,
+        "name": "AIMES Electronics",
+        "description": "AI MES for Electronics manufacturing - PCB assembly & testing",
+        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Electronics",
+        "entry": "services/api-gateway/src/index.js"
+    },
+    "aimes_medical": {
+        "port": 29080,
+        "name": "AIMES Medical",
+        "description": "AI MES for Medical device manufacturing - FDA compliance & sterilization",
+        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Medical",
+        "entry": "services/api-gateway/src/index.js"
+    },
+    "aimes_metal": {
+        "port": 49080,
+        "name": "AIMES Metal",
+        "description": "AI MES for Metal manufacturing - smelting, casting & finishing",
+        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Metal",
+        "entry": "services/api-gateway/src/index.js"
+    },
+    "aimes_pharmaceutical": {
+        "port": 38080,
+        "name": "AIMES Pharmaceutical",
+        "description": "AI MES for Pharmaceutical manufacturing - GMP compliance & batch tracking",
+        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Pharmaceutical",
+        "entry": "services/api-gateway/src/index.js"
+    },
+    "aimes_textile": {
+        "port": 50080,
+        "name": "AIMES Textile",
+        "description": "AI MES for Textile manufacturing - weaving, dyeing & quality control",
+        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Textile",
+        "entry": "services/api-gateway/src/index.js"
+    },
+    "anti_deepfake": {
+        "port": 4017,
+        "name": "Anti-Deep-Fake",
+        "description": "Advanced deepfake detection and prevention system",
+        "path": "/home/ubuntu-02/ai_project/Anti-Deep-Fake",
+        "entry": "api_server.py"
+    },
+    "autogit": {
+        "port": 4018,
+        "name": "AutoGit",
+        "description": "AI-powered Git automation with LLM integration",
+        "path": "/home/ubuntu-02/ai_project/AutoGit",
+        "entry": "api_server.py"
+    },
+    "stt_tts": {
+        "port": 4019,
+        "name": "STT-to-TTS",
+        "description": "Speech-to-Text and Text-to-Speech processing pipeline",
+        "path": "/home/ubuntu-02/ai_project/STT-to-TTS",
+        "entry": "api_server.py"
     },
 }
 
@@ -173,7 +257,7 @@ FRONTEND_SERVICES = {
         "port": 8001,
         "name": "TruthLens Web",
         "description": "DeepFake detection web interface",
-        "path": "/home/ubuntu-02/ai_project/TruthLens/webpage_truthlens",
+        "path": "/home/ubuntu-02/ai_project/webpage_truthlens",
         "type": "Next.js"
     },
     "webpage_ainex": {
@@ -195,28 +279,24 @@ FRONTEND_SERVICES = {
         "name": "Cluster Master Web",
         "description": "Cluster Master webpage",
         "path": "/home/ubuntu-02/ai_project/webpage_ai_cluster_master",
-        "type": "Next.js"
+        "type": "Next.js",
+        "basePath": "/Webpage-Cluster-Master"
     },
     "aialbm_web": {
         "port": 3003,
         "name": "AIALBM Web",
         "description": "AIALBM webpage",
         "path": "/home/ubuntu-02/ai_project/webpage_aialbm",
-        "type": "Next.js"
+        "type": "Next.js",
+        "basePath": "/Webpage_AIALBM"
     },
     "carelink_web": {
         "port": 3004,
         "name": "CareLink Web",
         "description": "CareLink webpage",
         "path": "/home/ubuntu-02/ai_project/webpage_carelink",
-        "type": "Next.js"
-    },
-    "ai_homepage": {
-        "port": 3005,
-        "name": "AI Homepage",
-        "description": "AI Project homepage",
-        "path": "/home/ubuntu-02/ai_project/webpage_ai_project",
-        "type": "Next.js"
+        "type": "Next.js",
+        "basePath": "/Webpage_AI-Carelink"
     },
     "carelink_frontend": {
         "port": 5005,
@@ -288,6 +368,104 @@ FRONTEND_SERVICES = {
         "path": "/home/ubuntu-02/ai_project/webpage_AIMES",
         "type": "Static"
     },
+    "webpage_eleven_aimes": {
+        "port": 8005,
+        "name": "Eleven AIMES Homepage",
+        "description": "AIMES Eleven smart factory portfolio webpage",
+        "path": "/home/ubuntu-02/ai_project/webpage_Eleven_AIMES",
+        "type": "Static"
+    },
+    "webpage_nexusai": {
+        "port": 8009,
+        "name": "NexusAI Homepage",
+        "description": "NexusAI platform portfolio webpage",
+        "path": "/home/ubuntu-02/ai_project/webpage_NexusAI",
+        "type": "Static"
+    },
+    "webpage_all_project": {
+        "port": 3008,
+        "name": "All Projects Homepage",
+        "description": "WDLab1958 all projects unified homepage",
+        "path": "/home/ubuntu-02/ai_project/webpage_wdlab1958-all_project",
+        "type": "Next.js"
+    },
+    "aimes_agricultural_web": {
+        "port": 5173,
+        "name": "AIMES Agricultural Web",
+        "description": "AIMES Agricultural MES frontend",
+        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Agricultural/frontend/web",
+        "type": "React/Vite"
+    },
+    "aimes_automotive_web": {
+        "port": 5174,
+        "name": "AIMES Automotive Web",
+        "description": "AIMES Automotive MES frontend",
+        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Automotive/frontend/web",
+        "type": "React/Vite"
+    },
+    "aimes_battery_web": {
+        "port": 5175,
+        "name": "AIMES Battery Web",
+        "description": "AIMES Battery MES frontend",
+        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Battery/frontend/web",
+        "type": "React/Vite"
+    },
+    "aimes_chemical_web": {
+        "port": 5176,
+        "name": "AIMES Chemical Web",
+        "description": "AIMES Chemical MES frontend",
+        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Chemical/frontend/web",
+        "type": "React/Vite"
+    },
+    "aimes_cosmetics_web": {
+        "port": 5177,
+        "name": "AIMES Cosmetics Web",
+        "description": "AIMES Cosmetics MES frontend",
+        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Cosmetics/frontend/web",
+        "type": "React/Vite"
+    },
+    "aimes_electronics_web": {
+        "port": 5178,
+        "name": "AIMES Electronics Web",
+        "description": "AIMES Electronics MES frontend",
+        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Electronics/frontend/web",
+        "type": "React/Vite"
+    },
+    "aimes_food_web": {
+        "port": 5179,
+        "name": "AIMES Food Web",
+        "description": "AIMES Food MES frontend",
+        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Food/frontend/web",
+        "type": "React/Vite"
+    },
+    "aimes_medical_web": {
+        "port": 5180,
+        "name": "AIMES Medical Web",
+        "description": "AIMES Medical MES frontend",
+        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Medical/frontend/web",
+        "type": "React/Vite"
+    },
+    "aimes_metal_web": {
+        "port": 5181,
+        "name": "AIMES Metal Web",
+        "description": "AIMES Metal MES frontend",
+        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Metal/frontend/web",
+        "type": "React/Vite"
+    },
+    "aimes_pharmaceutical_web": {
+        "port": 5182,
+        "name": "AIMES Pharmaceutical Web",
+        "description": "AIMES Pharmaceutical MES frontend",
+        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Pharmaceutical/frontend/web",
+        "type": "React/Vite"
+    },
+    "aimes_textile_web": {
+        "port": 5183,
+        "name": "AIMES Textile Web",
+        "description": "AIMES Textile MES frontend",
+        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Textile/frontend/web",
+        "type": "React/Vite"
+    },
 }
 
 # API Documentation for each service
@@ -305,14 +483,6 @@ API_DOCS = {
             {"method": "GET", "path": "/patients", "description": "Get patient list"},
             {"method": "GET", "path": "/caregivers", "description": "Get caregiver list"},
             {"method": "POST", "path": "/appointments", "description": "Create appointment"},
-        ]
-    },
-    "cluster": {
-        "endpoints": [
-            {"method": "GET", "path": "/workers", "description": "List worker nodes"},
-            {"method": "POST", "path": "/tasks", "description": "Submit new task"},
-            {"method": "GET", "path": "/status", "description": "Cluster status"},
-            {"method": "DELETE", "path": "/tasks/{id}", "description": "Cancel task"},
         ]
     },
     "langgraph": {
@@ -383,7 +553,7 @@ API_DOCS = {
             {"method": "GET", "path": "/api/v1/analytics/revenue/mrr", "description": "Monthly Recurring Revenue"},
         ]
     },
-    "aimes": {
+    "aimes_food": {
         "endpoints": [
             {"method": "GET", "path": "/health", "description": "Gateway health check"},
             {"method": "GET", "path": "/api/production", "description": "Production line status"},
@@ -391,6 +561,96 @@ API_DOCS = {
             {"method": "GET", "path": "/api/inventory", "description": "Inventory management"},
             {"method": "GET", "path": "/api/traceability", "description": "Product traceability"},
             {"method": "POST", "path": "/api/haccp", "description": "HACCP compliance check"},
+        ]
+    },
+    "aimes_agricultural": {
+        "endpoints": [
+            {"method": "GET", "path": "/health", "description": "Gateway health check"},
+            {"method": "GET", "path": "/api/production", "description": "Production line status"},
+            {"method": "GET", "path": "/api/quality", "description": "Quality inspection data"},
+            {"method": "GET", "path": "/api/inventory", "description": "Inventory management"},
+            {"method": "GET", "path": "/api/traceability", "description": "Product traceability"},
+        ]
+    },
+    "aimes_automotive": {
+        "endpoints": [
+            {"method": "GET", "path": "/health", "description": "Gateway health check"},
+            {"method": "GET", "path": "/api/production", "description": "Production line status"},
+            {"method": "GET", "path": "/api/quality", "description": "Quality inspection data"},
+            {"method": "GET", "path": "/api/inventory", "description": "Inventory management"},
+            {"method": "GET", "path": "/api/traceability", "description": "Product traceability"},
+        ]
+    },
+    "aimes_battery": {
+        "endpoints": [
+            {"method": "GET", "path": "/health", "description": "Gateway health check"},
+            {"method": "GET", "path": "/api/production", "description": "Production line status"},
+            {"method": "GET", "path": "/api/quality", "description": "Quality inspection data"},
+            {"method": "GET", "path": "/api/inventory", "description": "Inventory management"},
+            {"method": "GET", "path": "/api/traceability", "description": "Product traceability"},
+        ]
+    },
+    "aimes_chemical": {
+        "endpoints": [
+            {"method": "GET", "path": "/health", "description": "Gateway health check"},
+            {"method": "GET", "path": "/api/production", "description": "Production line status"},
+            {"method": "GET", "path": "/api/quality", "description": "Quality inspection data"},
+            {"method": "GET", "path": "/api/inventory", "description": "Inventory management"},
+            {"method": "GET", "path": "/api/traceability", "description": "Product traceability"},
+        ]
+    },
+    "aimes_cosmetics": {
+        "endpoints": [
+            {"method": "GET", "path": "/health", "description": "Gateway health check"},
+            {"method": "GET", "path": "/api/production", "description": "Production line status"},
+            {"method": "GET", "path": "/api/quality", "description": "Quality inspection data"},
+            {"method": "GET", "path": "/api/inventory", "description": "Inventory management"},
+            {"method": "GET", "path": "/api/traceability", "description": "Product traceability"},
+        ]
+    },
+    "aimes_electronics": {
+        "endpoints": [
+            {"method": "GET", "path": "/health", "description": "Gateway health check"},
+            {"method": "GET", "path": "/api/production", "description": "Production line status"},
+            {"method": "GET", "path": "/api/quality", "description": "Quality inspection data"},
+            {"method": "GET", "path": "/api/inventory", "description": "Inventory management"},
+            {"method": "GET", "path": "/api/traceability", "description": "Product traceability"},
+        ]
+    },
+    "aimes_medical": {
+        "endpoints": [
+            {"method": "GET", "path": "/health", "description": "Gateway health check"},
+            {"method": "GET", "path": "/api/production", "description": "Production line status"},
+            {"method": "GET", "path": "/api/quality", "description": "Quality inspection data"},
+            {"method": "GET", "path": "/api/inventory", "description": "Inventory management"},
+            {"method": "GET", "path": "/api/traceability", "description": "Product traceability"},
+        ]
+    },
+    "aimes_metal": {
+        "endpoints": [
+            {"method": "GET", "path": "/health", "description": "Gateway health check"},
+            {"method": "GET", "path": "/api/production", "description": "Production line status"},
+            {"method": "GET", "path": "/api/quality", "description": "Quality inspection data"},
+            {"method": "GET", "path": "/api/inventory", "description": "Inventory management"},
+            {"method": "GET", "path": "/api/traceability", "description": "Product traceability"},
+        ]
+    },
+    "aimes_pharmaceutical": {
+        "endpoints": [
+            {"method": "GET", "path": "/health", "description": "Gateway health check"},
+            {"method": "GET", "path": "/api/production", "description": "Production line status"},
+            {"method": "GET", "path": "/api/quality", "description": "Quality inspection data"},
+            {"method": "GET", "path": "/api/inventory", "description": "Inventory management"},
+            {"method": "GET", "path": "/api/traceability", "description": "Product traceability"},
+        ]
+    },
+    "aimes_textile": {
+        "endpoints": [
+            {"method": "GET", "path": "/health", "description": "Gateway health check"},
+            {"method": "GET", "path": "/api/production", "description": "Production line status"},
+            {"method": "GET", "path": "/api/quality", "description": "Quality inspection data"},
+            {"method": "GET", "path": "/api/inventory", "description": "Inventory management"},
+            {"method": "GET", "path": "/api/traceability", "description": "Product traceability"},
         ]
     },
 }
@@ -403,7 +663,7 @@ SERVICE_CATEGORIES = {
     },
     "Detection & Analysis": {
         "icon": "shield",
-        "services": ["deepfake"]
+        "services": ["deepfake", "anti_deepfake"]
     },
     "Healthcare": {
         "icon": "heart",
@@ -411,7 +671,7 @@ SERVICE_CATEGORIES = {
     },
     "Infrastructure": {
         "icon": "server",
-        "services": ["cluster", "cluster_master", "factory"]
+        "services": ["cluster_master", "factory", "autogit"]
     },
     "Assistants & Bots": {
         "icon": "message-circle",
@@ -419,7 +679,7 @@ SERVICE_CATEGORIES = {
     },
     "Data & ML": {
         "icon": "database",
-        "services": ["dataset_gen", "multimodals"]
+        "services": ["dataset_gen", "multimodals", "stt_tts"]
     },
     "Compliance": {
         "icon": "file-text",
@@ -431,7 +691,7 @@ SERVICE_CATEGORIES = {
     },
     "Manufacturing": {
         "icon": "industry",
-        "services": ["aimes"]
+        "services": ["aimes_food", "aimes_agricultural", "aimes_automotive", "aimes_battery", "aimes_chemical", "aimes_cosmetics", "aimes_electronics", "aimes_medical", "aimes_metal", "aimes_pharmaceutical", "aimes_textile"]
     },
 }
 
@@ -460,9 +720,11 @@ app.add_middleware(
 # Helper Functions
 # ============================================================
 
-async def check_service_health(port: int, timeout: float = 2.0) -> dict:
+async def check_service_health(port: int, timeout: float = 2.0, base_path: str = "") -> dict:
     """Check service health status"""
     endpoints_to_try = ["/health", "/api/health", "/", "/api/"]
+    if base_path:
+        endpoints_to_try = [base_path, f"{base_path}/health"] + endpoints_to_try
 
     for endpoint in endpoints_to_try:
         try:
@@ -498,7 +760,7 @@ async def check_all_services() -> dict:
     # Check frontend services
     frontend_tasks = []
     for service_key, service_info in FRONTEND_SERVICES.items():
-        frontend_tasks.append(check_service_health(service_info["port"]))
+        frontend_tasks.append(check_service_health(service_info["port"], base_path=service_info.get("basePath", "")))
 
     frontend_results = await asyncio.gather(*frontend_tasks)
     for i, (service_key, service_info) in enumerate(FRONTEND_SERVICES.items()):
