@@ -53,7 +53,7 @@ echo "=========================================="
 echo " AI Project Services Startup Script (v2)"
 echo "=========================================="
 echo ""
-echo "[Backend Services - 31 services]"
+echo "[Backend Services - 30 services]"
 echo "------------------------------------------"
 
 # Dataset_Gen (4001) - Streamlit
@@ -65,11 +65,6 @@ start_service "dataset_gen" 4001 \
 start_service "deepfake" 4002 \
     "${BASE}/TruthLens/src" \
     "../venv/bin/python3 -m uvicorn api_server:app --host 0.0.0.0 --port 4002"
-
-# A3-ADEP (4003)
-start_service "a3_adep" 4003 \
-    "${BASE}/A3-ADEP" \
-    "venv/bin/python3 -m uvicorn backend.main:app --host 0.0.0.0 --port 4003"
 
 # a3de (4004)
 start_service "a3de" 4004 \
@@ -411,7 +406,7 @@ echo -e "  Started: ${GREEN}${STARTED}${NC}"
 echo -e "  Skipped: ${YELLOW}${SKIPPED}${NC}"
 echo -e "  Failed:  ${RED}${FAILED}${NC}"
 TOTAL=$((STARTED + SKIPPED + FAILED))
-echo "  Total:   ${TOTAL} / 62"
+echo "  Total:   ${TOTAL} / 61"
 echo ""
 echo "  API Gateway: http://localhost:8080"
 echo "  Health Check: http://localhost:8080/health"

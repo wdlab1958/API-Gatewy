@@ -1,6 +1,6 @@
 # AI Project API Gateway
 
-> 62개 마이크로서비스(Backend 31 + Frontend 30 + Gateway 1)를 단일 엔드포인트로 통합 관리하는 API Gateway
+> 61개 마이크로서비스(Backend 30 + Frontend 30 + Gateway 1)를 단일 엔드포인트로 통합 관리하는 API Gateway
 
 **Version:** 2.0.0
 **Port:** 8080
@@ -76,7 +76,7 @@ AI Project API Gateway는 다수의 AI/ML 마이크로서비스를 하나의 진
 # Gateway만 시작
 ./start_gateway.sh
 
-# 전체 서비스(62개) + Gateway 시작
+# 전체 서비스(61개) + Gateway 시작
 ./start_all_services.sh
 
 # 서비스 상태 확인
@@ -211,7 +211,7 @@ API Gateway만 시작하는 스크립트. 백엔드/프론트엔드 서비스는
 
 #### `start_all_services.sh` - 전체 서비스 일괄 시작
 
-62개 서비스(Backend 31 + Frontend 30 + Gateway 1)를 순차적으로 시작한다.
+61개 서비스(Backend 30 + Frontend 30 + Gateway 1)를 순차적으로 시작한다.
 
 **동작 순서:**
 
@@ -225,7 +225,7 @@ API Gateway만 시작하는 스크립트. 백엔드/프론트엔드 서비스는
 | 유형 | 서비스 | 실행 명령 |
 |------|--------|-----------|
 | Streamlit | dataset_gen | `streamlit run main.py --server.port 4001` |
-| Uvicorn | deepfake, a3_adep, a3de, carelink 등 14개 | `uvicorn {module}:app --host 0.0.0.0 --port {port}` |
+| Uvicorn | deepfake, a3de, carelink 등 13개 | `uvicorn {module}:app --host 0.0.0.0 --port {port}` |
 | Flask-SocketIO | multimodals | `python -c "import app; socketio.run(...)"`|
 | Docker | aimes_food | `docker compose up -d` |
 | Node.js | aimes_agricultural 등 10개 AIMES GW | `env PORT={port} node src/index.js` |
@@ -258,13 +258,13 @@ API Gateway만 시작하는 스크립트. 백엔드/프론트엔드 서비스는
 5. Node.js 개발 서버 (`npm run dev`, `next dev`, `next-server`, `vite`)
 6. API Gateway (`pkill -f "api_gateway_v2"`)
 
-종료 후 62개 포트를 순회하며 아직 사용 중인 포트가 있는지 확인하고 경고를 출력한다.
+종료 후 61개 포트를 순회하며 아직 사용 중인 포트가 있는지 확인하고 경고를 출력한다.
 
 ---
 
 #### `status_services.sh` - 서비스 상태 확인
 
-62개 서비스의 실행 상태를 포트 기반으로 확인하고 색상 표시한다.
+61개 서비스의 실행 상태를 포트 기반으로 확인하고 색상 표시한다.
 
 **동작:**
 
@@ -305,7 +305,6 @@ Summary: 30 up / 3 down / 33 total
 |-----|---------|------|----------|------|
 | `dataset_gen` | Dataset Generator | 4001 | Data & ML | ML/AI 학습용 데이터셋 생성 유틸리티 |
 | `deepfake` | TruthLens (DeepFake) | 4002 | Detection | 딥페이크 탐지 및 분석 시스템 |
-| `a3_adep` | A3-ADEP Agent Platform | 4003 | AI Platforms | 에이전트 기반 AI 작업 오케스트레이션 |
 | `a3de` | A3-ADE Dev Environment | 4004 | AI Platforms | A3 Security 개발 환경 |
 | `carelink` | AI CareLink Platform | 4005 | Healthcare | 헬스케어/간병 AI 플랫폼 |
 | `consulting` | AiNex (AI Consulting) | 4007 | Assistants | 멀티에이전트 AI 컨설팅 어시스턴트 플랫폼 |

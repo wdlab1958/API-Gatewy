@@ -28,7 +28,6 @@ echo "[Backend Services]"
 echo "------------------------------------------"
 check_service "dataset_gen       " 4001
 check_service "deepfake          " 4002
-check_service "a3_adep           " 4003
 check_service "a3de              " 4004
 check_service "carelink          " 4005
 check_service "cluster           " 4006

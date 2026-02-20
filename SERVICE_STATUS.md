@@ -30,7 +30,6 @@ cd ~/ai_project
 |-------------|------|------|------------|-------------|--------|
 | dataset_gen | Dataset Generator | 4001 | localhost:4001 | /api/dataset_gen/ | Pending |
 | deepfake | TruthLens (DeepFake) | 4002 | localhost:4002 | /api/deepfake/ | Ready |
-| a3_adep | A3-ADEP Agent Platform | 4003 | localhost:4003 | /api/a3_adep/ | Pending (redis) |
 | a3de | A3-ADE Dev Environment | 4004 | localhost:4004 | /api/a3de/ | Ready |
 | carelink | AI CareLink Platform | 4005 | localhost:4005 | /api/carelink/ | Ready |
 | cluster | AI Cluster PC | 4006 | localhost:4006 | /api/cluster/ | Ready |

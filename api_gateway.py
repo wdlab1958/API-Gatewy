@@ -30,7 +30,6 @@ app.add_middleware(
 BACKEND_SERVICES = {
     "dataset_gen": {"port": 4001, "name": "Dataset Generator", "status": "pending"},
     "deepfake": {"port": 4002, "name": "DeepFake Detection (TruthLens)", "status": "running"},
-    "a3_adep": {"port": 4003, "name": "A3-ADEP Agent Platform", "status": "pending"},
     "a3de": {"port": 4004, "name": "A3-ADE Development Environment", "status": "running"},
     "carelink": {"port": 4005, "name": "AI CareLink Platform", "status": "running"},
     "cluster": {"port": 4006, "name": "AI Cluster Master", "status": "running"},
@@ -48,7 +47,6 @@ BACKEND_SERVICES = {
 FRONTEND_SERVICES = {
     "dataset_gen": {"port": 4000, "name": "Dataset Generator UI"},
     "deepfake": {"port": 5000, "name": "TruthLens UI"},
-    "a3_adep": {"port": 5003, "name": "A3-ADEP UI"},
     "a3de": {"port": 5004, "name": "A3-ADE UI"},
     "carelink": {"port": 5005, "name": "AI CareLink UI"},
     "cluster": {"port": 5006, "name": "AI Cluster UI"},

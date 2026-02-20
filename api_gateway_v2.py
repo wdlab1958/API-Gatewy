@@ -47,13 +47,6 @@ BACKEND_SERVICES = {
         "path": "/home/ubuntu-02/ai_project/TruthLens",
         "entry": "src/main.py"
     },
-    "a3_adep": {
-        "port": 4003,
-        "name": "A3-ADEP Agent Platform",
-        "description": "Agent-based AI system with task orchestration",
-        "path": "/home/ubuntu-02/ai_project/A3-ADEP",
-        "entry": "backend/main.py"
-    },
     "a3de": {
         "port": 4004,
         "name": "A3-ADE Development Environment",
@@ -659,7 +652,7 @@ API_DOCS = {
 SERVICE_CATEGORIES = {
     "AI Platforms": {
         "icon": "cube",
-        "services": ["a3_adep", "a3de", "langgraph", "aialbm", "enterprise", "aegis", "nexusai"]
+        "services": ["a3de", "langgraph", "aialbm", "enterprise", "aegis", "nexusai"]
     },
     "Detection & Analysis": {
         "icon": "shield",
