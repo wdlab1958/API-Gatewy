@@ -243,6 +243,13 @@ BACKEND_SERVICES = {
         "path": "/home/ubuntu-02/ai_project/STT-to-TTS",
         "entry": "api_server.py"
     },
+    "truthlens_unified": {
+        "port": 8000,
+        "name": "TruthLens Unified API",
+        "description": "TruthLens DeepFake Detection - Production REST API with multi-agent AI",
+        "path": "/home/ubuntu-02/ai_project/TruthLens",
+        "entry": "src/unified_server.py"
+    },
 }
 
 FRONTEND_SERVICES = {
@@ -327,11 +334,13 @@ FRONTEND_SERVICES = {
         "type": "React/Vite"
     },
     "aegis_frontend": {
-        "port": 3006,
+        "port": 4000,
         "name": "AEGIS Web",
-        "description": "AEGIS platform web interface",
+        "description": "AEGIS platform web interface (Desktop Dashboard)",
         "path": "/home/ubuntu-02/ai_project/AEGIS/apps/web",
-        "type": "Next.js"
+        "type": "Next.js",
+        "scheme": "https",
+        "url": "https://172.30.1.18:4000/interface"
     },
     "nexusai_frontend": {
         "port": 3007,
@@ -458,6 +467,13 @@ FRONTEND_SERVICES = {
         "description": "AIMES Textile MES frontend",
         "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Textile/frontend/web",
         "type": "React/Vite"
+    },
+    "truthlens_gradio": {
+        "port": 8000,
+        "name": "TruthLens Gradio UI",
+        "description": "TruthLens DeepFake Detection - Gradio web application",
+        "path": "/home/ubuntu-02/ai_project/TruthLens",
+        "type": "Gradio"
     },
 }
 
@@ -646,6 +662,17 @@ API_DOCS = {
             {"method": "GET", "path": "/api/traceability", "description": "Product traceability"},
         ]
     },
+    "truthlens_unified": {
+        "endpoints": [
+            {"method": "GET", "path": "/health", "description": "Service health check"},
+            {"method": "POST", "path": "/detect/upload", "description": "Upload and analyze file for deepfake detection"},
+            {"method": "POST", "path": "/detect/async", "description": "Async deepfake detection (returns task ID)"},
+            {"method": "GET", "path": "/detect/status/{task_id}", "description": "Get async detection task status"},
+            {"method": "GET", "path": "/models", "description": "List available detection models"},
+            {"method": "POST", "path": "/compliance/report", "description": "Generate AI Basic Law compliance report"},
+            {"method": "GET", "path": "/queue/stats", "description": "Task queue statistics"},
+        ]
+    },
 }
 
 # Service Categories for grouped view
@@ -656,7 +683,7 @@ SERVICE_CATEGORIES = {
     },
     "Detection & Analysis": {
         "icon": "shield",
-        "services": ["deepfake", "anti_deepfake"]
+        "services": ["deepfake", "anti_deepfake", "truthlens_unified"]
     },
     "Healthcare": {
         "icon": "heart",
@@ -713,7 +740,7 @@ app.add_middleware(
 # Helper Functions
 # ============================================================
 
-async def check_service_health(port: int, timeout: float = 2.0, base_path: str = "") -> dict:
+async def check_service_health(port: int, timeout: float = 2.0, base_path: str = "", scheme: str = "http") -> dict:
     """Check service health status"""
     endpoints_to_try = ["/health", "/api/health", "/", "/api/"]
     if base_path:
@@ -721,8 +748,8 @@ async def check_service_health(port: int, timeout: float = 2.0, base_path: str =
 
     for endpoint in endpoints_to_try:
         try:
-            async with httpx.AsyncClient(timeout=timeout) as client:
-                response = await client.get(f"http://localhost:{port}{endpoint}")
+            async with httpx.AsyncClient(timeout=timeout, verify=False) as client:
+                response = await client.get(f"{scheme}://localhost:{port}{endpoint}")
                 if response.status_code in [200, 207, 307, 503]:
                     return {
                         "status": "healthy",
@@ -753,7 +780,7 @@ async def check_all_services() -> dict:
     # Check frontend services
     frontend_tasks = []
     for service_key, service_info in FRONTEND_SERVICES.items():
-        frontend_tasks.append(check_service_health(service_info["port"], base_path=service_info.get("basePath", "")))
+        frontend_tasks.append(check_service_health(service_info["port"], base_path=service_info.get("basePath", ""), scheme=service_info.get("scheme", "http")))
 
     frontend_results = await asyncio.gather(*frontend_tasks)
     for i, (service_key, service_info) in enumerate(FRONTEND_SERVICES.items()):
@@ -1177,7 +1204,12 @@ DASHBOARD_HTML = """
         </div>
 
         <!-- Quick Links -->
-        <div class="qlink-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;">
+        <div class="qlink-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:24px;">
+            <a href="https://172.30.1.18:4000/interface" target="_blank" class="qlink">
+                <i class="fas fa-shield-halved" style="font-size:1.3rem;color:#10b981;margin-bottom:8px;"></i>
+                <span style="font-size:0.85rem;font-weight:500;color:var(--text-primary);">AEGIS</span>
+                <span style="font-size:0.7rem;color:var(--text-tertiary);margin-top:2px;">Desktop Interface</span>
+            </a>
             <a href="/health" class="qlink">
                 <i class="fas fa-heart-pulse" style="font-size:1.3rem;color:var(--success);margin-bottom:8px;"></i>
                 <span style="font-size:0.85rem;font-weight:500;color:var(--text-primary);">Health</span>
@@ -1807,14 +1839,16 @@ DASHBOARD_HTML = """
             const rt = svc.response_time;
             const hKey = 'frontend:' + key;
             const expanded = expandedRow === hKey;
+            const svcUrl = svc.url || ('http://localhost:' + svc.port);
+            const svcLabel = svc.url ? svc.url.replace(/^https?:\\/\\//, '') : ('localhost:' + svc.port);
             fRows += '<tr class="clickable-row' + (expanded ? ' row-expanded' : '') + '" onclick="toggleDetail(\\'frontend\\',\\'' + key + '\\')">' +
                 '<td><div style="font-weight:500;">' + esc(svc.name) + '</div><div style="font-size:0.75rem;color:var(--text-tertiary);">' + esc(svc.description || '') + '</div></td>' +
                 '<td><span style="font-size:0.75rem;padding:2px 8px;border-radius:9999px;background:var(--bg-tertiary);border:1px solid var(--border-color);">' + esc(svc.type || 'Web') + '</span></td>' +
                 '<td><span style="font-family:JetBrains Mono,monospace;font-size:0.8rem;color:var(--warning);">' + svc.port + '</span></td>' +
-                '<td><a href="http://localhost:' + svc.port + '" target="_blank" onclick="event.stopPropagation()" style="color:var(--accent);text-decoration:none;font-family:JetBrains Mono,monospace;font-size:0.8rem;">localhost:' + svc.port + '</a></td>' +
+                '<td><a href="' + svcUrl + '" target="_blank" onclick="event.stopPropagation()" style="color:var(--accent);text-decoration:none;font-family:JetBrains Mono,monospace;font-size:0.8rem;">' + esc(svcLabel) + '</a></td>' +
                 '<td>' + renderRTCell(rt, hKey) + '</td>' +
                 '<td style="text-align:center;"><span class="dot ' + (isH ? 'dot-healthy' : 'dot-unhealthy') + '"></span> <span style="font-size:0.8rem;color:' + (isH ? 'var(--success)' : 'var(--danger)') + ';">' + (isH ? 'Online' : 'Offline') + '</span></td>' +
-                '<td style="text-align:center;"><a href="http://localhost:' + svc.port + '" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="open-btn">Open</a></td>' +
+                '<td style="text-align:center;"><a href="' + svcUrl + '" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="open-btn">Open</a></td>' +
             '</tr>';
             if (expanded) {
                 fRows += renderDetailPanel('frontend', key, svc);
