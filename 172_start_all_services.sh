@@ -66,10 +66,10 @@ start_service "aegis" 4015 \
     "${BASE}/AEGIS/apps/api" \
     "venv/bin/python3 -m uvicorn main:app --host 0.0.0.0 --port 4015"
 
-# AiNex Consulting Backend (4007)
+# AiNex Consulting Backend (4007) — HTTPS
 start_service "consulting" 4007 \
     "${BASE}/AiNex" \
-    "venv/bin/python -m uvicorn main:app --host 0.0.0.0 --port 4007"
+    "venv/bin/python -m uvicorn main:app --host 0.0.0.0 --port 4007 --ssl-keyfile certs/key.pem --ssl-certfile certs/cert.pem"
 
 echo ""
 echo "[Frontend Services]"

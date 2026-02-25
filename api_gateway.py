@@ -62,18 +62,23 @@ FRONTEND_SERVICES = {
 }
 
 async def check_service_health(port: int) -> bool:
-    """서비스 상태 확인"""
-    try:
-        async with httpx.AsyncClient(timeout=2.0) as client:
-            response = await client.get(f"http://localhost:{port}/health")
-            return response.status_code == 200
-    except:
+    """서비스 상태 확인 (HTTP → HTTPS 순으로 시도)"""
+    for scheme in ("http", "https"):
         try:
-            async with httpx.AsyncClient(timeout=2.0) as client:
-                response = await client.get(f"http://localhost:{port}/")
-                return response.status_code in [200, 307, 404]
+            async with httpx.AsyncClient(timeout=2.0, verify=False) as client:
+                response = await client.get(f"{scheme}://localhost:{port}/health")
+                if response.status_code in [200, 207, 503]:
+                    return True
         except:
-            return False
+            pass
+        try:
+            async with httpx.AsyncClient(timeout=2.0, verify=False) as client:
+                response = await client.get(f"{scheme}://localhost:{port}/")
+                if response.status_code in [200, 307, 404]:
+                    return True
+        except:
+            pass
+    return False
 
 @app.get("/")
 async def root():

@@ -68,7 +68,8 @@ BACKEND_SERVICES = {
         "name": "AiNex (AI Consulting)",
         "description": "Multi-agent AI consulting assistant platform",
         "path": "/home/ubuntu-02/ai_project/AiNex",
-        "entry": "main.py"
+        "entry": "main.py",
+        "scheme": "https"
     },
     "factory": {
         "port": 4008,
@@ -914,7 +915,7 @@ async def check_all_services() -> dict:
     # Check backend services
     backend_tasks = []
     for service_key, service_info in BACKEND_SERVICES.items():
-        backend_tasks.append(check_service_health(service_info["port"]))
+        backend_tasks.append(check_service_health(service_info["port"], scheme=service_info.get("scheme", "http")))
 
     backend_results = await asyncio.gather(*backend_tasks)
     for i, (service_key, service_info) in enumerate(BACKEND_SERVICES.items()):
@@ -2092,15 +2093,19 @@ async def health_check_single(service_type: str, service_name: str):
     if service_type == "backend":
         if service_name not in BACKEND_SERVICES:
             raise HTTPException(status_code=404, detail=f"Backend service '{service_name}' not found")
-        port = BACKEND_SERVICES[service_name]["port"]
+        service_info = BACKEND_SERVICES[service_name]
+        port = service_info["port"]
+        scheme = service_info.get("scheme", "http")
     elif service_type == "frontend":
         if service_name not in FRONTEND_SERVICES:
             raise HTTPException(status_code=404, detail=f"Frontend service '{service_name}' not found")
-        port = FRONTEND_SERVICES[service_name]["port"]
+        service_info = FRONTEND_SERVICES[service_name]
+        port = service_info["port"]
+        scheme = service_info.get("scheme", "http")
     else:
         raise HTTPException(status_code=400, detail="Invalid service type. Use 'backend' or 'frontend'")
 
-    result = await check_service_health(port)
+    result = await check_service_health(port, scheme=scheme)
     return {
         "service": service_name,
         "type": service_type,
