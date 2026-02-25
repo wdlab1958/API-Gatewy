@@ -2,7 +2,7 @@
 # AI Project - 모든 서비스 시작 스크립트 (v2)
 # 실제 검증된 실행 방법 기반
 
-BASE="/home/ubuntu-02/ai_project"
+BASE="/home/wdlab/ai_project"
 LOG_DIR="/tmp"
 
 GREEN='\033[0;32m'
@@ -53,7 +53,7 @@ echo "=========================================="
 echo " AI Project Services Startup Script (v2)"
 echo "=========================================="
 echo ""
-echo "[Backend Services - 30 services]"
+echo "[Backend Services - 31 services]"
 echo "------------------------------------------"
 
 # Dataset_Gen (4001) - Streamlit
@@ -109,7 +109,7 @@ start_service "aialbm" 4012 \
 # enterprise_factory (4013)
 start_service "enterprise" 4013 \
     "${BASE}/enterprise_factory/local-llm-os/backend" \
-    "python3 -m uvicorn src.api.main:app --host 0.0.0.0 --port 4013"
+    "venv/bin/python3 -m uvicorn src.api.main:app --host 0.0.0.0 --port 4013"
 
 # panda_chetbot (4014)
 start_service "panda" 4014 \
@@ -124,7 +124,7 @@ start_service "cluster_master" 8200 \
 # AEGIS (4015)
 start_service "aegis" 4015 \
     "${BASE}/AEGIS/apps/api" \
-    "venv/bin/uvicorn main:app --host 0.0.0.0 --port 4015"
+    "venv/bin/python3 -m uvicorn main:app --host 0.0.0.0 --port 4015"
 
 # NexusAI (4016)
 start_service "nexusai" 4016 \
@@ -212,7 +212,7 @@ start_service "aimes_textile_gw" 50080 \
 # Anti-Deep-Fake (4017)
 start_service "anti_deepfake" 4017 \
     "${BASE}/Anti-Deep-Fake" \
-    "python3 -m uvicorn api_server:app --host 0.0.0.0 --port 4017"
+    "venv/bin/python3 -m uvicorn api_server:app --host 0.0.0.0 --port 4017"
 
 # AutoGit (4018)
 start_service "autogit" 4018 \
@@ -222,7 +222,12 @@ start_service "autogit" 4018 \
 # STT-to-TTS (4019)
 start_service "stt_tts" 4019 \
     "${BASE}/STT-to-TTS" \
-    "python3 -m uvicorn api_server:app --host 0.0.0.0 --port 4019"
+    "venv/bin/python3 -m uvicorn api_server:app --host 0.0.0.0 --port 4019"
+
+# TruthLens Unified (8000) - Gradio + FastAPI
+start_service "truthlens_unified" 8000 \
+    "${BASE}/TruthLens" \
+    "venv/bin/python3 src/unified_server.py"
 
 echo ""
 echo "[Frontend Services - 30 services]"
@@ -283,10 +288,10 @@ start_service "a3de_frontend" 5004 \
     "${BASE}/a3de/frontend" \
     "node node_modules/vite/bin/vite.js --port 5004 --host"
 
-# AEGIS Web (3006) - Next.js
-start_service "aegis_frontend" 3006 \
+# AEGIS Web (4000) - Next.js
+start_service "aegis_frontend" 4000 \
     "${BASE}/AEGIS/apps/web" \
-    "npx next dev -p 3006"
+    "npx next dev -p 4000 --hostname 0.0.0.0"
 
 # NexusAI Web (3007) - Next.js
 start_service "nexusai_frontend" 3007 \
@@ -396,7 +401,7 @@ echo "------------------------------------------"
 
 start_service "api_gateway" 8080 \
     "${BASE}" \
-    "python3 API_Gateway/api_gateway_v2.py"
+    "API_Gateway/venv/bin/python3 API_Gateway/api_gateway_v2.py"
 
 echo ""
 echo "=========================================="
@@ -408,8 +413,8 @@ echo -e "  Failed:  ${RED}${FAILED}${NC}"
 TOTAL=$((STARTED + SKIPPED + FAILED))
 echo "  Total:   ${TOTAL} / 61"
 echo ""
-echo "  API Gateway: http://localhost:8080"
-echo "  Health Check: http://localhost:8080/health"
+echo "  API Gateway: http://10.10.10.64:8080"
+echo "  Health Check: http://10.10.10.64:8080/health"
 echo ""
 
 # Wait a moment for services to fully initialize, then do health check
@@ -419,7 +424,7 @@ if [ "$STARTED" -gt 0 ]; then
     echo ""
     echo "[Health Check]"
     echo "------------------------------------------"
-    HEALTH=$(curl -s --max-time 10 http://localhost:8080/health 2>/dev/null)
+    HEALTH=$(curl -s --max-time 10 http://10.10.10.64:8080/health 2>/dev/null)
     if [ $? -eq 0 ] && [ -n "$HEALTH" ]; then
         eval "$(echo "$HEALTH" | python3 -c "
 import sys, json
@@ -437,7 +442,7 @@ print(f'GW_TOTAL={total}')
         echo -e "  Gateway reports: ${GREEN}${GW_HEALTHY}${NC}/${GW_TOTAL} services healthy"
     else
         echo -e "  ${YELLOW}Gateway not responding yet - check manually:${NC}"
-        echo "  curl http://localhost:8080/health"
+        echo "  curl http://10.10.10.64:8080/health"
     fi
 fi
 

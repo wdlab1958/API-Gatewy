@@ -28,6 +28,8 @@ from datetime import datetime
 import json
 import os
 
+GATEWAY_HOST = os.environ.get("GATEWAY_HOST", "localhost")
+
 # ============================================================
 # Service Configuration
 # ============================================================
@@ -128,7 +130,7 @@ BACKEND_SERVICES = {
         "port": 4015,
         "name": "AEGIS Platform",
         "description": "AI-Enhanced Guardian Intelligence System",
-        "path": "/home/ubuntu-02/ai_project/AEGIS",
+        "path": "/home/wdlab/ai_project/AEGIS",
         "entry": "apps/api/main.py"
     },
     "nexusai": {
@@ -337,10 +339,10 @@ FRONTEND_SERVICES = {
         "port": 4000,
         "name": "AEGIS Web",
         "description": "AEGIS platform web interface (Desktop Dashboard)",
-        "path": "/home/ubuntu-02/ai_project/AEGIS/apps/web",
+        "path": "/home/wdlab/ai_project/AEGIS/apps/web",
         "type": "Next.js",
-        "scheme": "https",
-        "url": "https://172.30.1.18:4000/interface"
+        "scheme": "http",
+        "url": f"http://{GATEWAY_HOST}:4000/interface"
     },
     "nexusai_frontend": {
         "port": 3007,
@@ -526,11 +528,155 @@ API_DOCS = {
     },
     "aegis": {
         "endpoints": [
-            {"method": "GET", "path": "/health", "description": "Service health check"},
-            {"method": "POST", "path": "/llm/chat", "description": "LLM chat conversation"},
-            {"method": "GET", "path": "/agents", "description": "List available agents"},
-            {"method": "GET", "path": "/projects", "description": "List projects"},
-            {"method": "GET", "path": "/dashboard", "description": "Dashboard data"},
+            # Health & Info
+            {"method": "GET", "path": "/api/v1/info", "description": "API information with architecture layers"},
+            {"method": "GET", "path": "/api/v1/health", "description": "Basic health check"},
+            {"method": "GET", "path": "/api/v1/health/detailed", "description": "Detailed health check with dependency status"},
+            {"method": "GET", "path": "/api/v1/health/architecture", "description": "AEGIS 7-layer architecture information"},
+            # LLM (HLE)
+            {"method": "GET", "path": "/api/v1/llm/models", "description": "List available LLM models"},
+            {"method": "POST", "path": "/api/v1/llm/chat", "description": "Chat completion using HLE"},
+            {"method": "GET", "path": "/api/v1/llm/health", "description": "HLE health and provider availability"},
+            # Memory (3LMS)
+            {"method": "GET", "path": "/api/v1/memory/status", "description": "Memory system status (3-layer)"},
+            {"method": "GET", "path": "/api/v1/memory/activity/recent", "description": "Recent activity across memory layers"},
+            {"method": "GET", "path": "/api/v1/memory/working/sessions", "description": "List working memory sessions"},
+            {"method": "POST", "path": "/api/v1/memory/working/sessions/{session_id}/messages", "description": "Add message to working memory"},
+            {"method": "DELETE", "path": "/api/v1/memory/working/sessions/{session_id}", "description": "Clear working memory session"},
+            {"method": "GET", "path": "/api/v1/memory/episodic/episodes", "description": "List episodic memory episodes"},
+            {"method": "POST", "path": "/api/v1/memory/episodic/episodes", "description": "Create episodic memory episode"},
+            {"method": "GET", "path": "/api/v1/memory/semantic/entities", "description": "List semantic memory entities"},
+            {"method": "POST", "path": "/api/v1/memory/semantic/entities", "description": "Add semantic memory entity"},
+            {"method": "GET", "path": "/api/v1/memory/semantic/relationships", "description": "List semantic relationships"},
+            {"method": "POST", "path": "/api/v1/memory/semantic/relationships", "description": "Add semantic relationship"},
+            {"method": "POST", "path": "/api/v1/memory/consolidation/run", "description": "Run memory consolidation"},
+            {"method": "GET", "path": "/api/v1/memory/consolidation/log", "description": "Consolidation log entries"},
+            {"method": "POST", "path": "/api/v1/memory/embeddings/generate", "description": "Generate text embedding"},
+            # Agents
+            {"method": "GET", "path": "/api/v1/agents/frameworks", "description": "List agent frameworks"},
+            {"method": "GET", "path": "/api/v1/agents", "description": "List all agents"},
+            {"method": "POST", "path": "/api/v1/agents", "description": "Create a new agent"},
+            {"method": "GET", "path": "/api/v1/agents/{agent_id}", "description": "Get agent details"},
+            {"method": "DELETE", "path": "/api/v1/agents/{agent_id}", "description": "Delete an agent"},
+            {"method": "POST", "path": "/api/v1/agents/tasks", "description": "Submit task for execution"},
+            {"method": "GET", "path": "/api/v1/agents/tasks/list", "description": "List all tasks"},
+            # Orchestration (MAOL)
+            {"method": "GET", "path": "/api/v1/orchestration/status", "description": "Orchestration layer status"},
+            {"method": "GET", "path": "/api/v1/orchestration/workflows", "description": "List workflows"},
+            {"method": "POST", "path": "/api/v1/orchestration/workflows", "description": "Create and execute workflow"},
+            {"method": "GET", "path": "/api/v1/orchestration/workflows/{workflow_id}", "description": "Get workflow by ID"},
+            {"method": "DELETE", "path": "/api/v1/orchestration/workflows/{workflow_id}", "description": "Delete workflow"},
+            # Dashboard
+            {"method": "GET", "path": "/api/v1/dashboard/overview", "description": "System dashboard overview"},
+            {"method": "GET", "path": "/api/v1/dashboard/alerts", "description": "Active system alerts"},
+            # Projects
+            {"method": "GET", "path": "/api/v1/projects", "description": "List all projects"},
+            {"method": "GET", "path": "/api/v1/projects/{project_id}", "description": "Get project by ID"},
+            # Companion (PLCM)
+            {"method": "GET", "path": "/api/v1/companion/status", "description": "Companion status and personality"},
+            {"method": "POST", "path": "/api/v1/companion/dialogue", "description": "Companion dialogue"},
+            {"method": "GET", "path": "/api/v1/companion/personality", "description": "Get personality profile"},
+            {"method": "PUT", "path": "/api/v1/companion/personality", "description": "Update personality"},
+            {"method": "GET", "path": "/api/v1/companion/preferences", "description": "Get user preferences"},
+            {"method": "POST", "path": "/api/v1/companion/preferences", "description": "Update user preferences"},
+            {"method": "GET", "path": "/api/v1/companion/routines", "description": "List user routines"},
+            {"method": "POST", "path": "/api/v1/companion/routines", "description": "Create routine"},
+            {"method": "GET", "path": "/api/v1/companion/goals", "description": "List user goals"},
+            {"method": "POST", "path": "/api/v1/companion/goals", "description": "Create goal"},
+            {"method": "GET", "path": "/api/v1/companion/reminders", "description": "List reminders"},
+            {"method": "POST", "path": "/api/v1/companion/reminders", "description": "Create reminder"},
+            {"method": "DELETE", "path": "/api/v1/companion/reminders/{reminder_id}", "description": "Delete reminder"},
+            {"method": "GET", "path": "/api/v1/companion/diary/entries", "description": "List diary entries"},
+            {"method": "POST", "path": "/api/v1/companion/diary/entries", "description": "Create diary entry"},
+            # Automation (PSAE)
+            {"method": "GET", "path": "/api/v1/automation/status", "description": "Automation layer status"},
+            {"method": "GET", "path": "/api/v1/automation/list", "description": "List all automations"},
+            {"method": "POST", "path": "/api/v1/automation", "description": "Create automation"},
+            {"method": "POST", "path": "/api/v1/automation/{auto_id}/run", "description": "Execute automation"},
+            {"method": "DELETE", "path": "/api/v1/automation/{auto_id}", "description": "Delete automation"},
+            {"method": "GET", "path": "/api/v1/automation/dashboard/home", "description": "Home automation dashboard"},
+            {"method": "GET", "path": "/api/v1/automation/devices", "description": "List all devices"},
+            {"method": "POST", "path": "/api/v1/automation/devices", "description": "Register device"},
+            {"method": "GET", "path": "/api/v1/automation/devices/stats", "description": "Device statistics"},
+            {"method": "GET", "path": "/api/v1/automation/devices/{device_id}", "description": "Get device details"},
+            {"method": "DELETE", "path": "/api/v1/automation/devices/{device_id}", "description": "Delete device"},
+            {"method": "POST", "path": "/api/v1/automation/devices/{device_id}/command", "description": "Send device command"},
+            {"method": "POST", "path": "/api/v1/automation/devices/voice-test", "description": "Test NLU voice command"},
+            {"method": "GET", "path": "/api/v1/automation/scenes", "description": "List scenes"},
+            {"method": "POST", "path": "/api/v1/automation/scenes", "description": "Create scene"},
+            {"method": "POST", "path": "/api/v1/automation/scenes/presets", "description": "Create preset scenes"},
+            {"method": "GET", "path": "/api/v1/automation/scenes/stats", "description": "Scene statistics"},
+            {"method": "DELETE", "path": "/api/v1/automation/scenes/{scene_id}", "description": "Delete scene"},
+            {"method": "POST", "path": "/api/v1/automation/scenes/{scene_id}/execute", "description": "Execute scene"},
+            {"method": "POST", "path": "/api/v1/automation/scenes/{scene_id}/favorite", "description": "Toggle scene favorite"},
+            {"method": "GET", "path": "/api/v1/automation/spaces/rooms", "description": "List rooms"},
+            {"method": "POST", "path": "/api/v1/automation/spaces/rooms", "description": "Create room"},
+            {"method": "DELETE", "path": "/api/v1/automation/spaces/rooms/{room_id}", "description": "Delete room"},
+            {"method": "POST", "path": "/api/v1/automation/spaces/rooms/{room_id}/devices/{device_id}", "description": "Add device to room"},
+            {"method": "DELETE", "path": "/api/v1/automation/spaces/rooms/{room_id}/devices/{device_id}", "description": "Remove device from room"},
+            {"method": "POST", "path": "/api/v1/automation/mqtt/publish", "description": "Publish MQTT message"},
+            {"method": "GET", "path": "/api/v1/automation/mqtt/status", "description": "MQTT bridge status"},
+            {"method": "GET", "path": "/api/v1/automation/homeassistant/devices", "description": "Home Assistant devices"},
+            {"method": "POST", "path": "/api/v1/automation/homeassistant/sync", "description": "Sync Home Assistant devices"},
+            {"method": "GET", "path": "/api/v1/automation/homeassistant/status", "description": "Home Assistant status"},
+            {"method": "POST", "path": "/api/v1/automation/homeassistant/service", "description": "Call Home Assistant service"},
+            {"method": "GET", "path": "/api/v1/automation/email/digest", "description": "Daily email digest"},
+            {"method": "GET", "path": "/api/v1/automation/email/rules", "description": "List email triage rules"},
+            {"method": "POST", "path": "/api/v1/automation/email/rules", "description": "Add email triage rule"},
+            {"method": "GET", "path": "/api/v1/automation/email/status", "description": "Email triage status"},
+            {"method": "POST", "path": "/api/v1/automation/calendar/sync", "description": "Sync external calendar"},
+            {"method": "GET", "path": "/api/v1/automation/calendar/external", "description": "List external calendars"},
+            {"method": "GET", "path": "/api/v1/automation/routines", "description": "List routines"},
+            {"method": "POST", "path": "/api/v1/automation/routines", "description": "Create routine"},
+            {"method": "POST", "path": "/api/v1/automation/routines/{routine_id}/execute", "description": "Execute routine"},
+            {"method": "POST", "path": "/api/v1/automation/routines/{routine_id}/toggle", "description": "Toggle routine"},
+            {"method": "DELETE", "path": "/api/v1/automation/routines/{routine_id}", "description": "Delete routine"},
+            {"method": "GET", "path": "/api/v1/automation/routines/stats", "description": "Routine statistics"},
+            {"method": "GET", "path": "/api/v1/automation/devices/{device_id}/history", "description": "Device event history"},
+            # Config
+            {"method": "GET", "path": "/api/v1/config", "description": "Get all configuration"},
+            {"method": "PUT", "path": "/api/v1/config", "description": "Update configuration"},
+            # Auth
+            {"method": "POST", "path": "/api/v1/auth/register", "description": "Register user"},
+            {"method": "POST", "path": "/api/v1/auth/login", "description": "Login and get tokens"},
+            {"method": "POST", "path": "/api/v1/auth/refresh", "description": "Refresh access token"},
+            {"method": "GET", "path": "/api/v1/auth/me", "description": "Current user profile"},
+            {"method": "POST", "path": "/api/v1/auth/test-user", "description": "Create test user (dev)"},
+            {"method": "GET", "path": "/api/v1/auth/admin/users", "description": "List all users (admin)"},
+            {"method": "PUT", "path": "/api/v1/auth/admin/users/{user_id}/role", "description": "Update user role (admin)"},
+            # Voice
+            {"method": "GET", "path": "/api/v1/voice/status", "description": "Voice engine status"},
+            {"method": "GET", "path": "/api/v1/voice/stt/models", "description": "List STT models"},
+            {"method": "POST", "path": "/api/v1/voice/stt/load", "description": "Load STT model"},
+            {"method": "POST", "path": "/api/v1/voice/stt/unload", "description": "Unload STT model"},
+            {"method": "POST", "path": "/api/v1/voice/transcribe", "description": "Transcribe audio to text"},
+            {"method": "POST", "path": "/api/v1/voice/synthesize", "description": "Text-to-speech synthesis"},
+            {"method": "POST", "path": "/api/v1/voice/synthesize/json", "description": "TTS metadata (no audio)"},
+            {"method": "POST", "path": "/api/v1/voice/conversation", "description": "Full voice conversation turn"},
+            {"method": "GET", "path": "/api/v1/voice/voices", "description": "List TTS voices"},
+            {"method": "GET", "path": "/api/v1/voice/languages", "description": "Supported STT languages"},
+            # Monitoring
+            {"method": "GET", "path": "/api/v1/monitoring/events", "description": "Recent monitoring events"},
+            {"method": "GET", "path": "/api/v1/monitoring/stats", "description": "Monitoring statistics"},
+            # Docs
+            {"method": "GET", "path": "/api/v1/docs/list", "description": "List documentation files"},
+            {"method": "GET", "path": "/api/v1/docs/{filename}", "description": "Get documentation content"},
+            # Files
+            {"method": "GET", "path": "/api/v1/files/status", "description": "File manager status"},
+            {"method": "POST", "path": "/api/v1/files/search", "description": "Search files"},
+            {"method": "POST", "path": "/api/v1/files/copy", "description": "Copy files"},
+            {"method": "POST", "path": "/api/v1/files/move", "description": "Move files"},
+            {"method": "POST", "path": "/api/v1/files/rename", "description": "Rename file"},
+            {"method": "POST", "path": "/api/v1/files/delete", "description": "Delete files"},
+            {"method": "POST", "path": "/api/v1/files/organize", "description": "Auto-organize files"},
+            # Desktop
+            {"method": "GET", "path": "/api/v1/desktop/status", "description": "Desktop integration status"},
+            {"method": "POST", "path": "/api/v1/desktop/clipboard/analyze", "description": "Analyze clipboard text"},
+            # WebSocket
+            {"method": "WS", "path": "/ws", "description": "Main WebSocket (real-time events)"},
+            {"method": "WS", "path": "/ws/voice/realtime", "description": "Real-time voice WebSocket"},
+            # Prometheus
+            {"method": "GET", "path": "/metrics", "description": "Prometheus metrics"},
         ]
     },
     "nexusai": {
@@ -1205,7 +1351,7 @@ DASHBOARD_HTML = """
 
         <!-- Quick Links -->
         <div class="qlink-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:24px;">
-            <a href="https://172.30.1.18:4000/interface" target="_blank" class="qlink">
+            <a href="http://GATEWAY_HOST_PLACEHOLDER:4000/interface" target="_blank" class="qlink">
                 <i class="fas fa-shield-halved" style="font-size:1.3rem;color:#10b981;margin-bottom:8px;"></i>
                 <span style="font-size:0.85rem;font-weight:500;color:var(--text-primary);">AEGIS</span>
                 <span style="font-size:0.7rem;color:var(--text-tertiary);margin-top:2px;">Desktop Interface</span>
@@ -1242,7 +1388,7 @@ DASHBOARD_HTML = """
                 <div style="padding:0 20px 20px;">
                     <p style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:12px;">All backend services are accessible through the gateway:</p>
                     <code style="display:block;background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:8px;padding:10px 16px;font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--success);margin-bottom:16px;">
-                        http://localhost:8080/api/{service_name}/{endpoint}
+                        http://GATEWAY_HOST_PLACEHOLDER:8080/api/{service_name}/{endpoint}
                     </code>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
                         <div style="background:var(--bg-tertiary);border-radius:8px;padding:10px 14px;">
@@ -1795,11 +1941,11 @@ DASHBOARD_HTML = """
         return '<tr class="clickable-row' + (expanded ? ' row-expanded' : '') + '" onclick="toggleDetail(\\'backend\\',\\'' + key + '\\')">' +
             '<td><div style="font-weight:500;">' + esc(svc.name) + '</div><div style="font-size:0.75rem;color:var(--text-tertiary);">' + esc(svc.description || '') + '</div></td>' +
             '<td><span style="font-family:JetBrains Mono,monospace;font-size:0.8rem;color:var(--warning);">' + svc.port + '</span></td>' +
-            '<td><a href="http://localhost:' + svc.port + '" target="_blank" onclick="event.stopPropagation()" style="color:var(--accent);text-decoration:none;font-family:JetBrains Mono,monospace;font-size:0.8rem;">localhost:' + svc.port + '</a></td>' +
+            '<td><a href="http://GATEWAY_HOST_PLACEHOLDER:' + svc.port + '" target="_blank" onclick="event.stopPropagation()" style="color:var(--accent);text-decoration:none;font-family:JetBrains Mono,monospace;font-size:0.8rem;">GATEWAY_HOST_PLACEHOLDER:' + svc.port + '</a></td>' +
             '<td><code style="font-size:0.8rem;color:var(--success);font-family:JetBrains Mono,monospace;">/api/' + key + '/</code></td>' +
             '<td>' + renderRTCell(rt, hKey) + '</td>' +
             '<td style="text-align:center;"><span class="dot ' + (isH ? 'dot-healthy' : 'dot-unhealthy') + '"></span> <span style="font-size:0.8rem;color:' + (isH ? 'var(--success)' : 'var(--danger)') + ';">' + (isH ? 'Online' : 'Offline') + '</span></td>' +
-            '<td style="text-align:center;"><a href="http://localhost:' + svc.port + '" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="open-btn">Open</a></td>' +
+            '<td style="text-align:center;"><a href="http://GATEWAY_HOST_PLACEHOLDER:' + svc.port + '" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="open-btn">Open</a></td>' +
         '</tr>';
     }
 
@@ -1839,8 +1985,8 @@ DASHBOARD_HTML = """
             const rt = svc.response_time;
             const hKey = 'frontend:' + key;
             const expanded = expandedRow === hKey;
-            const svcUrl = svc.url || ('http://localhost:' + svc.port);
-            const svcLabel = svc.url ? svc.url.replace(/^https?:\\/\\//, '') : ('localhost:' + svc.port);
+            const svcUrl = svc.url || ('http://GATEWAY_HOST_PLACEHOLDER:' + svc.port);
+            const svcLabel = svc.url ? svc.url.replace(/^https?:\\/\\//, '') : ('GATEWAY_HOST_PLACEHOLDER:' + svc.port);
             fRows += '<tr class="clickable-row' + (expanded ? ' row-expanded' : '') + '" onclick="toggleDetail(\\'frontend\\',\\'' + key + '\\')">' +
                 '<td><div style="font-weight:500;">' + esc(svc.name) + '</div><div style="font-size:0.75rem;color:var(--text-tertiary);">' + esc(svc.description || '') + '</div></td>' +
                 '<td><span style="font-size:0.75rem;padding:2px 8px;border-radius:9999px;background:var(--bg-tertiary);border:1px solid var(--border-color);">' + esc(svc.type || 'Web') + '</span></td>' +
@@ -1911,6 +2057,9 @@ async def root():
     ).replace(
         "API_DOCS_JSON",
         json.dumps(API_DOCS)
+    ).replace(
+        "GATEWAY_HOST_PLACEHOLDER",
+        GATEWAY_HOST
     )
     return HTMLResponse(content=html)
 
@@ -1965,7 +2114,7 @@ async def api_documentation():
     return {
         "title": "AI Project API Documentation",
         "version": "2.0.0",
-        "base_url": "http://localhost:8080",
+        "base_url": f"http://{GATEWAY_HOST}:8080",
         "services": API_DOCS,
         "routing_pattern": "/api/{service_name}/{endpoint}",
         "note": "Detailed OpenAPI documentation available at /swagger or /redoc"
@@ -1984,7 +2133,7 @@ async def service_api_documentation(service_name: str):
         "description": service_info.get("description", ""),
         "port": service_info.get("port"),
         "gateway_base_url": f"/api/{service_name}",
-        "direct_url": f"http://localhost:{service_info.get('port', 'unknown')}",
+        "direct_url": f"http://{GATEWAY_HOST}:{service_info.get('port', 'unknown')}",
         "endpoints": API_DOCS[service_name]["endpoints"]
     }
 
@@ -2055,15 +2204,15 @@ async def proxy_request(service: str, path: str, request: Request):
 
 if __name__ == "__main__":
     import uvicorn
-    print("""
+    print(f"""
     ╔═══════════════════════════════════════════════════════════╗
     ║           AI Project API Gateway v2.0.0                   ║
     ║═══════════════════════════════════════════════════════════║
-    ║  Dashboard:    http://localhost:8080                      ║
-    ║  Health Check: http://localhost:8080/health               ║
-    ║  OpenAPI Docs: http://localhost:8080/swagger              ║
-    ║  API Docs:     http://localhost:8080/docs/api             ║
-    ║  Services:     http://localhost:8080/services             ║
+    ║  Dashboard:    http://{GATEWAY_HOST}:8080                     ║
+    ║  Health Check: http://{GATEWAY_HOST}:8080/health              ║
+    ║  OpenAPI Docs: http://{GATEWAY_HOST}:8080/swagger             ║
+    ║  API Docs:     http://{GATEWAY_HOST}:8080/docs/api            ║
+    ║  Services:     http://{GATEWAY_HOST}:8080/services            ║
     ╚═══════════════════════════════════════════════════════════╝
     """)
     uvicorn.run(app, host="0.0.0.0", port=8080, reload=False)
