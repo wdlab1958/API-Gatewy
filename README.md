@@ -305,7 +305,7 @@ Summary: 30 up / 3 down / 33 total
 |-----|---------|------|----------|------|
 | `dataset_gen` | Dataset Generator | 4001 | Data & ML | ML/AI 학습용 데이터셋 생성 유틸리티 |
 | `deepfake` | TruthLens (DeepFake) | 4002 | Detection | 딥페이크 탐지 및 분석 시스템 |
-| `a3de` | A3-ADE Dev Environment | 4004 | AI Platforms | A3 Security 개발 환경 |
+| `a3de` | A3-ADE Dev Environment | 4004 | AI Platforms | WDLAB@2023-2026 개발 환경 |
 | `carelink` | AI CareLink Platform | 4005 | Healthcare | 헬스케어/간병 AI 플랫폼 |
 | `consulting` | AiNex (AI Consulting) | 4007 | Assistants | 멀티에이전트 AI 컨설팅 어시스턴트 플랫폼 |
 | `factory` | AI Factory | 4008 | Infrastructure | AI 팩토리 엔터프라이즈 생산 시스템 |

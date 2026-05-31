@@ -2,7 +2,7 @@
 # AI Project - 모든 서비스 시작 스크립트 (v2)
 # 실제 검증된 실행 방법 기반
 
-BASE="/home/wdlab/ai_project"
+BASE="/home/ubuntu-02/ai_project"
 LOG_DIR="/tmp"
 
 GREEN='\033[0;32m'
@@ -400,8 +400,8 @@ echo "[API Gateway]"
 echo "------------------------------------------"
 
 start_service "api_gateway" 8080 \
-    "${BASE}" \
-    "API_Gateway/venv/bin/python3 API_Gateway/api_gateway_v2.py"
+    "${BASE}/API_Gateway" \
+    "python3 api_gateway_v2.py"
 
 echo ""
 echo "=========================================="

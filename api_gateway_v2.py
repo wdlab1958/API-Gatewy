@@ -12,23 +12,54 @@ Features:
 - API Routing
 - Backend/Frontend Service Management
 - Real-time Status Monitoring
+- Auto-Recovery: Automatic restart of services that go Offline
 
-Update: Feb. 15, 2026
+Update: Mar. 07, 2026
 Editor: Brian Lee
 """
 
-from fastapi import FastAPI, Request, HTTPException
+from fastapi import FastAPI, Request, HTTPException, Depends, Header
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, HTMLResponse, FileResponse, Response
-from fastapi.staticfiles import StaticFiles
 import httpx
 import asyncio
-from typing import Dict, Any, List, Optional
 from datetime import datetime
 import json
 import os
+import subprocess
+import logging
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(name)s] %(levelname)s: %(message)s")
+logger = logging.getLogger("api-gateway")
 
 GATEWAY_HOST = os.environ.get("GATEWAY_HOST", "localhost")
+
+# Bind host: default to loopback only. Override with GATEWAY_BIND_HOST=0.0.0.0 for LAN exposure.
+GATEWAY_BIND_HOST = os.environ.get("GATEWAY_BIND_HOST", "127.0.0.1")
+
+# CORS: explicit localhost allow-list by default; override with comma-separated GATEWAY_CORS_ORIGINS.
+_default_cors_origins = [
+    "http://localhost:8080",
+    "http://127.0.0.1:8080",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+GATEWAY_CORS_ORIGINS = [
+    o.strip()
+    for o in os.environ.get("GATEWAY_CORS_ORIGINS", ",".join(_default_cors_origins)).split(",")
+    if o.strip()
+]
+
+# API key for proxy/management endpoints. If unset/empty, auth is disabled (back-compat).
+GATEWAY_API_KEY = os.environ.get("GATEWAY_API_KEY", "")
+
+
+async def require_api_key(x_api_key: str = Header(default="")):
+    """Env-driven API-key dependency. No-op when GATEWAY_API_KEY is unset (back-compat)."""
+    if not GATEWAY_API_KEY:
+        return
+    if x_api_key != GATEWAY_API_KEY:
+        raise HTTPException(status_code=401, detail="Invalid or missing API key")
 
 # ============================================================
 # Service Configuration
@@ -52,7 +83,7 @@ BACKEND_SERVICES = {
     "a3de": {
         "port": 4004,
         "name": "A3-ADE Development Environment",
-        "description": "A3 Security development environment",
+        "description": "WDLAB@2023-2026 development environment",
         "path": "/home/ubuntu-02/ai_project/a3de",
         "entry": "backend/main.py"
     },
@@ -68,8 +99,7 @@ BACKEND_SERVICES = {
         "name": "AiNex (AI Consulting)",
         "description": "Multi-agent AI consulting assistant platform",
         "path": "/home/ubuntu-02/ai_project/AiNex",
-        "entry": "main.py",
-        "scheme": "https"
+        "entry": "main.py"
     },
     "factory": {
         "port": 4008,
@@ -471,13 +501,6 @@ FRONTEND_SERVICES = {
         "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Textile/frontend/web",
         "type": "React/Vite"
     },
-    "truthlens_gradio": {
-        "port": 8000,
-        "name": "TruthLens Gradio UI",
-        "description": "TruthLens DeepFake Detection - Gradio web application",
-        "path": "/home/ubuntu-02/ai_project/TruthLens",
-        "type": "Gradio"
-    },
 }
 
 # API Documentation for each service
@@ -863,6 +886,413 @@ SERVICE_CATEGORIES = {
 }
 
 # ============================================================
+# Service Startup Commands (for Auto-Recovery)
+# ============================================================
+
+_BASE = "/home/ubuntu-02/ai_project"
+
+SERVICE_STARTUP_COMMANDS = {
+    # --- Backend Services ---
+    "dataset_gen": {
+        "workdir": f"{_BASE}/Dataset_Gen",
+        "cmd": "myenv/bin/streamlit run main.py --server.port 4001 --server.headless true",
+    },
+    "deepfake": {
+        "workdir": f"{_BASE}/TruthLens/src",
+        "cmd": "../venv/bin/python3 -m uvicorn api_server:app --host 0.0.0.0 --port 4002",
+    },
+    "a3de": {
+        "workdir": f"{_BASE}/a3de/backend",
+        "cmd": "../venv/bin/uvicorn main:app --host 0.0.0.0 --port 4004",
+    },
+    "carelink": {
+        "workdir": f"{_BASE}/AiCarelink/backend",
+        "cmd": "../venv/bin/python3 -m uvicorn app.main:app --host 0.0.0.0 --port 4005",
+    },
+    "consulting": {
+        "workdir": f"{_BASE}/AiNex",
+        "cmd": "venv/bin/python -m uvicorn main:app --host 0.0.0.0 --port 4007",
+    },
+    "factory": {
+        "workdir": f"{_BASE}/ai_factory",
+        "cmd": "venv/bin/uvicorn src.api.main:app --host 0.0.0.0 --port 4008",
+    },
+    "labor": {
+        "workdir": f"{_BASE}/ai_labor",
+        "cmd": "venv/bin/uvicorn backend.main:app --host 0.0.0.0 --port 4009",
+    },
+    "langgraph": {
+        "workdir": f"{_BASE}/AgentForge",
+        "cmd": "venv/bin/python -m uvicorn api.main:app --host 0.0.0.0 --port 4010",
+    },
+    "multimodals": {
+        "workdir": f"{_BASE}/ai_multimodals/web",
+        "cmd": """../venv/bin/python -c "import app as a; a.socketio.run(a.app, host='0.0.0.0', port=4011, debug=False, allow_unsafe_werkzeug=True)" """,
+    },
+    "aialbm": {
+        "workdir": f"{_BASE}/AIALBM",
+        "cmd": "aialb_venv/bin/python -m uvicorn app.main:app --host 0.0.0.0 --port 4012",
+    },
+    "enterprise": {
+        "workdir": f"{_BASE}/enterprise_factory/local-llm-os/backend",
+        "cmd": "venv/bin/python3 -m uvicorn src.api.main:app --host 0.0.0.0 --port 4013",
+    },
+    "panda": {
+        "workdir": f"{_BASE}/panda_chetbot/api",
+        "cmd": "../venv/bin/uvicorn main:app --host 0.0.0.0 --port 4014",
+    },
+    "cluster_master": {
+        "workdir": f"{_BASE}/Cluster-Master",
+        "cmd": "venv/bin/python3 -m uvicorn src.server:app --host 0.0.0.0 --port 8200",
+    },
+    "aegis": {
+        "workdir": f"{_BASE}/AEGIS/apps/api",
+        "cmd": "venv/bin/python3 -m uvicorn main:app --host 0.0.0.0 --port 4015",
+    },
+    "nexusai": {
+        "workdir": f"{_BASE}/NexusAI/apps/api",
+        "cmd": ".venv/bin/uvicorn main:app --host 0.0.0.0 --port 4016",
+    },
+    "ascm": {
+        "workdir": f"{_BASE}/ASCM/ASCM-main",
+        "cmd": "venv_ascm/bin/python run_services.py",
+    },
+    "aimes_food": {
+        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Food",
+        "cmd": "docker compose up -d",
+        "docker": True,
+    },
+    "aimes_agricultural": {
+        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Agricultural/services/api-gateway",
+        "cmd": "env API_GATEWAY_PORT=28080 node src/index.js",
+    },
+    "aimes_automotive": {
+        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Automotive/services/api-gateway",
+        "cmd": "env PORT=58080 node src/index.js",
+    },
+    "aimes_battery": {
+        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Battery/services/api-gateway",
+        "cmd": "env PORT=40080 node index.js",
+    },
+    "aimes_chemical": {
+        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Chemical/services/api-gateway",
+        "cmd": "env API_GATEWAY_PORT=39080 node src/index.js",
+    },
+    "aimes_cosmetics": {
+        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Cosmetics/services/api-gateway",
+        "cmd": "env PORT=20080 node src/index.js",
+    },
+    "aimes_electronics": {
+        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Electronics/services/api-gateway",
+        "cmd": "env API_GATEWAY_PORT=48080 node src/index.js",
+    },
+    "aimes_medical": {
+        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Medical/services/api-gateway",
+        "cmd": "env PORT=29080 node src/index.js",
+    },
+    "aimes_metal": {
+        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Metal/services/api-gateway",
+        "cmd": "env PORT=49080 node src/index.js",
+    },
+    "aimes_pharmaceutical": {
+        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Pharmaceutical/services/api-gateway",
+        "cmd": "env API_GATEWAY_PORT=38080 node src/index.js",
+    },
+    "aimes_textile": {
+        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Textile/services/api-gateway",
+        "cmd": "env PORT=50080 node src/index.js",
+    },
+    "anti_deepfake": {
+        "workdir": f"{_BASE}/Anti-Deep-Fake",
+        "cmd": "venv/bin/python3 -m uvicorn api_server:app --host 0.0.0.0 --port 4017",
+    },
+    "autogit": {
+        "workdir": f"{_BASE}/AutoGit",
+        "cmd": ".venv/bin/python -m uvicorn api_server:app --host 0.0.0.0 --port 4018",
+    },
+    "stt_tts": {
+        "workdir": f"{_BASE}/STT-to-TTS",
+        "cmd": "venv/bin/python3 -m uvicorn api_server:app --host 0.0.0.0 --port 4019",
+    },
+    "truthlens_unified": {
+        "workdir": f"{_BASE}/TruthLens",
+        "cmd": "venv/bin/python3 src/unified_server.py",
+    },
+    # --- Frontend Services ---
+    "truthlens": {
+        "workdir": f"{_BASE}/webpage_truthlens",
+        "cmd": "python3 -m http.server 8001",
+    },
+    "webpage_ainex": {
+        "workdir": f"{_BASE}/webpage_AiNex",
+        "cmd": "python3 -m http.server 8002",
+    },
+    "ainex_home": {
+        "workdir": f"{_BASE}/webpage_ainex_forge",
+        "cmd": "npx next dev -p 3001",
+    },
+    "cluster_master_web": {
+        "workdir": f"{_BASE}/webpage_ai_cluster_master",
+        "cmd": "npx next dev -p 3002",
+    },
+    "aialbm_web": {
+        "workdir": f"{_BASE}/webpage_aialbm",
+        "cmd": "npx next dev -p 3003",
+    },
+    "carelink_web": {
+        "workdir": f"{_BASE}/webpage_carelink",
+        "cmd": "npx next dev -p 3004",
+    },
+    "carelink_frontend": {
+        "workdir": f"{_BASE}/AiCarelink/frontend",
+        "cmd": "npx next dev -p 5005",
+    },
+    "langgraph_frontend": {
+        "workdir": f"{_BASE}/AgentForge/frontend",
+        "cmd": "npx vite --port 5010 --host",
+    },
+    "enterprise_frontend": {
+        "workdir": f"{_BASE}/enterprise_factory/local-llm-os/frontend",
+        "cmd": "npx vite --port 5013 --host",
+    },
+    "unified_portal": {
+        "workdir": f"{_BASE}/Ai_Unified_Portal",
+        "cmd": "npx vite --port 5015 --host",
+    },
+    "a3de_frontend": {
+        "workdir": f"{_BASE}/a3de/frontend",
+        "cmd": "node node_modules/vite/bin/vite.js --port 5004 --host",
+    },
+    "aegis_frontend": {
+        "workdir": f"{_BASE}/AEGIS/apps/web",
+        "cmd": "npx next dev -p 4000 --hostname 0.0.0.0",
+    },
+    "nexusai_frontend": {
+        "workdir": f"{_BASE}/NexusAI/apps/web",
+        "cmd": "npx next dev -p 3007",
+    },
+    "webpage_aegis": {
+        "workdir": f"{_BASE}/webpage_AEGIS",
+        "cmd": "python3 -m http.server 8003",
+    },
+    "ascm_dashboard": {
+        "workdir": f"{_BASE}/ASCM/ASCM-main/admin-dashboard",
+        "cmd": "npx next dev -p 3010",
+    },
+    "webpage_aimes": {
+        "workdir": f"{_BASE}/webpage_AIMES",
+        "cmd": "python3 -m http.server 8004",
+    },
+    "webpage_eleven_aimes": {
+        "workdir": f"{_BASE}/webpage_Eleven_AIMES",
+        "cmd": "python3 -m http.server 8005",
+    },
+    "webpage_nexusai": {
+        "workdir": f"{_BASE}/webpage_NexusAI",
+        "cmd": "python3 -m http.server 8009",
+    },
+    "webpage_all_project": {
+        "workdir": f"{_BASE}/webpage_wdlab1958-all_project",
+        "cmd": "npx next dev -p 3008",
+    },
+    "aimes_agricultural_web": {
+        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Agricultural/frontend/web",
+        "cmd": "npx vite --port 5173 --host",
+    },
+    "aimes_automotive_web": {
+        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Automotive/frontend/web",
+        "cmd": "npx vite --port 5174 --host",
+    },
+    "aimes_battery_web": {
+        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Battery/frontend/web",
+        "cmd": "npx vite --port 5175 --host",
+    },
+    "aimes_chemical_web": {
+        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Chemical/frontend/web",
+        "cmd": "npx vite --port 5176 --host",
+    },
+    "aimes_cosmetics_web": {
+        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Cosmetics/frontend/web",
+        "cmd": "npx vite --port 5177 --host",
+    },
+    "aimes_electronics_web": {
+        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Electronics/frontend/web",
+        "cmd": "npx vite --port 5178 --host",
+    },
+    "aimes_food_web": {
+        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Food/frontend/web",
+        "cmd": "npx vite --port 5179 --host",
+    },
+    "aimes_medical_web": {
+        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Medical/frontend/web",
+        "cmd": "npx vite --port 5180 --host",
+    },
+    "aimes_metal_web": {
+        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Metal/frontend/web",
+        "cmd": "npx vite --port 5181 --host",
+    },
+    "aimes_pharmaceutical_web": {
+        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Pharmaceutical/frontend/web",
+        "cmd": "npx vite --port 5182 --host",
+    },
+    "aimes_textile_web": {
+        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Textile/frontend/web",
+        "cmd": "npx vite --port 5183 --host",
+    },
+    # truthlens_gradio shares port 8000 with truthlens_unified — no separate restart needed
+}
+
+# ============================================================
+# Auto-Recovery System
+# ============================================================
+
+RECOVERY_CHECK_INTERVAL = 30   # seconds between health checks
+RECOVERY_COOLDOWN = 120        # seconds between restart attempts per service
+RECOVERY_MAX_RETRIES = 5       # max consecutive restart attempts before pausing
+
+_recovery_state = {
+    "enabled": True,
+    "last_check": None,
+    "previous_status": {},
+    "restart_cooldown": {},
+    "restart_counts": {},
+    "recovery_log": [],
+    "task": None,
+    "total_restarts": 0,
+}
+
+
+async def restart_service(service_key: str) -> bool:
+    """Restart a single service using its configured startup command."""
+    if service_key not in SERVICE_STARTUP_COMMANDS:
+        logger.warning("[Auto-Recovery] No startup command configured for '%s'", service_key)
+        return False
+
+    cmd_info = SERVICE_STARTUP_COMMANDS[service_key]
+    workdir = cmd_info["workdir"]
+    cmd = cmd_info["cmd"]
+
+    if not os.path.isdir(workdir):
+        logger.error("[Auto-Recovery] Directory not found for '%s': %s", service_key, workdir)
+        return False
+
+    try:
+        log_file = f"/tmp/{service_key}_recovery.log"
+        if cmd_info.get("docker"):
+            full_cmd = f"cd '{workdir}' && docker compose down --remove-orphans > /dev/null 2>&1; docker compose up -d > '{log_file}' 2>&1"
+        else:
+            full_cmd = f"cd '{workdir}' && nohup {cmd} > '{log_file}' 2>&1 &"
+
+        subprocess.Popen(full_cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        logger.info("[Auto-Recovery] Restart command sent for '%s'", service_key)
+        return True
+    except Exception as e:
+        logger.error("[Auto-Recovery] Failed to restart '%s': %s", service_key, e)
+        return False
+
+
+async def auto_recovery_loop():
+    """Background loop: detect Offline transitions and auto-restart services."""
+    logger.info("[Auto-Recovery] Monitor started (interval=%ds, cooldown=%ds, max_retries=%d)",
+                RECOVERY_CHECK_INTERVAL, RECOVERY_COOLDOWN, RECOVERY_MAX_RETRIES)
+
+    # Initial delay to let services stabilize
+    await asyncio.sleep(15)
+
+    # First pass: record baseline status without restarting anything
+    try:
+        results = await check_all_services()
+        for stype in ("backend", "frontend"):
+            for skey, sinfo in results.get(stype, {}).items():
+                _recovery_state["previous_status"][skey] = sinfo.get("status", "unhealthy")
+        _recovery_state["last_check"] = datetime.now().isoformat()
+        healthy_count = sum(1 for s in _recovery_state["previous_status"].values() if s == "healthy")
+        total_count = len(_recovery_state["previous_status"])
+        logger.info("[Auto-Recovery] Baseline recorded: %d/%d services Online", healthy_count, total_count)
+    except Exception as e:
+        logger.error("[Auto-Recovery] Baseline check failed: %s", e)
+
+    # Main monitoring loop
+    while _recovery_state["enabled"]:
+        await asyncio.sleep(RECOVERY_CHECK_INTERVAL)
+        try:
+            results = await check_all_services()
+            now = datetime.now()
+            _recovery_state["last_check"] = now.isoformat()
+
+            for stype in ("backend", "frontend"):
+                for skey, sinfo in results.get(stype, {}).items():
+                    current = sinfo.get("status", "unhealthy")
+                    prev = _recovery_state["previous_status"].get(skey)
+                    sname = sinfo.get("name", skey)
+
+                    if current == "healthy" and prev == "unhealthy":
+                        # Service recovered — reset retry counter
+                        _recovery_state["restart_counts"][skey] = 0
+                        logger.info("[Auto-Recovery] %s recovered -> Online", sname)
+                        _recovery_state["recovery_log"].append({
+                            "timestamp": now.isoformat(), "service": skey,
+                            "name": sname, "event": "recovered",
+                        })
+
+                    elif current == "unhealthy" and prev == "healthy":
+                        # Online -> Offline transition detected
+                        await _attempt_restart(skey, sname, now, "offline_detected")
+
+                    elif current == "unhealthy" and prev == "unhealthy":
+                        # Still offline — retry if cooldown passed and retries remain
+                        last_restart = _recovery_state["restart_cooldown"].get(skey, 0)
+                        if last_restart > 0 and (now.timestamp() - last_restart) >= RECOVERY_COOLDOWN:
+                            await _attempt_restart(skey, sname, now, "retry")
+
+                    _recovery_state["previous_status"][skey] = current
+
+            # Trim log to last 200 entries
+            if len(_recovery_state["recovery_log"]) > 200:
+                _recovery_state["recovery_log"] = _recovery_state["recovery_log"][-200:]
+
+        except Exception as e:
+            logger.error("[Auto-Recovery] Check cycle error: %s", e)
+
+
+async def _attempt_restart(skey: str, sname: str, now: datetime, reason: str):
+    """Check cooldown/retry limits and attempt a service restart."""
+    # Check cooldown
+    last_restart = _recovery_state["restart_cooldown"].get(skey, 0)
+    if (now.timestamp() - last_restart) < RECOVERY_COOLDOWN:
+        return
+
+    # Check retry limit
+    retries = _recovery_state["restart_counts"].get(skey, 0)
+    if retries >= RECOVERY_MAX_RETRIES:
+        if retries == RECOVERY_MAX_RETRIES:
+            logger.warning("[Auto-Recovery] %s hit max retries (%d) — pausing auto-restart",
+                           sname, RECOVERY_MAX_RETRIES)
+            _recovery_state["restart_counts"][skey] = retries + 1
+            _recovery_state["recovery_log"].append({
+                "timestamp": now.isoformat(), "service": skey,
+                "name": sname, "event": "max_retries_reached",
+            })
+        return
+
+    event_label = "restart" if reason == "offline_detected" else "retry_restart"
+    logger.info("[Auto-Recovery] %s — %s (attempt %d/%d)",
+                sname, event_label, retries + 1, RECOVERY_MAX_RETRIES)
+
+    success = await restart_service(skey)
+
+    _recovery_state["restart_cooldown"][skey] = now.timestamp()
+    _recovery_state["restart_counts"][skey] = retries + 1
+    if success:
+        _recovery_state["total_restarts"] += 1
+
+    _recovery_state["recovery_log"].append({
+        "timestamp": now.isoformat(), "service": skey, "name": sname,
+        "event": event_label, "attempt": retries + 1, "success": success,
+    })
+
+
+# ============================================================
 # FastAPI Application
 # ============================================================
 
@@ -877,11 +1307,28 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=GATEWAY_CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.on_event("startup")
+async def startup_event():
+    """Start the auto-recovery background monitor."""
+    _recovery_state["task"] = asyncio.create_task(auto_recovery_loop())
+    logger.info("[API Gateway] Auto-Recovery monitor started")
+
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    """Stop the auto-recovery background monitor."""
+    _recovery_state["enabled"] = False
+    if _recovery_state["task"]:
+        _recovery_state["task"].cancel()
+    logger.info("[API Gateway] Auto-Recovery monitor stopped")
+
 
 # ============================================================
 # Helper Functions
@@ -903,7 +1350,7 @@ async def check_service_health(port: int, timeout: float = 2.0, base_path: str =
                         "response_time": response.elapsed.total_seconds() * 1000,
                         "endpoint": endpoint
                     }
-        except:
+        except Exception:
             continue
 
     return {"status": "unhealthy", "response_time": None, "endpoint": None}
@@ -2113,6 +2560,33 @@ async def health_check_single(service_type: str, service_name: str):
         **result
     }
 
+@app.get("/auto-recovery/status")
+async def auto_recovery_status():
+    """Get auto-recovery system status and recent events"""
+    return {
+        "enabled": _recovery_state["enabled"],
+        "check_interval_sec": RECOVERY_CHECK_INTERVAL,
+        "cooldown_sec": RECOVERY_COOLDOWN,
+        "max_retries": RECOVERY_MAX_RETRIES,
+        "last_check": _recovery_state["last_check"],
+        "total_restarts": _recovery_state["total_restarts"],
+        "services_tracked": len(_recovery_state["previous_status"]),
+        "services_at_max_retries": [
+            k for k, v in _recovery_state["restart_counts"].items() if v > RECOVERY_MAX_RETRIES
+        ],
+        "recent_events": _recovery_state["recovery_log"][-30:],
+    }
+
+@app.post("/auto-recovery/reset/{service_key}", dependencies=[Depends(require_api_key)])
+async def auto_recovery_reset(service_key: str):
+    """Reset retry counter for a service (re-enable auto-recovery after max retries)"""
+    if service_key not in _recovery_state["previous_status"]:
+        raise HTTPException(status_code=404, detail=f"Service '{service_key}' not tracked")
+    _recovery_state["restart_counts"][service_key] = 0
+    _recovery_state["restart_cooldown"].pop(service_key, None)
+    logger.info("[Auto-Recovery] Retry counter reset for '%s'", service_key)
+    return {"message": f"Auto-recovery retry counter reset for '{service_key}'"}
+
 @app.get("/docs/api")
 async def api_documentation():
     """Get API documentation for all services"""
@@ -2142,7 +2616,7 @@ async def service_api_documentation(service_name: str):
         "endpoints": API_DOCS[service_name]["endpoints"]
     }
 
-@app.api_route("/api/{service}/{path:path}", methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"])
+@app.api_route("/api/{service}/{path:path}", methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"], dependencies=[Depends(require_api_key)])
 async def proxy_request(service: str, path: str, request: Request):
     """Proxy requests to backend services"""
     if service not in BACKEND_SERVICES:
@@ -2181,7 +2655,7 @@ async def proxy_request(service: str, path: str, request: Request):
                         status_code=response.status_code,
                         headers={"X-Proxied-From": f"localhost:{port}"}
                     )
-                except:
+                except Exception:
                     pass
 
             return JSONResponse(
@@ -2211,13 +2685,16 @@ if __name__ == "__main__":
     import uvicorn
     print(f"""
     ╔═══════════════════════════════════════════════════════════╗
-    ║           AI Project API Gateway v2.0.0                   ║
+    ║           AI Project API Gateway v2.1.0                   ║
     ║═══════════════════════════════════════════════════════════║
-    ║  Dashboard:    http://{GATEWAY_HOST}:8080                     ║
-    ║  Health Check: http://{GATEWAY_HOST}:8080/health              ║
-    ║  OpenAPI Docs: http://{GATEWAY_HOST}:8080/swagger             ║
-    ║  API Docs:     http://{GATEWAY_HOST}:8080/docs/api            ║
-    ║  Services:     http://{GATEWAY_HOST}:8080/services            ║
+    ║  Dashboard:      http://{GATEWAY_HOST}:8080                   ║
+    ║  Health Check:   http://{GATEWAY_HOST}:8080/health            ║
+    ║  Auto-Recovery:  http://{GATEWAY_HOST}:8080/auto-recovery/status║
+    ║  OpenAPI Docs:   http://{GATEWAY_HOST}:8080/swagger           ║
+    ║  API Docs:       http://{GATEWAY_HOST}:8080/docs/api          ║
+    ║  Services:       http://{GATEWAY_HOST}:8080/services          ║
+    ╠═══════════════════════════════════════════════════════════╣
+    ║  Auto-Recovery: ON (interval={RECOVERY_CHECK_INTERVAL}s, cooldown={RECOVERY_COOLDOWN}s)     ║
     ╚═══════════════════════════════════════════════════════════╝
     """)
-    uvicorn.run(app, host="0.0.0.0", port=8080, reload=False)
+    uvicorn.run(app, host=GATEWAY_BIND_HOST, port=8080, reload=False)

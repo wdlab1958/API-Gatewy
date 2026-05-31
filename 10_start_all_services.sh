@@ -1,6 +1,6 @@
 #!/bin/bash
 # AI Project - Essential Services Startup Script
-# Location: A3Security (10.10.10.64)
+# Location: WDLAB@2023-2026 (10.10.10.64)
 # Services: AEGIS + AiNex + API Gateway (5 services only)
 
 export GATEWAY_HOST="10.10.10.64"
@@ -53,7 +53,7 @@ start_service() {
 }
 
 echo "=========================================="
-echo " Essential Services Startup (A3Security)"
+echo " Essential Services Startup (WDLAB@2023-2026)"
 echo " GATEWAY_HOST=${GATEWAY_HOST}"
 echo "=========================================="
 echo ""

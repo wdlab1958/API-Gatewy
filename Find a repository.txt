@@ -1,0 +1,335 @@
+Find a repository…
+
+https://github.com/wdlab1958?tab=repositories
+
+1) ~/ai_project/NexusAI/
+NexusAI;  https://github.com/wdlab1958/NexusAI
+
+2) ~/ai_project/webpage_NexusAI/
+Webpage-NexusAI; https://github.com/wdlab1958/Webpage-NexusAI
+Deploy; https://wdlab1958.github.io/Webpage-NexusAI/
+
+3) ~/ai_project/AEGIS/
+AEGIS; https://github.com/wdlab1958/AEGIS
+
+4)~/ai_project/webpage_AEGIS
+Web-AEGIS; https://github.com/wdlab1958/Web-AEGIS
+Deploy; https://wdlab1958.github.io/Web-AEGIS/
+
+5) ~/ai_project/AIMES-Eleven/AIMES-Food/
+AIMES; https://github.com/wdlab1958/AIMES
+
+6) ~/ai_project/webpage_AIMES/
+Webpage-AIMES; https://github.com/wdlab1958/Webpage-AIMES
+Deploy; https://wdlab1958.github.io/Webpage-AIMES/
+
+7) ~/ai_project/webpage_Eleven_AIMES /
+Webpage-AIMES-ELEVEN; https://github.com/wdlab1958/Webpage-AIMES-ELEVEN
+Deploy; https://wdlaWebpage_AiNexb1958.github.io/Webpage-AIMES-ELEVEN/    
+
+8) ~/ai_project/AIMES-Eleven/AIMES-Cosmetics/
+AIMES-Cosmetics; https://github.com/wdlab1958/AIMES-Cosmetics
+
+9) ~/ai_project/AIMES-Eleven/AIMES-Pharmaceutical/
+AIMES-Pharmaceutical; https://github.com/wdlab1958/AIMES-Pharmaceutical
+
+10) ~/ai_project/AIMES-Eleven/AIMES-Agricultural/
+AIMES-AgriProcess; https://github.com/wdlab1958/AIMES-AgriProcess
+
+11) ~/ai_project/AIMES-Eleven/AIMES-Automotive/
+AIMES-Automotive; https://github.com/wdlab1958/AIMES-Automotive
+
+12)  ~/ai_project/AIMES-Eleven/AIMES-Battery/
+AIMES-Battery; https://github.com/wdlab1958/AIMES-Battery
+
+13)  ~/ai_project/AIMES-Eleven/AIMES-Chemical/
+AIMES-Chemical; https://github.com/wdlab1958/AIMES-Chemical
+
+14)  ~/ai_project/AIMES-Eleven/AIMES-Electronics/
+AIMES-Electronics; https://github.com/wdlab1958/AIMES-Electronics
+
+15)  ~/ai_project/AIMES-Eleven/AIMES-Medical/
+AIMES-Medical; https://github.com/wdlab1958/AIMES-Medical
+
+16)  ~/ai_project/AIMES-Eleven/AIMES-Metal/
+AIMES-Metal; https://github.com/wdlab1958/AIMES-Metal
+
+17)  ~/ai_project/AIMES-Eleven/AIMES-Textile/
+AIMES-Textile; https://github.com/wdlab1958/AIMES-Textile
+
+18)   ~/ai_project/AiNex/
+AiNex; https://github.com/wdlab1958/AiNex
+
+19) ~/ai_project/webpage_AiNex/
+Webpage_AiNex; https://github.com/wdlab1958/Webpage_AiNex
+
+20)   ~/ai_project/AIALBM /
+ AIALBM; https://github.com/wdlab1958/AIALBM
+
+21)  ~/ai_project/webpage_aialbm/  
+Webpage_AIALBM; https://github.com/wdlab1958/Webpage_AIALBM
+
+ 22)  ~/ai_project/ASCM/ ; Unified monitoring for 5 AI SaaS platforms
+ASCM ; https://github.com/wdlab1958/ASCM
+AI SaaS Control & Monitoring System
+
+23) ~/ai_project/TruthLens/ 
+TruthLens; https://github.com/wdlab1958/TruthLens
+Test Video; https://www.youtube.com/watch?v=x-emzK0sDkA
+	        https://www.youtube.com/shorts/WOyhKrFUN1w
+                   https://www.youtube.com/shorts/_vHoe5_zwfc
+
+24)  ~/ai_project/webpage_truthlens/
+Webpage_TruthLens;  https://github.com/wdlab1958/Webpage_TruthLens
+
+25)  ~/ai_project/Cluster-Master/
+Cluster-Master;  https://github.com/wdlab1958/Cluster-Master
+
+27)  ~/ai_project/webpage_ai_cluster_master/
+Webpage-Cluster-Master; https://github.com/wdlab1958/Webpage-Cluster-Master
+
+28)  ~/ai_project/AgentForge/
+AgentForge ; https://github.com/wdlab1958/AgentForge
+
+29)  ~/ai_project/webpage_agentforge/
+Webpage-AgentForge; https://github.com/wdlab1958/Webpage-AgentForge
+Deploy; https://wdlab1958.github.io/Webpage-AgentForge/
+
+30)  ~/ai_project/A3DE/
+A3DE; https://github.com/wdlab1958/A3DE
+(Advanced Autonomous Agentic Development Environment)
+
+32)  Webpage-A3DE; https://github.com/wdlab1958/Webpage-A3DE
+
+
+
+
+
+
+OpenClaw
+http://127.0.0.1:18789/#token=2cbc77b4e06cc9f4ad2fcc883e880783bb83a2c6dcff9a1e69e     
+     009a5413503b1 
+
+claude –dangerously-skip-permissions
+start_all_services.sh*
+start_gateway.sh*
+status_services.sh*
+stop_all_services.sh*
+
+
+프로젝트 폴더의 frontend, backend server를 실행하고, 모든 API endpoint를 routing 시킨 후 완료되면 frontend, backend server를 기존 열려 있는 서비스와 충돌이 나지 않게 port 지정하여 웹 브라우저에 Open 시키세요.
+CLUSTER MASTER
+A3-ADE에 구현되어 있는 멀티 에이젠틱 AI 프레임워크들을 동작을 모두 조사하고 이들이 대시보드의 모든 메뉴와 연동되는 워크스페이스의 모든 기능들을 파이널 테스트한 후 테스트 결과를 Pass/Fail 리포트로 작성해 주세요.
+
+1) 지금 수정한 모든 내용을 적용해서 README.md 파일의 내용을 최신 적용 내용으로 수정하시오.
+Update; Feb. 19, 2026 / Editor; Brian Lee - WDLAB@2023-2026 WDLAB@2023-2026 Working Group
+2) 수정이 완료되면 https://github.com/wdlab1958/A3DE에 Commit & Push 하세요.
+
+
+3) 수정 전 root의 README.md 파일만 제외하고 모든 *.md, *.txt 파일을 ~/docs/로 move 하였으므로 root에 남아 있는 해당 파일들은 모두 삭제하시오.
+
+
+A3DE 프로젝트 소개용 웹페이지를 아래의 내용을 참고해서 업데이트 된 부문을 적용해서 구현하시오.
+1) A3DE 프로젝트 폴더; ~~/ai_project/A3DE/
+- README.md 참조
+- Frontend Server 구성 참조 
+2) A3DE  프로젝트 소개용 웹페이지 제작 폴더;   ~/ai_project/webpage_A3DE/
+3)  A3DE 웹페이지의 디자인 및 스타일 참조 다른 프로젝트 URL;
+- https://wdlab1958.github.io/Webpage_AIALBM/
+- https://wdlab1958.github.io/AiNex_Home/ainex
+4) 웹 페이지 구현이 완료되면 포트 충돌이 없게 브라우저에서 열어 보시오.
+===================================================================
+ai-carelink; wdlab1958/ai-carelink 
+Cluster-Master; wdlab1958/Cluster-Master
+wdlab1958/Webpage-Cluster-Master 
+API-Gatewy; wdlab1958/API-Gatewy
+wdlab1958-all; wdlab1958/wdlab1958-all
+GitAutoPush; wdlab1958/GitAutoPush
+Webpage_AI-Carelink; wdlab1958/Webpage_AI-Carelink
+A3-ADEP; wdlab1958/A3-ADEP
+A3DE; wdlab1958/A3DE
+AgentForge; wdlab1958/AgentForge
+TruthLens; wdlab1958/TruthLens
+Ai_Unified_Portal; wdlab1958/Ai_Unified_Portal
+
+claude --dangerously-skip-permissions
+
+AIALBM 프로젝트 소개용 웹페이지를 아래의 내용을 참고해서 업데이트 된 부문을 적용해서 구현하시오.
+1) AIALBM 프로젝트 폴더; ~/ai_project/AIALBM/
+- README.md 참조
+- Frontend Server 구성 참조 
+2) AIALBM 프로젝트 소개용 웹페이지 제작 폴더; ~/ai_project/webpage_aialbm/
+3) 웹 페이지 구현이 완료되면 포트 충돌이 없게 브라우저에서 열어 보시오.
+==================================================================
+[Deploy]
+https://wdlab1958.github.io/Webpage-NexusAI/
+https://wdlab1958.github.io/Web-AEGIS/
+https://wdlab1958.github.io/AiNex_Home/ ; AiNex & AgentForge
+https://wdlab1958.github.io/Webpage_AiNex/
+https://wdlab1958.github.io/Webpage-Cluster-Master
+https://wdlab1958.github.io/Webpage-AIMES/
+https://wdlab1958.github.io/Webpage-AIMES-ELEVEN/
+https://wdlab1958.github.io/Webpage_AIALBM/ 
+https://wdlab1958.github.io/Webpage_TruthLens/
+https://wdlab1958.github.io/Webpage-AgentForge/
+https://wdlab1958.github.io/Webpage-A3DE/
+
+https://wdlab1958.github.io/Webpage_AI-Carelink/
+
+API Key
+
+Claude A3-ADE
+REPLACE_ME_ANTHROPIC_KEY
+
+ChatGPT A3-ADE
+REPLACE_ME_OPENAI_KEY
+
+Gemini A3-ADE
+REPLACE_ME_GOOGLE_KEY
+
+Generative Language API Key (9/22) ; REPLACE_ME_GOOGLE_KEY
+
+Generative Language API Key (9/4) ; REPLACE_ME_GOOGLE_KEY
+
+Cohere default
+3Yl9pJMJiiHSeYMG887kBzOX9QlCiRAJlHVuTP7j
+
+Hugging Face A3-ADE
+REPLACE_ME_HF_TOKEN
+
+REPLACE_ME_HF_TOKEN
+
+REPLACE_ME_HF_TOKEN
+
+Github API Key
+REPLACE_ME_GITHUB_TOKEN
+
+https://github.com/wdlab1958/ai-carelink/
+
+AiNex -Github
+REPLACE_ME_GITHUB_TOKEN
+
+1. 기존의 CrewAI, LangGraph, AutoGen 에이전틱 AI 프레임워크가 정상적으로 작동하는지 확인 및 검증이 필요하고 문제가 있으면 수정하시오.
+
+2. Query Agent common.workspace에 아래의 차세대 에이전틱 AI 프레임워크를 커스텀 에이전트 프레임워크에 통합하는 방법론을 정리하여 통합 시 장/단점, 통합 후 기대 효과를 정리하고 Implement_Agentic_AI.md 파일로 작성해 주세요. 
+   - 2.1 [Google ADK (Agent Development Kit)](#31-google-adk-agent-development-kit)
+   - 2.2 [OpenAI Agents SDK](#32-openai-agents-sdk)
+   - 2.3 [Claude Agent SDK (Anthropic)](#33-claude-agent-sdk-anthropic)
+   - 2.4 [DSPy (Stanford NLP)](#34-dspy-stanford-nlp)
+   - 2.5 [MetaGPT](#35-metagpt)
+   - 2.6 [CAMEL-AI / OWL](#36-camel-ai--owl)
+   - 2.7 [LlamaIndex Workflows](#37-llamaindex-workflows)
+   - 2.8 [Microsoft Agent Framework](#38-microsoft-agent-framework)
+3. Implement_multi-agent.md 파일에는 위 프레임워크의 역활과 기능들도 함께 정리해 주세요.
+통합 시 구현된 기능이 플랫폼의 핵심 기능 향상에 도움이 안되는 워크프레임은 제외하고 보고서를 작성하시오.
+4. 사이드바 메뉴 제일 아래에  ‘시스템 설정’ 메뉴를 추가하고 AI / 에이전트 프레임워크에 관한 사용자 설정이 가능하도록 구현하세요.
+5. 시스템 설정에는 Ollama 서버 상태, Local LLM Model 선택, AI/에이전트 프레임워크 설정에 관한 사용자 설정이 가능하여야 합니다.
+6. 구현이 완료되면 시스템 정보 메뉴의 워크스페이스 내용도 모두 업데이트 하시오.
+
+~/ai_project/AIMES-Eleven/ 폴더 안에는 Domain 별로 서로 다른 독립된 AIMS Project가 11개 있습니다.
+이들 프로젝트는 Start_all_AIMES.sh 스크립트에 의해 순차적으로 11개의 AIMS 프로젝트를 구동합니다.
+물론 이들 프로젝트는 상호 작용하지 않는 완전한 별개의 프로젝트들 입니다. AI 기반의 Manufacturing Excution System 입니다.
+drwxrwxr-x 13 ubuntu-02 ubuntu-02  4096  2월 17 22:44  AIMES-Agricultural/
+drwxrwxr-x  5 ubuntu-02 ubuntu-02  4096  2월 17 22:44  AIMES-Automotive/
+drwxrwxr-x  5 ubuntu-02 ubuntu-02  4096  2월 17 22:44  AIMES-Battery/
+drwxrwxr-x  4 ubuntu-02 ubuntu-02  4096  2월 17 22:44  AIMES-Chemical/
+drwxrwxr-x  7 ubuntu-02 ubuntu-02  4096  2월 17 22:44  AIMES-Cosmetics/
+drwxrwxr-x  6 ubuntu-02 ubuntu-02  4096  2월 17 22:44  AIMES-Electronics/
+drwxrwxr-x 13 ubuntu-02 ubuntu-02  4096  2월 15 09:51  AIMES-Food/
+drwxrwxr-x  6 ubuntu-02 ubuntu-02  4096  2월 17 21:46  AIMES-Medical/
+drwxrwxr-x  5 ubuntu-02 ubuntu-02  4096  2월 17 22:03  AIMES-Metal/
+drwxrwxr-x 13 ubuntu-02 ubuntu-02  4096  2월 17 22:44  AIMES-Pharmaceutical/
+drwxrwxr-x  4 ubuntu-02 ubuntu-02  4096  2월 17 22:44  AIMES-Textile/
+
+Dashboard의 Backend Services와 Frontend Services 각 라인의 STATUS 다음에 "Open" 버튼을 추가하여 클릭 시 해당  서비스 페이지를 새 브라우저 탭으로 열 수 있게 구현 하시오.     
+
+유희종	yhj9394@gmail.com 	test1234	플랫폼 관리자
+이원대	wdlab1958@gmail.com	test1234	환자/보호자
+김영식	ctob08040@naver.com	test1234	쇼핑몰 관리자
+서영해	caregiver@cagelink.com	test1234	간병인
+최민정	hospital01@carelink.com	test1234	요양원 관리자
+서영심	sys@carelink.com	 	test1234	요양원 관리자
+이원대	wdlab@carelink.com	test1234	플랫폼 관리자
+
+플랫폼 관리 대시보드, 환자 대시보드, 쇼핑몰 관리자, 병원 관리 대시보드, 간병인 대시보드, 간병 용품 쇼핑몰 대시보드의 모든 메뉴와 연동되는 워크스페이스의 모든 기능들을 테스트한 후 테스트 결과를 Pass/Fail 리포트로 작성해 주세요. 특히 연관된 대시보드 간의 상호 연동되어야 하는 데이터들이 정상적으로 연동되어 상대 대시보드의 정보에 업데이트가 실시간으로 처리되는지 확인하는 것이 매우 중요합니다.
+
+프로젝트 폴더의 frontend, backend server를 실행하고, 모든 API endpoint를 routing 시킨 후 완료되면 frontend, backend server를 기존 열려 있는 서비스와 충돌이 나지 않게 port 지정하여 웹 브라우저에 Open 시키세요.
+
+대시보드의 모든 메뉴와 연동되는 워크스페이스의 모든 기능들을 테스트한 후 테스트 결과를 Pass/Fail 리포트로 작성해 주세요.
+
+TEST_REPORT.md 파일을 참조하여 지금까지 수정한 모든 내용을 적용해서 README.md 파일을 업데이트 하세요. 파일 수정이 완료되면 https://github.com/wdlab1958/ai-carelink 에 커밋 후 푸시하기 바랍니다. Update; Feb. 18, 2026 / Editor; Brian Lee – AiCareLink, Inc.
+
+https://github.com/wdlab1958/ai-carelink
+모든 6개 대시보드(플랫폼 관리자, 환자, 병원 관리, 간병인, 쇼핑몰 관리자, 간병 용품 쇼핑몰)의 
+
+
+ # Backend
+   check 4001 "dataset_gen"
+   check 4002 "deepfake"
+   check 4004 "a3de"
+   check 4005 "carelink"
+   check 4007 "consulting"
+   check 4008 "factory"
+   check 4009 "labor"
+   check 4010 "langgraph"
+   check 4011 "multimodals"
+   check 4012 "aialbm"
+   check 4013 "enterprise"
+   check 4014 "panda"
+   check 8200 "cluster_master"
+   check 4015 "aegis"
+   check 4016 "nexusai"
+   check 8006 "ascm"
+   check 18080 "aimes_food"
+   check 28080 "aimes_agricultural_gw"
+   check 58080 "aimes_automotive_gw"
+   check 40080 "aimes_battery_gw"
+   check 39080 "aimes_chemical_gw"
+   check 20080 "aimes_cosmetics_gw"
+   check 48080 "aimes_electronics_gw"
+   check 29080 "aimes_medical_gw"
+   check 49080 "aimes_metal_gw"
+   check 38080 "aimes_pharmaceutical_gw"
+   check 50080 "aimes_textile_gw"
+   check 4017 "anti_deepfake"
+   check 4018 "autogit"
+   check 4019 "stt_tts"
+
+   # Frontend
+   check 8001 "truthlens"
+   check 8002 "webpage_ainex"
+   check 3001 "ainex_home"
+   check 3002 "cluster_master_web"
+   check 3003 "aialbm_web"
+   check 3004 "carelink_web"
+   check 5005 "carelink_frontend"
+   check 5010 "langgraph_frontend"
+   check 5013 "enterprise_frontend"
+   check 5015 "unified_portal"
+   check 5004 "a3de_frontend"
+   check 3006 "aegis_frontend"
+   check 3007 "nexusai_frontend"
+   check 8003 "webpage_aegis"
+   check 3010 "ascm_dashboard"
+   check 8004 "webpage_aimes"
+   check 8005 "webpage_eleven_aimes"
+   check 8009 "webpage_nexusai"
+   check 3008 "webpage_all_project"
+   check 5173 "aimes_agricultural_fe"
+   check 5174 "aimes_automotive_fe"
+   check 5175 "aimes_battery_fe"
+   check 5176 "aimes_chemical_fe"
+   check 5177 "aimes_cosmetics_fe"
+   check 5178 "aimes_electronics_fe"
+   check 5179 "aimes_food_fe"
+   check 5180 "aimes_medical_fe"
+   check 5181 "aimes_metal_fe"
+   check 5182 "aimes_pharmaceutical_fe"
+   check 5183 "aimes_textile_fe"
+
+   # Gateway
+   check 8080 "api_gateway"
+, 
+rsync -avz --delete ./ wdlab@172.30.1.18:~/ai_project/API_Gateway/
+
+

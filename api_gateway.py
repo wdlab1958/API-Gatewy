@@ -7,10 +7,8 @@ Port: 8080
 
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, StreamingResponse
+from fastapi.responses import JSONResponse
 import httpx
-import asyncio
-from typing import Dict, Any
 
 app = FastAPI(
     title="AI Project API Gateway",
@@ -69,14 +67,14 @@ async def check_service_health(port: int) -> bool:
                 response = await client.get(f"{scheme}://localhost:{port}/health")
                 if response.status_code in [200, 207, 503]:
                     return True
-        except:
+        except Exception:
             pass
         try:
             async with httpx.AsyncClient(timeout=2.0, verify=False) as client:
                 response = await client.get(f"{scheme}://localhost:{port}/")
                 if response.status_code in [200, 307, 404]:
                     return True
-        except:
+        except Exception:
             pass
     return False
 
