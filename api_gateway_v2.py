@@ -66,1092 +66,1062 @@ async def require_api_key(x_api_key: str = Header(default="")):
 # ============================================================
 
 BACKEND_SERVICES = {
-    "dataset_gen": {
-        "port": 4001,
-        "name": "Dataset Generator",
-        "description": "Dataset generation utility for ML/AI training",
-        "path": "/home/ubuntu-02/ai_project/Dataset_Gen",
-        "entry": "main.py"
+    "notebooklm": {
+        "port": 8013,
+        "name": "Design NotebookLM (Server)",
+        "description": "Notebook-style design ideation API server",
+        "path": "/home/ubuntu-02/ai_project/02_Design_NotebookLM",
+        "entry": "server/index.mjs",
+        "scheme": "http",
+        "health": "/api/health"
     },
-    "deepfake": {
-        "port": 4002,
-        "name": "TruthLens (DeepFake Detection)",
-        "description": "Deepfake detection and analysis system",
-        "path": "/home/ubuntu-02/ai_project/TruthLens",
-        "entry": "src/main.py"
+    "fileforge": {
+        "port": 8090,
+        "name": "FileForge Backend",
+        "description": "File processing & forge backend (FastAPI)",
+        "path": "/home/ubuntu-02/ai_project/03_FileForge/backend",
+        "entry": "main.py",
+        "scheme": "http",
+        "health": "/api/health"
     },
-    "a3de": {
-        "port": 4004,
-        "name": "A3-ADE Development Environment",
-        "description": "WDLAB@2023-2026 development environment",
-        "path": "/home/ubuntu-02/ai_project/a3de",
-        "entry": "backend/main.py"
+    "fileforge_py": {
+        "port": 8091,
+        "name": "FileForge-Python Backend",
+        "description": "FileForge Python edition (FastAPI+NiceGUI). Native port 8090.",
+        "path": "/home/ubuntu-02/ai_project/03_FileForge-Python/backend",
+        "entry": "main.py",
+        "scheme": "http",
+        "health": "/health"
     },
-    "carelink": {
-        "port": 4005,
-        "name": "AI CareLink Platform",
-        "description": "Healthcare/caregiving AI platform",
-        "path": "/home/ubuntu-02/ai_project/AiCarelink",
-        "entry": "backend/app/main.py"
+    "autoflow": {
+        "port": 8085,
+        "name": "AutoFlow Backend",
+        "description": "vLLM OpenClaw automation backend (FastAPI)",
+        "path": "/home/ubuntu-02/ai_project/04_AutoFlow/vllm-openclaw-webapp/backend",
+        "entry": "main.py",
+        "scheme": "http",
+        "health": "/api/health"
     },
-    "consulting": {
-        "port": 4007,
-        "name": "AiNex (AI Consulting)",
-        "description": "Multi-agent AI consulting assistant platform",
-        "path": "/home/ubuntu-02/ai_project/AiNex",
-        "entry": "main.py"
+    "wdlab_cli": {
+        "port": 8877,
+        "name": "WDLab CLI Backend",
+        "description": "WDLab CLI web backend (FastAPI)",
+        "path": "/home/ubuntu-02/ai_project/06_wdlab-CLI/backend",
+        "entry": "main.py",
+        "scheme": "http",
+        "health": "/monitoring/health"
     },
-    "factory": {
-        "port": 4008,
-        "name": "AI Factory",
-        "description": "AI Factory - Enterprise production system",
-        "path": "/home/ubuntu-02/ai_project/ai_factory",
-        "entry": "src/api/main.py"
-    },
-    "labor": {
-        "port": 4009,
-        "name": "AI Labor Compliance",
-        "description": "Labor law compliance AI system",
-        "path": "/home/ubuntu-02/ai_project/ai_labor",
-        "entry": "backend/main.py"
-    },
-    "langgraph": {
-        "port": 4010,
-        "name": "AgentForge (LangGraph)",
-        "description": "AI LangGraph platform for agent workflows",
-        "path": "/home/ubuntu-02/ai_project/AgentForge",
-        "entry": "api/main.py"
-    },
-    "multimodals": {
-        "port": 4011,
-        "name": "AI Multimodals",
-        "description": "Multimodal AI system (audio/video/text)",
-        "path": "/home/ubuntu-02/ai_project/ai_multimodals",
-        "entry": "web/app.py"
-    },
-    "aialbm": {
-        "port": 4012,
-        "name": "AIALBM Memory Platform",
-        "description": "AIALB AI platform with memory",
-        "path": "/home/ubuntu-02/ai_project/AIALBM",
-        "entry": "app/main.py"
-    },
-    "enterprise": {
-        "port": 4013,
-        "name": "Enterprise Factory",
-        "description": "Enterprise local LLM factory",
-        "path": "/home/ubuntu-02/ai_project/enterprise_factory",
-        "entry": "local-llm-os/backend/src/api/main.py"
-    },
-    "panda": {
-        "port": 4014,
-        "name": "Panda Chatbot",
-        "description": "Panda chatbot system",
-        "path": "/home/ubuntu-02/ai_project/panda_chetbot",
-        "entry": "api/main.py"
-    },
-    "cluster_master": {
-        "port": 8200,
-        "name": "Cluster Master",
-        "description": "Master cluster orchestration system",
-        "path": "/home/ubuntu-02/ai_project/Cluster-Master",
-        "entry": "src/server.py"
+    "expert100k": {
+        "port": 8001,
+        "name": "100K-Expert",
+        "description": "100K multi-agent expert system (FastAPI)",
+        "path": "/home/ubuntu-02/ai_project/100K-Expert",
+        "entry": "main.py",
+        "scheme": "http",
+        "health": "/health"
     },
     "aegis": {
         "port": 4015,
-        "name": "AEGIS Platform",
-        "description": "AI-Enhanced Guardian Intelligence System",
-        "path": "/home/wdlab/ai_project/AEGIS",
-        "entry": "apps/api/main.py"
+        "name": "AEGIS API",
+        "description": "AEGIS platform backend API (FastAPI)",
+        "path": "/home/ubuntu-02/ai_project/AEGIS/apps/api",
+        "entry": "main.py",
+        "scheme": "http",
+        "health": "/api/v1/health"
+    },
+    "aialbm": {
+        "port": 8000,
+        "name": "AIALBM Memory Platform",
+        "description": "AIALB AI platform with memory (FastAPI)",
+        "path": "/home/ubuntu-02/ai_project/AIALBM/app",
+        "entry": "main.py",
+        "scheme": "http",
+        "health": "/health"
+    },
+    "agriprocess": {
+        "port": 28080,
+        "name": "AIMES AgriProcess Gateway",
+        "description": "Agricultural process MES API gateway (Express)",
+        "path": "/home/ubuntu-02/ai_project/AIMES-AgriProcess/services/api-gateway",
+        "entry": "src/index.js",
+        "scheme": "http",
+        "health": "/health"
+    },
+    "argus": {
+        "port": 8002,
+        "name": "ARGUS Backend",
+        "description": "ARGUS monitoring/analysis backend (FastAPI). Native port 8000.",
+        "path": "/home/ubuntu-02/ai_project/ARGUS/backend",
+        "entry": "main.py",
+        "scheme": "http",
+        "health": "/health"
+    },
+    "agentforge": {
+        "port": 8003,
+        "name": "AgentForge (LangGraph)",
+        "description": "LangGraph agent workflow platform (FastAPI)",
+        "path": "/home/ubuntu-02/ai_project/AgentForge/api",
+        "entry": "main.py",
+        "scheme": "http",
+        "health": "/api/health"
+    },
+    "carelink": {
+        "port": 8004,
+        "name": "AI CareLink Backend",
+        "description": "Healthcare/caregiving AI backend (FastAPI). Native port 8000.",
+        "path": "/home/ubuntu-02/ai_project/AiCarelink/backend",
+        "entry": "app/main.py",
+        "scheme": "http",
+        "health": "/health"
+    },
+    "ainex": {
+        "port": 8005,
+        "name": "AiNex Consulting",
+        "description": "Multi-agent AI consulting assistant (FastAPI). Native port 8001.",
+        "path": "/home/ubuntu-02/ai_project/AiNex",
+        "entry": "main.py",
+        "scheme": "http",
+        "health": "/health"
+    },
+    "janggi": {
+        "port": 8007,
+        "name": "JangGi Backend",
+        "description": "JangGi platform backend (FastAPI)",
+        "path": "/home/ubuntu-02/ai_project/JangGi/backend",
+        "entry": "main.py",
+        "scheme": "http",
+        "health": "/health"
     },
     "nexusai": {
-        "port": 4016,
-        "name": "NexusAI Platform",
-        "description": "Multi-agent AI platform with conversations, documents, and workflows",
-        "path": "/home/ubuntu-02/ai_project/NexusAI",
-        "entry": "apps/api/main.py"
+        "port": 8008,
+        "name": "NexusAI API",
+        "description": "NexusAI platform backend API (FastAPI). Native port 8000.",
+        "path": "/home/ubuntu-02/ai_project/NexusAI/apps/api",
+        "entry": "main.py",
+        "scheme": "http",
+        "health": "/health"
+    },
+    "patentforge": {
+        "port": 9700,
+        "name": "PatentForge API",
+        "description": "Patent drafting/analysis API (FastAPI)",
+        "path": "/home/ubuntu-02/ai_project/PatentForge",
+        "entry": "scripts/serve_api.py",
+        "scheme": "http",
+        "health": "/health"
+    },
+    "crawling": {
+        "port": 3014,
+        "name": "Project Crawling Server",
+        "description": "Web crawling orchestration server (Express)",
+        "path": "/home/ubuntu-02/ai_project/Project_Crawling/server",
+        "entry": "index.ts",
+        "scheme": "http",
+        "health": "/api/health"
+    },
+    "selfsec": {
+        "port": 8019,
+        "name": "Self Security Consulting API",
+        "description": "Self security consulting platform API (FastAPI). Native port 8080.",
+        "path": "/home/ubuntu-02/ai_project/Self_Security_Consulting/platform",
+        "entry": "main.py",
+        "scheme": "http",
+        "health": "/health"
+    },
+    "alphaforge": {
+        "port": 8021,
+        "name": "WDLAB AlphaForge Backend",
+        "description": "Quant/alpha research backend (FastAPI). Native port 8080.",
+        "path": "/home/ubuntu-02/ai_project/WDLAB-AlphaForge/src/alphaforge/backend",
+        "entry": "main.py",
+        "scheme": "http",
+        "health": "/health"
+    },
+    "llmops": {
+        "port": 18080,
+        "name": "WDLAB LLMOps Backend",
+        "description": "LLMOps observability/ops backend (FastAPI)",
+        "path": "/home/ubuntu-02/ai_project/WDLAB-LLMOps/apps/backend",
+        "entry": "main.py",
+        "scheme": "http",
+        "health": "/healthz"
+    },
+    "pokerface": {
+        "port": 8012,
+        "name": "PokerFace Backend",
+        "description": "PokerFace game/analysis backend (FastAPI). Native port 8001.",
+        "path": "/home/ubuntu-02/ai_project/PokerFace/backend",
+        "entry": "app.py",
+        "scheme": "http",
+        "health": "/api/system/health"
+    },
+    "truthlens": {
+        "port": 7000,
+        "name": "TruthLens Gateway",
+        "description": "DeepFake detection gateway (NestJS)",
+        "path": "/home/ubuntu-02/ai_project/TruthLens/services/gateway",
+        "entry": "src/main.ts",
+        "scheme": "http",
+        "health": "/api/v1/usage/stats"
+    },
+    "jangforge": {
+        "port": 8014,
+        "name": "WDLAB JangForge",
+        "description": "Fermentation reasoning engine (FastAPI/LangGraph)",
+        "path": "/home/ubuntu-02/ai_project/WDLAB-JangForge/jangforge-core/jangforge",
+        "entry": "main.py",
+        "scheme": "http",
+        "health": "/health"
     },
     "ascm": {
         "port": 8006,
-        "name": "ASCM Platform",
-        "description": "AI SaaS Service Platform Control System - Unified management for AI platforms",
-        "path": "/home/ubuntu-02/ai_project/ASCM",
-        "entry": "ASCM-main/run_services.py"
+        "name": "ASCM Integration Gateway",
+        "description": "SaaS subscription mgmt integration gateway (FastAPI)",
+        "path": "/home/ubuntu-02/ai_project/ASCM/services/integration",
+        "entry": "main.py",
+        "scheme": "http",
+        "health": "/health"
     },
-    "aimes_food": {
-        "port": 18080,
-        "name": "AIMES Food",
-        "description": "AI MES for Food manufacturing - HACCP compliance & production management",
-        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Food",
-        "entry": "services/api-gateway/src/index.js"
+    "pi5_edge": {
+        "port": 18899,
+        "name": "Pi5 Edge Device Gateway",
+        "description": "Raspberry Pi5 edge device gateway (FastAPI)",
+        "path": "/home/ubuntu-02/ai_project/Pi5-Edge-Device/pi5-gateway",
+        "entry": "src/main.py",
+        "scheme": "http",
+        "health": "/health"
     },
-    "aimes_agricultural": {
-        "port": 28080,
-        "name": "AIMES Agricultural",
-        "description": "AI MES for Agricultural manufacturing - crop processing & supply chain",
-        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Agricultural",
-        "entry": "services/api-gateway/src/index.js"
-    },
-    "aimes_automotive": {
-        "port": 58080,
-        "name": "AIMES Automotive",
-        "description": "AI MES for Automotive manufacturing - vehicle assembly & quality control",
-        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Automotive",
-        "entry": "services/api-gateway/src/index.js"
-    },
-    "aimes_battery": {
-        "port": 40080,
-        "name": "AIMES Battery",
-        "description": "AI MES for Battery manufacturing - cell production & safety testing",
-        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Battery",
-        "entry": "index.js"
-    },
-    "aimes_chemical": {
-        "port": 39080,
-        "name": "AIMES Chemical",
-        "description": "AI MES for Chemical manufacturing - process control & safety management",
-        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Chemical",
-        "entry": "services/api-gateway/src/index.js"
-    },
-    "aimes_cosmetics": {
-        "port": 20080,
-        "name": "AIMES Cosmetics",
-        "description": "AI MES for Cosmetics manufacturing - formulation & quality assurance",
-        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Cosmetics",
-        "entry": "services/api-gateway/src/index.js"
-    },
-    "aimes_electronics": {
-        "port": 48080,
-        "name": "AIMES Electronics",
-        "description": "AI MES for Electronics manufacturing - PCB assembly & testing",
-        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Electronics",
-        "entry": "services/api-gateway/src/index.js"
-    },
-    "aimes_medical": {
-        "port": 29080,
-        "name": "AIMES Medical",
-        "description": "AI MES for Medical device manufacturing - FDA compliance & sterilization",
-        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Medical",
-        "entry": "services/api-gateway/src/index.js"
-    },
-    "aimes_metal": {
-        "port": 49080,
-        "name": "AIMES Metal",
-        "description": "AI MES for Metal manufacturing - smelting, casting & finishing",
-        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Metal",
-        "entry": "services/api-gateway/src/index.js"
-    },
-    "aimes_pharmaceutical": {
-        "port": 38080,
-        "name": "AIMES Pharmaceutical",
-        "description": "AI MES for Pharmaceutical manufacturing - GMP compliance & batch tracking",
-        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Pharmaceutical",
-        "entry": "services/api-gateway/src/index.js"
-    },
-    "aimes_textile": {
-        "port": 50080,
-        "name": "AIMES Textile",
-        "description": "AI MES for Textile manufacturing - weaving, dyeing & quality control",
-        "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Textile",
-        "entry": "services/api-gateway/src/index.js"
-    },
-    "anti_deepfake": {
-        "port": 4017,
-        "name": "Anti-Deep-Fake",
-        "description": "Advanced deepfake detection and prevention system",
-        "path": "/home/ubuntu-02/ai_project/Anti-Deep-Fake",
-        "entry": "api_server.py"
-    },
-    "autogit": {
-        "port": 4018,
-        "name": "AutoGit",
-        "description": "AI-powered Git automation with LLM integration",
-        "path": "/home/ubuntu-02/ai_project/AutoGit",
-        "entry": "api_server.py"
-    },
-    "stt_tts": {
-        "port": 4019,
-        "name": "STT-to-TTS",
-        "description": "Speech-to-Text and Text-to-Speech processing pipeline",
-        "path": "/home/ubuntu-02/ai_project/STT-to-TTS",
-        "entry": "api_server.py"
-    },
-    "truthlens_unified": {
-        "port": 8000,
-        "name": "TruthLens Unified API",
-        "description": "TruthLens DeepFake Detection - Production REST API with multi-agent AI",
-        "path": "/home/ubuntu-02/ai_project/TruthLens",
-        "entry": "src/unified_server.py"
+    "pi5_aegis": {
+        "port": 8088,
+        "name": "Pi5 AEGIS Gateway",
+        "description": "Raspberry Pi5 AEGIS edge gateway (FastAPI)",
+        "path": "/home/ubuntu-02/ai_project/Pi5-AEGIS/gateway",
+        "entry": "server.py",
+        "scheme": "http",
+        "health": "/health"
     },
 }
 
 FRONTEND_SERVICES = {
-    "truthlens": {
-        "port": 8001,
-        "name": "TruthLens Web",
-        "description": "DeepFake detection web interface",
-        "path": "/home/ubuntu-02/ai_project/webpage_truthlens",
-        "type": "Next.js"
+    "notebooklm_web": {
+        "port": 3017,
+        "name": "Design NotebookLM Web",
+        "description": "Notebook design web UI (Vite/React)",
+        "path": "/home/ubuntu-02/ai_project/02_Design_NotebookLM/app",
+        "type": "Vite",
+        "scheme": "http"
     },
-    "webpage_ainex": {
-        "port": 8002,
-        "name": "AiNex Web",
-        "description": "AiNex static webpage",
-        "path": "/home/ubuntu-02/ai_project/webpage_AiNex",
-        "type": "Static"
+    "fileforge_web": {
+        "port": 5185,
+        "name": "FileForge Web",
+        "description": "FileForge frontend (Vite/React)",
+        "path": "/home/ubuntu-02/ai_project/03_FileForge/frontend",
+        "type": "Vite",
+        "scheme": "http"
     },
-    "ainex_home": {
-        "port": 3001,
-        "name": "AiNex Home",
-        "description": "AiNex & AgentForge homepage",
-        "path": "/home/ubuntu-02/ai_project/webpage_ainex_forge",
-        "type": "Next.js"
+    "autoflow_web": {
+        "port": 5174,
+        "name": "AutoFlow Web",
+        "description": "AutoFlow frontend (Vite/React)",
+        "path": "/home/ubuntu-02/ai_project/04_AutoFlow/vllm-openclaw-webapp/frontend",
+        "type": "Vite",
+        "scheme": "http"
     },
-    "cluster_master_web": {
-        "port": 3002,
-        "name": "Cluster Master Web",
-        "description": "Cluster Master webpage",
-        "path": "/home/ubuntu-02/ai_project/webpage_ai_cluster_master",
-        "type": "Next.js",
-        "basePath": "/Webpage-Cluster-Master"
+    "wdlab_cli_web": {
+        "port": 5188,
+        "name": "WDLab CLI Web",
+        "description": "WDLab CLI frontend (Vite/React)",
+        "path": "/home/ubuntu-02/ai_project/06_wdlab-CLI/frontend",
+        "type": "Vite",
+        "scheme": "http"
     },
-    "aialbm_web": {
-        "port": 3003,
-        "name": "AIALBM Web",
-        "description": "AIALBM webpage",
-        "path": "/home/ubuntu-02/ai_project/webpage_aialbm",
-        "type": "Next.js",
-        "basePath": "/Webpage_AIALBM"
-    },
-    "carelink_web": {
-        "port": 3004,
-        "name": "CareLink Web",
-        "description": "CareLink webpage",
-        "path": "/home/ubuntu-02/ai_project/webpage_carelink",
-        "type": "Next.js",
-        "basePath": "/Webpage_AI-Carelink"
-    },
-    "carelink_frontend": {
-        "port": 5005,
-        "name": "AI CareLink UI",
-        "description": "AI CareLink frontend application",
-        "path": "/home/ubuntu-02/ai_project/AiCarelink/frontend",
-        "type": "Next.js"
-    },
-    "langgraph_frontend": {
-        "port": 5010,
-        "name": "AgentForge UI",
-        "description": "AgentForge frontend application",
-        "path": "/home/ubuntu-02/ai_project/AgentForge/frontend",
-        "type": "React/Vite"
-    },
-    "enterprise_frontend": {
-        "port": 5013,
-        "name": "Enterprise Factory UI",
-        "description": "Enterprise Factory frontend",
-        "path": "/home/ubuntu-02/ai_project/enterprise_factory/local-llm-os/frontend",
-        "type": "React/Vite"
-    },
-    "unified_portal": {
-        "port": 5015,
-        "name": "Unified Portal",
-        "description": "Unified portal frontend",
-        "path": "/home/ubuntu-02/ai_project/Ai_Unified_Portal",
-        "type": "React/Vite"
-    },
-    "a3de_frontend": {
-        "port": 5004,
-        "name": "A3-ADE UI",
-        "description": "A3-ADE frontend application",
-        "path": "/home/ubuntu-02/ai_project/a3de/frontend",
-        "type": "React/Vite"
-    },
-    "aegis_frontend": {
+    "aegis_web": {
         "port": 4000,
         "name": "AEGIS Web",
-        "description": "AEGIS platform web interface (Desktop Dashboard)",
-        "path": "/home/wdlab/ai_project/AEGIS/apps/web",
+        "description": "AEGIS platform web interface (Next.js)",
+        "path": "/home/ubuntu-02/ai_project/AEGIS/apps/web",
         "type": "Next.js",
-        "scheme": "http",
-        "url": f"http://{GATEWAY_HOST}:4000/interface"
+        "scheme": "http"
     },
-    "nexusai_frontend": {
-        "port": 3007,
+    "agriprocess_web": {
+        "port": 5273,
+        "name": "AIMES AgriProcess Web",
+        "description": "Agricultural MES frontend (Vite/React)",
+        "path": "/home/ubuntu-02/ai_project/AIMES-AgriProcess/frontend/web",
+        "type": "Vite",
+        "scheme": "http"
+    },
+    "argus_web": {
+        "port": 3030,
+        "name": "ARGUS Web",
+        "description": "ARGUS frontend (Vite/React)",
+        "path": "/home/ubuntu-02/ai_project/ARGUS/frontend",
+        "type": "Vite",
+        "scheme": "http"
+    },
+    "agentforge_web": {
+        "port": 5175,
+        "name": "AgentForge UI",
+        "description": "AgentForge frontend (Vite/React). Native port 5174.",
+        "path": "/home/ubuntu-02/ai_project/AgentForge/frontend",
+        "type": "Vite",
+        "scheme": "http"
+    },
+    "carelink_web": {
+        "port": 3000,
+        "name": "AI CareLink UI",
+        "description": "CareLink frontend (Next.js)",
+        "path": "/home/ubuntu-02/ai_project/AiCarelink/frontend",
+        "type": "Next.js",
+        "scheme": "http"
+    },
+    "janggi_web": {
+        "port": 3021,
+        "name": "JangGi Web",
+        "description": "JangGi frontend (Next.js). Native port 3000.",
+        "path": "/home/ubuntu-02/ai_project/JangGi/frontend",
+        "type": "Next.js",
+        "scheme": "http"
+    },
+    "nexusai_web": {
+        "port": 3022,
         "name": "NexusAI Web",
-        "description": "NexusAI platform web interface",
+        "description": "NexusAI web interface (Next.js). Native port 3000.",
         "path": "/home/ubuntu-02/ai_project/NexusAI/apps/web",
-        "type": "Next.js"
+        "type": "Next.js",
+        "scheme": "http"
     },
-    "webpage_aegis": {
-        "port": 8003,
-        "name": "AEGIS Homepage",
-        "description": "AEGIS marketing/documentation webpage",
-        "path": "/home/ubuntu-02/ai_project/webpage_AEGIS",
-        "type": "Static"
+    "patentforge_web": {
+        "port": 3023,
+        "name": "PatentForge Web",
+        "description": "PatentForge frontend (Next.js). Native port 3000.",
+        "path": "/home/ubuntu-02/ai_project/PatentForge/apps/frontend",
+        "type": "Next.js",
+        "scheme": "http"
     },
-    "ascm_dashboard": {
+    "crawling_web": {
+        "port": 3013,
+        "name": "Project Crawling Web",
+        "description": "Crawling frontend (Vite/React)",
+        "path": "/home/ubuntu-02/ai_project/Project_Crawling",
+        "type": "Vite",
+        "scheme": "http"
+    },
+    "selfsec_dashboard": {
+        "port": 8501,
+        "name": "Self Security Dashboard",
+        "description": "Self security consulting dashboard (Streamlit)",
+        "path": "/home/ubuntu-02/ai_project/Self_Security_Consulting/platform/dashboard",
+        "type": "Streamlit",
+        "scheme": "http"
+    },
+    "alphaforge_web": {
+        "port": 3024,
+        "name": "WDLAB AlphaForge Web",
+        "description": "AlphaForge frontend (Next.js). Native port 3000.",
+        "path": "/home/ubuntu-02/ai_project/WDLAB-AlphaForge/apps/frontend",
+        "type": "Next.js",
+        "scheme": "http"
+    },
+    "llmops_web": {
+        "port": 18090,
+        "name": "WDLAB LLMOps Web",
+        "description": "LLMOps frontend (Vite/React)",
+        "path": "/home/ubuntu-02/ai_project/WDLAB-LLMOps/apps/frontend",
+        "type": "Vite",
+        "scheme": "http"
+    },
+    "pokerface_web": {
+        "port": 5176,
+        "name": "PokerFace Web",
+        "description": "PokerFace frontend (Vite/React)",
+        "path": "/home/ubuntu-02/ai_project/PokerFace/frontend",
+        "type": "Vite",
+        "scheme": "http"
+    },
+    "slideeditor": {
+        "port": 3025,
+        "name": "SlideEditor",
+        "description": "Slide editor app with embedded API (Vite/React). Native port 3000.",
+        "path": "/home/ubuntu-02/ai_project/SlideEditor",
+        "type": "Vite",
+        "scheme": "http"
+    },
+    "truthlens_web": {
+        "port": 7001,
+        "name": "TruthLens Dashboard",
+        "description": "TruthLens detection dashboard (Vite/React)",
+        "path": "/home/ubuntu-02/ai_project/TruthLens/services/dashboard",
+        "type": "Vite",
+        "scheme": "http"
+    },
+    "ascm_web": {
         "port": 3010,
         "name": "ASCM Admin Dashboard",
-        "description": "ASCM platform administration and management dashboard",
+        "description": "ASCM administration dashboard (Next.js)",
         "path": "/home/ubuntu-02/ai_project/ASCM/ASCM-main/admin-dashboard",
-        "type": "Next.js"
-    },
-    "webpage_aimes": {
-        "port": 8004,
-        "name": "AIMES Homepage",
-        "description": "AIMES Manufacturing Execution System webpage",
-        "path": "/home/ubuntu-02/ai_project/webpage_AIMES",
-        "type": "Static"
-    },
-    "webpage_eleven_aimes": {
-        "port": 8005,
-        "name": "Eleven AIMES Homepage",
-        "description": "AIMES Eleven smart factory portfolio webpage",
-        "path": "/home/ubuntu-02/ai_project/webpage_Eleven_AIMES",
-        "type": "Static"
-    },
-    "webpage_nexusai": {
-        "port": 8009,
-        "name": "NexusAI Homepage",
-        "description": "NexusAI platform portfolio webpage",
-        "path": "/home/ubuntu-02/ai_project/webpage_NexusAI",
-        "type": "Static"
-    },
-    "webpage_all_project": {
-        "port": 3008,
-        "name": "All Projects Homepage",
-        "description": "WDLab1958 all projects unified homepage",
-        "path": "/home/ubuntu-02/ai_project/webpage_wdlab1958-all_project",
-        "type": "Next.js"
+        "type": "Next.js",
+        "scheme": "http"
     },
     "aimes_agricultural_web": {
-        "port": 5173,
+        "port": 5301,
         "name": "AIMES Agricultural Web",
-        "description": "AIMES Agricultural MES frontend",
+        "description": "AIMES Agricultural MES frontend. Native 5173.",
         "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Agricultural/frontend/web",
-        "type": "React/Vite"
+        "type": "Vite",
+        "scheme": "http"
     },
     "aimes_automotive_web": {
-        "port": 5174,
+        "port": 5302,
         "name": "AIMES Automotive Web",
-        "description": "AIMES Automotive MES frontend",
+        "description": "AIMES Automotive MES frontend. Native 5174.",
         "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Automotive/frontend/web",
-        "type": "React/Vite"
+        "type": "Vite",
+        "scheme": "http"
     },
     "aimes_battery_web": {
-        "port": 5175,
+        "port": 5303,
         "name": "AIMES Battery Web",
-        "description": "AIMES Battery MES frontend",
+        "description": "AIMES Battery MES frontend. Native 5175.",
         "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Battery/frontend/web",
-        "type": "React/Vite"
+        "type": "Vite",
+        "scheme": "http"
     },
     "aimes_chemical_web": {
-        "port": 5176,
+        "port": 5304,
         "name": "AIMES Chemical Web",
-        "description": "AIMES Chemical MES frontend",
+        "description": "AIMES Chemical MES frontend. Native 5176.",
         "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Chemical/frontend/web",
-        "type": "React/Vite"
+        "type": "Vite",
+        "scheme": "http"
     },
     "aimes_cosmetics_web": {
-        "port": 5177,
+        "port": 5305,
         "name": "AIMES Cosmetics Web",
-        "description": "AIMES Cosmetics MES frontend",
+        "description": "AIMES Cosmetics MES frontend. Native 5177.",
         "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Cosmetics/frontend/web",
-        "type": "React/Vite"
+        "type": "Vite",
+        "scheme": "http"
     },
     "aimes_electronics_web": {
-        "port": 5178,
+        "port": 5306,
         "name": "AIMES Electronics Web",
-        "description": "AIMES Electronics MES frontend",
+        "description": "AIMES Electronics MES frontend. Native 5178.",
         "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Electronics/frontend/web",
-        "type": "React/Vite"
+        "type": "Vite",
+        "scheme": "http"
     },
     "aimes_food_web": {
-        "port": 5179,
+        "port": 5307,
         "name": "AIMES Food Web",
-        "description": "AIMES Food MES frontend",
+        "description": "AIMES Food MES frontend. Native 5179.",
         "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Food/frontend/web",
-        "type": "React/Vite"
+        "type": "Vite",
+        "scheme": "http"
     },
     "aimes_medical_web": {
-        "port": 5180,
+        "port": 5308,
         "name": "AIMES Medical Web",
-        "description": "AIMES Medical MES frontend",
+        "description": "AIMES Medical MES frontend. Native 5180.",
         "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Medical/frontend/web",
-        "type": "React/Vite"
+        "type": "Vite",
+        "scheme": "http"
     },
     "aimes_metal_web": {
-        "port": 5181,
+        "port": 5309,
         "name": "AIMES Metal Web",
-        "description": "AIMES Metal MES frontend",
+        "description": "AIMES Metal MES frontend. Native 5181.",
         "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Metal/frontend/web",
-        "type": "React/Vite"
+        "type": "Vite",
+        "scheme": "http"
     },
     "aimes_pharmaceutical_web": {
-        "port": 5182,
+        "port": 5310,
         "name": "AIMES Pharmaceutical Web",
-        "description": "AIMES Pharmaceutical MES frontend",
+        "description": "AIMES Pharmaceutical MES frontend. Native 5182.",
         "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Pharmaceutical/frontend/web",
-        "type": "React/Vite"
+        "type": "Vite",
+        "scheme": "http"
     },
     "aimes_textile_web": {
-        "port": 5183,
+        "port": 5311,
         "name": "AIMES Textile Web",
-        "description": "AIMES Textile MES frontend",
+        "description": "AIMES Textile MES frontend. Native 5183.",
         "path": "/home/ubuntu-02/ai_project/AIMES-Eleven/AIMES-Textile/frontend/web",
-        "type": "React/Vite"
+        "type": "Vite",
+        "scheme": "http"
+    },
+    "patentforge_webpage": {
+        "port": 8201,
+        "name": "PatentForge Homepage",
+        "description": "PatentForge marketing webpage (Static)",
+        "path": "/home/ubuntu-02/ai_project/PatentForge-Webpage",
+        "type": "Static",
+        "scheme": "http"
+    },
+    "alphaforge_webpage": {
+        "port": 8202,
+        "name": "AlphaForge Homepage",
+        "description": "WDLAB AlphaForge marketing webpage (Static)",
+        "path": "/home/ubuntu-02/ai_project/WDLAB-AlphaForge_Webpage",
+        "type": "Static",
+        "scheme": "http"
+    },
+    "llmops_webpage": {
+        "port": 8203,
+        "name": "LLMOps Homepage",
+        "description": "WDLAB LLMOps marketing webpage (Static)",
+        "path": "/home/ubuntu-02/ai_project/WDLAB-LLMOps_Webpage",
+        "type": "Static",
+        "scheme": "http"
     },
 }
 
-# API Documentation for each service
 API_DOCS = {
-    "deepfake": {
+    "notebooklm": {
+        "name": "Design NotebookLM (Server)",
+        "description": "Notebook-style design ideation API server",
+        "base_url": "/api/notebooklm",
         "endpoints": [
-            {"method": "POST", "path": "/detect", "description": "Analyze media for deepfake detection"},
-            {"method": "GET", "path": "/health", "description": "Service health check"},
-            {"method": "GET", "path": "/models", "description": "List available detection models"},
+            {
+                "method": "GET",
+                "path": "/api/health",
+                "description": "Health check"
+            }
         ]
     },
-    "carelink": {
+    "fileforge": {
+        "name": "FileForge Backend",
+        "description": "File processing & forge backend (FastAPI)",
+        "base_url": "/api/fileforge",
         "endpoints": [
-            {"method": "POST", "path": "/auth/login", "description": "User authentication"},
-            {"method": "GET", "path": "/patients", "description": "Get patient list"},
-            {"method": "GET", "path": "/caregivers", "description": "Get caregiver list"},
-            {"method": "POST", "path": "/appointments", "description": "Create appointment"},
+            {
+                "method": "GET",
+                "path": "/api/health",
+                "description": "Health check"
+            }
         ]
     },
-    "langgraph": {
+    "fileforge_py": {
+        "name": "FileForge-Python Backend",
+        "description": "FileForge Python edition (FastAPI+NiceGUI). Native port 8090.",
+        "base_url": "/api/fileforge_py",
         "endpoints": [
-            {"method": "POST", "path": "/chat", "description": "AI chat conversation"},
-            {"method": "POST", "path": "/rag/query", "description": "RAG query"},
-            {"method": "GET", "path": "/agents", "description": "List available agents"},
-            {"method": "POST", "path": "/workflow", "description": "Execute workflow"},
+            {
+                "method": "GET",
+                "path": "/health",
+                "description": "Health check"
+            }
         ]
     },
-    "a3de": {
+    "autoflow": {
+        "name": "AutoFlow Backend",
+        "description": "vLLM OpenClaw automation backend (FastAPI)",
+        "base_url": "/api/autoflow",
         "endpoints": [
-            {"method": "POST", "path": "/projects", "description": "Create new project"},
-            {"method": "GET", "path": "/agents", "description": "List agents"},
-            {"method": "POST", "path": "/code/generate", "description": "Generate code"},
+            {
+                "method": "GET",
+                "path": "/api/health",
+                "description": "Health check"
+            }
         ]
     },
-    "consulting": {
+    "wdlab_cli": {
+        "name": "WDLab CLI Backend",
+        "description": "WDLab CLI web backend (FastAPI)",
+        "base_url": "/api/wdlab_cli",
         "endpoints": [
-            {"method": "POST", "path": "/diagnose", "description": "AI maturity diagnosis"},
-            {"method": "GET", "path": "/reports", "description": "List reports"},
-            {"method": "POST", "path": "/analyze", "description": "Scenario analysis"},
+            {
+                "method": "GET",
+                "path": "/monitoring/health",
+                "description": "Health check"
+            }
         ]
     },
-    "cluster_master": {
+    "expert100k": {
+        "name": "100K-Expert",
+        "description": "100K multi-agent expert system (FastAPI)",
+        "base_url": "/api/expert100k",
         "endpoints": [
-            {"method": "GET", "path": "/api/workers", "description": "List all workers"},
-            {"method": "POST", "path": "/api/command", "description": "Execute command"},
-            {"method": "GET", "path": "/api/status", "description": "System status"},
-            {"method": "GET", "path": "/api/scheduler/jobs", "description": "List scheduled jobs"},
+            {
+                "method": "GET",
+                "path": "/health",
+                "description": "Health check"
+            }
         ]
     },
     "aegis": {
+        "name": "AEGIS API",
+        "description": "AEGIS platform backend API (FastAPI)",
+        "base_url": "/api/aegis",
         "endpoints": [
-            # Health & Info
-            {"method": "GET", "path": "/api/v1/info", "description": "API information with architecture layers"},
-            {"method": "GET", "path": "/api/v1/health", "description": "Basic health check"},
-            {"method": "GET", "path": "/api/v1/health/detailed", "description": "Detailed health check with dependency status"},
-            {"method": "GET", "path": "/api/v1/health/architecture", "description": "AEGIS 7-layer architecture information"},
-            # LLM (HLE)
-            {"method": "GET", "path": "/api/v1/llm/models", "description": "List available LLM models"},
-            {"method": "POST", "path": "/api/v1/llm/chat", "description": "Chat completion using HLE"},
-            {"method": "GET", "path": "/api/v1/llm/health", "description": "HLE health and provider availability"},
-            # Memory (3LMS)
-            {"method": "GET", "path": "/api/v1/memory/status", "description": "Memory system status (3-layer)"},
-            {"method": "GET", "path": "/api/v1/memory/activity/recent", "description": "Recent activity across memory layers"},
-            {"method": "GET", "path": "/api/v1/memory/working/sessions", "description": "List working memory sessions"},
-            {"method": "POST", "path": "/api/v1/memory/working/sessions/{session_id}/messages", "description": "Add message to working memory"},
-            {"method": "DELETE", "path": "/api/v1/memory/working/sessions/{session_id}", "description": "Clear working memory session"},
-            {"method": "GET", "path": "/api/v1/memory/episodic/episodes", "description": "List episodic memory episodes"},
-            {"method": "POST", "path": "/api/v1/memory/episodic/episodes", "description": "Create episodic memory episode"},
-            {"method": "GET", "path": "/api/v1/memory/semantic/entities", "description": "List semantic memory entities"},
-            {"method": "POST", "path": "/api/v1/memory/semantic/entities", "description": "Add semantic memory entity"},
-            {"method": "GET", "path": "/api/v1/memory/semantic/relationships", "description": "List semantic relationships"},
-            {"method": "POST", "path": "/api/v1/memory/semantic/relationships", "description": "Add semantic relationship"},
-            {"method": "POST", "path": "/api/v1/memory/consolidation/run", "description": "Run memory consolidation"},
-            {"method": "GET", "path": "/api/v1/memory/consolidation/log", "description": "Consolidation log entries"},
-            {"method": "POST", "path": "/api/v1/memory/embeddings/generate", "description": "Generate text embedding"},
-            # Agents
-            {"method": "GET", "path": "/api/v1/agents/frameworks", "description": "List agent frameworks"},
-            {"method": "GET", "path": "/api/v1/agents", "description": "List all agents"},
-            {"method": "POST", "path": "/api/v1/agents", "description": "Create a new agent"},
-            {"method": "GET", "path": "/api/v1/agents/{agent_id}", "description": "Get agent details"},
-            {"method": "DELETE", "path": "/api/v1/agents/{agent_id}", "description": "Delete an agent"},
-            {"method": "POST", "path": "/api/v1/agents/tasks", "description": "Submit task for execution"},
-            {"method": "GET", "path": "/api/v1/agents/tasks/list", "description": "List all tasks"},
-            # Orchestration (MAOL)
-            {"method": "GET", "path": "/api/v1/orchestration/status", "description": "Orchestration layer status"},
-            {"method": "GET", "path": "/api/v1/orchestration/workflows", "description": "List workflows"},
-            {"method": "POST", "path": "/api/v1/orchestration/workflows", "description": "Create and execute workflow"},
-            {"method": "GET", "path": "/api/v1/orchestration/workflows/{workflow_id}", "description": "Get workflow by ID"},
-            {"method": "DELETE", "path": "/api/v1/orchestration/workflows/{workflow_id}", "description": "Delete workflow"},
-            # Dashboard
-            {"method": "GET", "path": "/api/v1/dashboard/overview", "description": "System dashboard overview"},
-            {"method": "GET", "path": "/api/v1/dashboard/alerts", "description": "Active system alerts"},
-            # Projects
-            {"method": "GET", "path": "/api/v1/projects", "description": "List all projects"},
-            {"method": "GET", "path": "/api/v1/projects/{project_id}", "description": "Get project by ID"},
-            # Companion (PLCM)
-            {"method": "GET", "path": "/api/v1/companion/status", "description": "Companion status and personality"},
-            {"method": "POST", "path": "/api/v1/companion/dialogue", "description": "Companion dialogue"},
-            {"method": "GET", "path": "/api/v1/companion/personality", "description": "Get personality profile"},
-            {"method": "PUT", "path": "/api/v1/companion/personality", "description": "Update personality"},
-            {"method": "GET", "path": "/api/v1/companion/preferences", "description": "Get user preferences"},
-            {"method": "POST", "path": "/api/v1/companion/preferences", "description": "Update user preferences"},
-            {"method": "GET", "path": "/api/v1/companion/routines", "description": "List user routines"},
-            {"method": "POST", "path": "/api/v1/companion/routines", "description": "Create routine"},
-            {"method": "GET", "path": "/api/v1/companion/goals", "description": "List user goals"},
-            {"method": "POST", "path": "/api/v1/companion/goals", "description": "Create goal"},
-            {"method": "GET", "path": "/api/v1/companion/reminders", "description": "List reminders"},
-            {"method": "POST", "path": "/api/v1/companion/reminders", "description": "Create reminder"},
-            {"method": "DELETE", "path": "/api/v1/companion/reminders/{reminder_id}", "description": "Delete reminder"},
-            {"method": "GET", "path": "/api/v1/companion/diary/entries", "description": "List diary entries"},
-            {"method": "POST", "path": "/api/v1/companion/diary/entries", "description": "Create diary entry"},
-            # Automation (PSAE)
-            {"method": "GET", "path": "/api/v1/automation/status", "description": "Automation layer status"},
-            {"method": "GET", "path": "/api/v1/automation/list", "description": "List all automations"},
-            {"method": "POST", "path": "/api/v1/automation", "description": "Create automation"},
-            {"method": "POST", "path": "/api/v1/automation/{auto_id}/run", "description": "Execute automation"},
-            {"method": "DELETE", "path": "/api/v1/automation/{auto_id}", "description": "Delete automation"},
-            {"method": "GET", "path": "/api/v1/automation/dashboard/home", "description": "Home automation dashboard"},
-            {"method": "GET", "path": "/api/v1/automation/devices", "description": "List all devices"},
-            {"method": "POST", "path": "/api/v1/automation/devices", "description": "Register device"},
-            {"method": "GET", "path": "/api/v1/automation/devices/stats", "description": "Device statistics"},
-            {"method": "GET", "path": "/api/v1/automation/devices/{device_id}", "description": "Get device details"},
-            {"method": "DELETE", "path": "/api/v1/automation/devices/{device_id}", "description": "Delete device"},
-            {"method": "POST", "path": "/api/v1/automation/devices/{device_id}/command", "description": "Send device command"},
-            {"method": "POST", "path": "/api/v1/automation/devices/voice-test", "description": "Test NLU voice command"},
-            {"method": "GET", "path": "/api/v1/automation/scenes", "description": "List scenes"},
-            {"method": "POST", "path": "/api/v1/automation/scenes", "description": "Create scene"},
-            {"method": "POST", "path": "/api/v1/automation/scenes/presets", "description": "Create preset scenes"},
-            {"method": "GET", "path": "/api/v1/automation/scenes/stats", "description": "Scene statistics"},
-            {"method": "DELETE", "path": "/api/v1/automation/scenes/{scene_id}", "description": "Delete scene"},
-            {"method": "POST", "path": "/api/v1/automation/scenes/{scene_id}/execute", "description": "Execute scene"},
-            {"method": "POST", "path": "/api/v1/automation/scenes/{scene_id}/favorite", "description": "Toggle scene favorite"},
-            {"method": "GET", "path": "/api/v1/automation/spaces/rooms", "description": "List rooms"},
-            {"method": "POST", "path": "/api/v1/automation/spaces/rooms", "description": "Create room"},
-            {"method": "DELETE", "path": "/api/v1/automation/spaces/rooms/{room_id}", "description": "Delete room"},
-            {"method": "POST", "path": "/api/v1/automation/spaces/rooms/{room_id}/devices/{device_id}", "description": "Add device to room"},
-            {"method": "DELETE", "path": "/api/v1/automation/spaces/rooms/{room_id}/devices/{device_id}", "description": "Remove device from room"},
-            {"method": "POST", "path": "/api/v1/automation/mqtt/publish", "description": "Publish MQTT message"},
-            {"method": "GET", "path": "/api/v1/automation/mqtt/status", "description": "MQTT bridge status"},
-            {"method": "GET", "path": "/api/v1/automation/homeassistant/devices", "description": "Home Assistant devices"},
-            {"method": "POST", "path": "/api/v1/automation/homeassistant/sync", "description": "Sync Home Assistant devices"},
-            {"method": "GET", "path": "/api/v1/automation/homeassistant/status", "description": "Home Assistant status"},
-            {"method": "POST", "path": "/api/v1/automation/homeassistant/service", "description": "Call Home Assistant service"},
-            {"method": "GET", "path": "/api/v1/automation/email/digest", "description": "Daily email digest"},
-            {"method": "GET", "path": "/api/v1/automation/email/rules", "description": "List email triage rules"},
-            {"method": "POST", "path": "/api/v1/automation/email/rules", "description": "Add email triage rule"},
-            {"method": "GET", "path": "/api/v1/automation/email/status", "description": "Email triage status"},
-            {"method": "POST", "path": "/api/v1/automation/calendar/sync", "description": "Sync external calendar"},
-            {"method": "GET", "path": "/api/v1/automation/calendar/external", "description": "List external calendars"},
-            {"method": "GET", "path": "/api/v1/automation/routines", "description": "List routines"},
-            {"method": "POST", "path": "/api/v1/automation/routines", "description": "Create routine"},
-            {"method": "POST", "path": "/api/v1/automation/routines/{routine_id}/execute", "description": "Execute routine"},
-            {"method": "POST", "path": "/api/v1/automation/routines/{routine_id}/toggle", "description": "Toggle routine"},
-            {"method": "DELETE", "path": "/api/v1/automation/routines/{routine_id}", "description": "Delete routine"},
-            {"method": "GET", "path": "/api/v1/automation/routines/stats", "description": "Routine statistics"},
-            {"method": "GET", "path": "/api/v1/automation/devices/{device_id}/history", "description": "Device event history"},
-            # Config
-            {"method": "GET", "path": "/api/v1/config", "description": "Get all configuration"},
-            {"method": "PUT", "path": "/api/v1/config", "description": "Update configuration"},
-            # Auth
-            {"method": "POST", "path": "/api/v1/auth/register", "description": "Register user"},
-            {"method": "POST", "path": "/api/v1/auth/login", "description": "Login and get tokens"},
-            {"method": "POST", "path": "/api/v1/auth/refresh", "description": "Refresh access token"},
-            {"method": "GET", "path": "/api/v1/auth/me", "description": "Current user profile"},
-            {"method": "POST", "path": "/api/v1/auth/test-user", "description": "Create test user (dev)"},
-            {"method": "GET", "path": "/api/v1/auth/admin/users", "description": "List all users (admin)"},
-            {"method": "PUT", "path": "/api/v1/auth/admin/users/{user_id}/role", "description": "Update user role (admin)"},
-            # Voice
-            {"method": "GET", "path": "/api/v1/voice/status", "description": "Voice engine status"},
-            {"method": "GET", "path": "/api/v1/voice/stt/models", "description": "List STT models"},
-            {"method": "POST", "path": "/api/v1/voice/stt/load", "description": "Load STT model"},
-            {"method": "POST", "path": "/api/v1/voice/stt/unload", "description": "Unload STT model"},
-            {"method": "POST", "path": "/api/v1/voice/transcribe", "description": "Transcribe audio to text"},
-            {"method": "POST", "path": "/api/v1/voice/synthesize", "description": "Text-to-speech synthesis"},
-            {"method": "POST", "path": "/api/v1/voice/synthesize/json", "description": "TTS metadata (no audio)"},
-            {"method": "POST", "path": "/api/v1/voice/conversation", "description": "Full voice conversation turn"},
-            {"method": "GET", "path": "/api/v1/voice/voices", "description": "List TTS voices"},
-            {"method": "GET", "path": "/api/v1/voice/languages", "description": "Supported STT languages"},
-            # Monitoring
-            {"method": "GET", "path": "/api/v1/monitoring/events", "description": "Recent monitoring events"},
-            {"method": "GET", "path": "/api/v1/monitoring/stats", "description": "Monitoring statistics"},
-            # Docs
-            {"method": "GET", "path": "/api/v1/docs/list", "description": "List documentation files"},
-            {"method": "GET", "path": "/api/v1/docs/{filename}", "description": "Get documentation content"},
-            # Files
-            {"method": "GET", "path": "/api/v1/files/status", "description": "File manager status"},
-            {"method": "POST", "path": "/api/v1/files/search", "description": "Search files"},
-            {"method": "POST", "path": "/api/v1/files/copy", "description": "Copy files"},
-            {"method": "POST", "path": "/api/v1/files/move", "description": "Move files"},
-            {"method": "POST", "path": "/api/v1/files/rename", "description": "Rename file"},
-            {"method": "POST", "path": "/api/v1/files/delete", "description": "Delete files"},
-            {"method": "POST", "path": "/api/v1/files/organize", "description": "Auto-organize files"},
-            # Desktop
-            {"method": "GET", "path": "/api/v1/desktop/status", "description": "Desktop integration status"},
-            {"method": "POST", "path": "/api/v1/desktop/clipboard/analyze", "description": "Analyze clipboard text"},
-            # WebSocket
-            {"method": "WS", "path": "/ws", "description": "Main WebSocket (real-time events)"},
-            {"method": "WS", "path": "/ws/voice/realtime", "description": "Real-time voice WebSocket"},
-            # Prometheus
-            {"method": "GET", "path": "/metrics", "description": "Prometheus metrics"},
+            {
+                "method": "GET",
+                "path": "/api/v1/health",
+                "description": "Health check"
+            }
+        ]
+    },
+    "aialbm": {
+        "name": "AIALBM Memory Platform",
+        "description": "AIALB AI platform with memory (FastAPI)",
+        "base_url": "/api/aialbm",
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/health",
+                "description": "Health check"
+            }
+        ]
+    },
+    "agriprocess": {
+        "name": "AIMES AgriProcess Gateway",
+        "description": "Agricultural process MES API gateway (Express)",
+        "base_url": "/api/agriprocess",
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/health",
+                "description": "Health check"
+            }
+        ]
+    },
+    "argus": {
+        "name": "ARGUS Backend",
+        "description": "ARGUS monitoring/analysis backend (FastAPI). Native port 8000.",
+        "base_url": "/api/argus",
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/health",
+                "description": "Health check"
+            }
+        ]
+    },
+    "agentforge": {
+        "name": "AgentForge (LangGraph)",
+        "description": "LangGraph agent workflow platform (FastAPI)",
+        "base_url": "/api/agentforge",
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/health",
+                "description": "Health check"
+            }
+        ]
+    },
+    "carelink": {
+        "name": "AI CareLink Backend",
+        "description": "Healthcare/caregiving AI backend (FastAPI). Native port 8000.",
+        "base_url": "/api/carelink",
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/health",
+                "description": "Health check"
+            }
+        ]
+    },
+    "ainex": {
+        "name": "AiNex Consulting",
+        "description": "Multi-agent AI consulting assistant (FastAPI). Native port 8001.",
+        "base_url": "/api/ainex",
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/health",
+                "description": "Health check"
+            }
+        ]
+    },
+    "janggi": {
+        "name": "JangGi Backend",
+        "description": "JangGi platform backend (FastAPI)",
+        "base_url": "/api/janggi",
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/health",
+                "description": "Health check"
+            }
         ]
     },
     "nexusai": {
+        "name": "NexusAI API",
+        "description": "NexusAI platform backend API (FastAPI). Native port 8000.",
+        "base_url": "/api/nexusai",
         "endpoints": [
-            {"method": "GET", "path": "/health", "description": "Service health check"},
-            {"method": "POST", "path": "/auth/login", "description": "User authentication"},
-            {"method": "GET", "path": "/agents", "description": "List agents"},
-            {"method": "POST", "path": "/conversations", "description": "Create conversation"},
-            {"method": "GET", "path": "/documents", "description": "List documents"},
-            {"method": "POST", "path": "/tasks", "description": "Create task"},
+            {
+                "method": "GET",
+                "path": "/health",
+                "description": "Health check"
+            }
+        ]
+    },
+    "patentforge": {
+        "name": "PatentForge API",
+        "description": "Patent drafting/analysis API (FastAPI)",
+        "base_url": "/api/patentforge",
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/health",
+                "description": "Health check"
+            }
+        ]
+    },
+    "crawling": {
+        "name": "Project Crawling Server",
+        "description": "Web crawling orchestration server (Express)",
+        "base_url": "/api/crawling",
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/health",
+                "description": "Health check"
+            }
+        ]
+    },
+    "selfsec": {
+        "name": "Self Security Consulting API",
+        "description": "Self security consulting platform API (FastAPI). Native port 8080.",
+        "base_url": "/api/selfsec",
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/health",
+                "description": "Health check"
+            }
+        ]
+    },
+    "alphaforge": {
+        "name": "WDLAB AlphaForge Backend",
+        "description": "Quant/alpha research backend (FastAPI). Native port 8080.",
+        "base_url": "/api/alphaforge",
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/health",
+                "description": "Health check"
+            }
+        ]
+    },
+    "llmops": {
+        "name": "WDLAB LLMOps Backend",
+        "description": "LLMOps observability/ops backend (FastAPI)",
+        "base_url": "/api/llmops",
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/healthz",
+                "description": "Health check"
+            }
+        ]
+    },
+    "pokerface": {
+        "name": "PokerFace Backend",
+        "description": "PokerFace game/analysis backend (FastAPI). Native port 8001.",
+        "base_url": "/api/pokerface",
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/system/health",
+                "description": "Health check"
+            }
+        ]
+    },
+    "truthlens": {
+        "name": "TruthLens Gateway",
+        "description": "DeepFake detection gateway (NestJS)",
+        "base_url": "/api/truthlens",
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/health",
+                "description": "Health check"
+            }
+        ]
+    },
+    "jangforge": {
+        "name": "WDLAB JangForge",
+        "description": "Fermentation reasoning engine (FastAPI/LangGraph)",
+        "base_url": "/api/jangforge",
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/health",
+                "description": "Health check"
+            }
         ]
     },
     "ascm": {
+        "name": "ASCM Integration Gateway",
+        "description": "SaaS subscription mgmt integration gateway (FastAPI)",
+        "base_url": "/api/ascm",
         "endpoints": [
-            {"method": "GET", "path": "/health", "description": "Gateway health check"},
-            {"method": "GET", "path": "/health/services", "description": "All ASCM services health status"},
-            {"method": "POST", "path": "/auth/login", "description": "Admin authentication"},
-            {"method": "GET", "path": "/auth/me", "description": "Current authenticated user info"},
-            {"method": "GET", "path": "/api/v1/platforms", "description": "List managed AI platforms"},
-            {"method": "GET", "path": "/api/v1/customers/customers", "description": "List customers"},
-            {"method": "GET", "path": "/api/v1/customers/customers/stats", "description": "Customer statistics"},
-            {"method": "GET", "path": "/api/v1/subscriptions/subscriptions", "description": "List subscriptions"},
-            {"method": "GET", "path": "/api/v1/subscriptions/subscriptions/stats", "description": "Subscription statistics"},
-            {"method": "GET", "path": "/api/v1/billing/invoices", "description": "List invoices"},
-            {"method": "GET", "path": "/api/v1/billing/invoices/stats", "description": "Invoice statistics"},
-            {"method": "GET", "path": "/api/v1/monitoring/metrics", "description": "System metrics (CPU, memory, disk)"},
-            {"method": "GET", "path": "/api/v1/monitoring/alerts", "description": "List alerts"},
-            {"method": "GET", "path": "/api/v1/analytics/dashboard", "description": "Analytics dashboard summary"},
-            {"method": "GET", "path": "/api/v1/analytics/revenue/mrr", "description": "Monthly Recurring Revenue"},
+            {
+                "method": "GET",
+                "path": "/health",
+                "description": "Health check"
+            }
         ]
     },
-    "aimes_food": {
+    "pi5_edge": {
+        "name": "Pi5 Edge Device Gateway",
+        "description": "Raspberry Pi5 edge device gateway (FastAPI)",
+        "base_url": "/api/pi5_edge",
         "endpoints": [
-            {"method": "GET", "path": "/health", "description": "Gateway health check"},
-            {"method": "GET", "path": "/api/production", "description": "Production line status"},
-            {"method": "GET", "path": "/api/quality", "description": "Quality inspection data"},
-            {"method": "GET", "path": "/api/inventory", "description": "Inventory management"},
-            {"method": "GET", "path": "/api/traceability", "description": "Product traceability"},
-            {"method": "POST", "path": "/api/haccp", "description": "HACCP compliance check"},
+            {
+                "method": "GET",
+                "path": "/health",
+                "description": "Health check"
+            }
         ]
     },
-    "aimes_agricultural": {
+    "pi5_aegis": {
+        "name": "Pi5 AEGIS Gateway",
+        "description": "Raspberry Pi5 AEGIS edge gateway (FastAPI)",
+        "base_url": "/api/pi5_aegis",
         "endpoints": [
-            {"method": "GET", "path": "/health", "description": "Gateway health check"},
-            {"method": "GET", "path": "/api/production", "description": "Production line status"},
-            {"method": "GET", "path": "/api/quality", "description": "Quality inspection data"},
-            {"method": "GET", "path": "/api/inventory", "description": "Inventory management"},
-            {"method": "GET", "path": "/api/traceability", "description": "Product traceability"},
-        ]
-    },
-    "aimes_automotive": {
-        "endpoints": [
-            {"method": "GET", "path": "/health", "description": "Gateway health check"},
-            {"method": "GET", "path": "/api/production", "description": "Production line status"},
-            {"method": "GET", "path": "/api/quality", "description": "Quality inspection data"},
-            {"method": "GET", "path": "/api/inventory", "description": "Inventory management"},
-            {"method": "GET", "path": "/api/traceability", "description": "Product traceability"},
-        ]
-    },
-    "aimes_battery": {
-        "endpoints": [
-            {"method": "GET", "path": "/health", "description": "Gateway health check"},
-            {"method": "GET", "path": "/api/production", "description": "Production line status"},
-            {"method": "GET", "path": "/api/quality", "description": "Quality inspection data"},
-            {"method": "GET", "path": "/api/inventory", "description": "Inventory management"},
-            {"method": "GET", "path": "/api/traceability", "description": "Product traceability"},
-        ]
-    },
-    "aimes_chemical": {
-        "endpoints": [
-            {"method": "GET", "path": "/health", "description": "Gateway health check"},
-            {"method": "GET", "path": "/api/production", "description": "Production line status"},
-            {"method": "GET", "path": "/api/quality", "description": "Quality inspection data"},
-            {"method": "GET", "path": "/api/inventory", "description": "Inventory management"},
-            {"method": "GET", "path": "/api/traceability", "description": "Product traceability"},
-        ]
-    },
-    "aimes_cosmetics": {
-        "endpoints": [
-            {"method": "GET", "path": "/health", "description": "Gateway health check"},
-            {"method": "GET", "path": "/api/production", "description": "Production line status"},
-            {"method": "GET", "path": "/api/quality", "description": "Quality inspection data"},
-            {"method": "GET", "path": "/api/inventory", "description": "Inventory management"},
-            {"method": "GET", "path": "/api/traceability", "description": "Product traceability"},
-        ]
-    },
-    "aimes_electronics": {
-        "endpoints": [
-            {"method": "GET", "path": "/health", "description": "Gateway health check"},
-            {"method": "GET", "path": "/api/production", "description": "Production line status"},
-            {"method": "GET", "path": "/api/quality", "description": "Quality inspection data"},
-            {"method": "GET", "path": "/api/inventory", "description": "Inventory management"},
-            {"method": "GET", "path": "/api/traceability", "description": "Product traceability"},
-        ]
-    },
-    "aimes_medical": {
-        "endpoints": [
-            {"method": "GET", "path": "/health", "description": "Gateway health check"},
-            {"method": "GET", "path": "/api/production", "description": "Production line status"},
-            {"method": "GET", "path": "/api/quality", "description": "Quality inspection data"},
-            {"method": "GET", "path": "/api/inventory", "description": "Inventory management"},
-            {"method": "GET", "path": "/api/traceability", "description": "Product traceability"},
-        ]
-    },
-    "aimes_metal": {
-        "endpoints": [
-            {"method": "GET", "path": "/health", "description": "Gateway health check"},
-            {"method": "GET", "path": "/api/production", "description": "Production line status"},
-            {"method": "GET", "path": "/api/quality", "description": "Quality inspection data"},
-            {"method": "GET", "path": "/api/inventory", "description": "Inventory management"},
-            {"method": "GET", "path": "/api/traceability", "description": "Product traceability"},
-        ]
-    },
-    "aimes_pharmaceutical": {
-        "endpoints": [
-            {"method": "GET", "path": "/health", "description": "Gateway health check"},
-            {"method": "GET", "path": "/api/production", "description": "Production line status"},
-            {"method": "GET", "path": "/api/quality", "description": "Quality inspection data"},
-            {"method": "GET", "path": "/api/inventory", "description": "Inventory management"},
-            {"method": "GET", "path": "/api/traceability", "description": "Product traceability"},
-        ]
-    },
-    "aimes_textile": {
-        "endpoints": [
-            {"method": "GET", "path": "/health", "description": "Gateway health check"},
-            {"method": "GET", "path": "/api/production", "description": "Production line status"},
-            {"method": "GET", "path": "/api/quality", "description": "Quality inspection data"},
-            {"method": "GET", "path": "/api/inventory", "description": "Inventory management"},
-            {"method": "GET", "path": "/api/traceability", "description": "Product traceability"},
-        ]
-    },
-    "truthlens_unified": {
-        "endpoints": [
-            {"method": "GET", "path": "/health", "description": "Service health check"},
-            {"method": "POST", "path": "/detect/upload", "description": "Upload and analyze file for deepfake detection"},
-            {"method": "POST", "path": "/detect/async", "description": "Async deepfake detection (returns task ID)"},
-            {"method": "GET", "path": "/detect/status/{task_id}", "description": "Get async detection task status"},
-            {"method": "GET", "path": "/models", "description": "List available detection models"},
-            {"method": "POST", "path": "/compliance/report", "description": "Generate AI Basic Law compliance report"},
-            {"method": "GET", "path": "/queue/stats", "description": "Task queue statistics"},
+            {
+                "method": "GET",
+                "path": "/health",
+                "description": "Health check"
+            }
         ]
     },
 }
 
-# Service Categories for grouped view
 SERVICE_CATEGORIES = {
     "AI Platforms": {
         "icon": "cube",
-        "services": ["a3de", "langgraph", "aialbm", "enterprise", "aegis", "nexusai"]
+        "services": [
+            "agentforge",
+            "aegis",
+            "nexusai",
+            "aialbm",
+            "expert100k",
+            "jangforge"
+        ]
+    },
+    "Documents & Files": {
+        "icon": "file-text",
+        "services": [
+            "fileforge",
+            "fileforge_py",
+            "notebooklm",
+            "slideeditor",
+            "patentforge"
+        ]
     },
     "Detection & Analysis": {
         "icon": "shield",
-        "services": ["deepfake", "anti_deepfake", "truthlens_unified"]
+        "services": [
+            "truthlens"
+        ]
     },
     "Healthcare": {
         "icon": "heart",
-        "services": ["carelink"]
+        "services": [
+            "carelink"
+        ]
     },
-    "Infrastructure": {
-        "icon": "server",
-        "services": ["cluster_master", "factory", "autogit"]
+    "Manufacturing (MES)": {
+        "icon": "industry",
+        "services": [
+            "agriprocess",
+            "aimes_agricultural_web",
+            "aimes_automotive_web",
+            "aimes_battery_web",
+            "aimes_chemical_web",
+            "aimes_cosmetics_web",
+            "aimes_electronics_web",
+            "aimes_food_web",
+            "aimes_medical_web",
+            "aimes_metal_web",
+            "aimes_pharmaceutical_web",
+            "aimes_textile_web"
+        ]
     },
-    "Assistants & Bots": {
+    "Automation & Agents": {
+        "icon": "settings",
+        "services": [
+            "autoflow",
+            "wdlab_cli",
+            "crawling"
+        ]
+    },
+    "Finance / Quant": {
+        "icon": "trending-up",
+        "services": [
+            "alphaforge"
+        ]
+    },
+    "LLMOps": {
+        "icon": "activity",
+        "services": [
+            "llmops"
+        ]
+    },
+    "Security": {
+        "icon": "lock",
+        "services": [
+            "selfsec"
+        ]
+    },
+    "Gaming": {
         "icon": "message-circle",
-        "services": ["consulting", "panda"]
-    },
-    "Data & ML": {
-        "icon": "database",
-        "services": ["dataset_gen", "multimodals", "stt_tts"]
-    },
-    "Compliance": {
-        "icon": "file-text",
-        "services": ["labor"]
+        "services": [
+            "pokerface"
+        ]
     },
     "SaaS Management": {
-        "icon": "settings",
-        "services": ["ascm"]
+        "icon": "server",
+        "services": [
+            "ascm"
+        ]
     },
-    "Manufacturing": {
-        "icon": "industry",
-        "services": ["aimes_food", "aimes_agricultural", "aimes_automotive", "aimes_battery", "aimes_chemical", "aimes_cosmetics", "aimes_electronics", "aimes_medical", "aimes_metal", "aimes_pharmaceutical", "aimes_textile"]
+    "Assistants": {
+        "icon": "message-circle",
+        "services": [
+            "ainex"
+        ]
+    },
+    "Edge / IoT": {
+        "icon": "cpu",
+        "services": [
+            "pi5_edge",
+            "pi5_aegis"
+        ]
+    },
+    "Strategy / Games": {
+        "icon": "cube",
+        "services": [
+            "janggi"
+        ]
     },
 }
-
-# ============================================================
-# Service Startup Commands (for Auto-Recovery)
-# ============================================================
 
 _BASE = "/home/ubuntu-02/ai_project"
 
 SERVICE_STARTUP_COMMANDS = {
-    # --- Backend Services ---
-    "dataset_gen": {
-        "workdir": f"{_BASE}/Dataset_Gen",
-        "cmd": "myenv/bin/streamlit run main.py --server.port 4001 --server.headless true",
+    "notebooklm": {
+        "workdir": "/home/ubuntu-02/ai_project/02_Design_NotebookLM/server",
+        "cmd": "PORT=8013 node index.mjs"
     },
-    "deepfake": {
-        "workdir": f"{_BASE}/TruthLens/src",
-        "cmd": "../venv/bin/python3 -m uvicorn api_server:app --host 0.0.0.0 --port 4002",
+    "fileforge": {
+        "workdir": "/home/ubuntu-02/ai_project/03_FileForge/backend",
+        "cmd": "python main.py"
     },
-    "a3de": {
-        "workdir": f"{_BASE}/a3de/backend",
-        "cmd": "../venv/bin/uvicorn main:app --host 0.0.0.0 --port 4004",
+    "fileforge_py": {
+        "workdir": "/home/ubuntu-02/ai_project/03_FileForge-Python",
+        "cmd": "python -m backend.main"
     },
-    "carelink": {
-        "workdir": f"{_BASE}/AiCarelink/backend",
-        "cmd": "../venv/bin/python3 -m uvicorn app.main:app --host 0.0.0.0 --port 4005",
+    "autoflow": {
+        "workdir": "/home/ubuntu-02/ai_project/04_AutoFlow/vllm-openclaw-webapp/backend",
+        "cmd": "uvicorn main:app --port 8085"
     },
-    "consulting": {
-        "workdir": f"{_BASE}/AiNex",
-        "cmd": "venv/bin/python -m uvicorn main:app --host 0.0.0.0 --port 4007",
+    "wdlab_cli": {
+        "workdir": "/home/ubuntu-02/ai_project/06_wdlab-CLI/backend",
+        "cmd": "python main.py"
     },
-    "factory": {
-        "workdir": f"{_BASE}/ai_factory",
-        "cmd": "venv/bin/uvicorn src.api.main:app --host 0.0.0.0 --port 4008",
-    },
-    "labor": {
-        "workdir": f"{_BASE}/ai_labor",
-        "cmd": "venv/bin/uvicorn backend.main:app --host 0.0.0.0 --port 4009",
-    },
-    "langgraph": {
-        "workdir": f"{_BASE}/AgentForge",
-        "cmd": "venv/bin/python -m uvicorn api.main:app --host 0.0.0.0 --port 4010",
-    },
-    "multimodals": {
-        "workdir": f"{_BASE}/ai_multimodals/web",
-        "cmd": """../venv/bin/python -c "import app as a; a.socketio.run(a.app, host='0.0.0.0', port=4011, debug=False, allow_unsafe_werkzeug=True)" """,
-    },
-    "aialbm": {
-        "workdir": f"{_BASE}/AIALBM",
-        "cmd": "aialb_venv/bin/python -m uvicorn app.main:app --host 0.0.0.0 --port 4012",
-    },
-    "enterprise": {
-        "workdir": f"{_BASE}/enterprise_factory/local-llm-os/backend",
-        "cmd": "venv/bin/python3 -m uvicorn src.api.main:app --host 0.0.0.0 --port 4013",
-    },
-    "panda": {
-        "workdir": f"{_BASE}/panda_chetbot/api",
-        "cmd": "../venv/bin/uvicorn main:app --host 0.0.0.0 --port 4014",
-    },
-    "cluster_master": {
-        "workdir": f"{_BASE}/Cluster-Master",
-        "cmd": "venv/bin/python3 -m uvicorn src.server:app --host 0.0.0.0 --port 8200",
+    "expert100k": {
+        "workdir": "/home/ubuntu-02/ai_project/100K-Expert",
+        "cmd": "python main.py"
     },
     "aegis": {
-        "workdir": f"{_BASE}/AEGIS/apps/api",
-        "cmd": "venv/bin/python3 -m uvicorn main:app --host 0.0.0.0 --port 4015",
+        "workdir": "/home/ubuntu-02/ai_project/AEGIS/apps/api",
+        "cmd": "python main.py"
+    },
+    "aialbm": {
+        "workdir": "/home/ubuntu-02/ai_project/AIALBM",
+        "cmd": "python -m app.main"
+    },
+    "agriprocess": {
+        "workdir": "/home/ubuntu-02/ai_project/AIMES-AgriProcess/services/api-gateway",
+        "cmd": "node src/index.js"
+    },
+    "argus": {
+        "workdir": "/home/ubuntu-02/ai_project/ARGUS/backend",
+        "cmd": "uvicorn main:app --port 8002"
+    },
+    "agentforge": {
+        "workdir": "/home/ubuntu-02/ai_project/AgentForge",
+        "cmd": "python -m uvicorn api.main:app --port 8003"
+    },
+    "carelink": {
+        "workdir": "/home/ubuntu-02/ai_project/AiCarelink/backend",
+        "cmd": "uvicorn app.main:app --port 8004"
+    },
+    "ainex": {
+        "workdir": "/home/ubuntu-02/ai_project/AiNex",
+        "cmd": "python main.py"
+    },
+    "janggi": {
+        "workdir": "/home/ubuntu-02/ai_project/JangGi/backend",
+        "cmd": "uvicorn backend.main:app --port 8007"
     },
     "nexusai": {
-        "workdir": f"{_BASE}/NexusAI/apps/api",
-        "cmd": ".venv/bin/uvicorn main:app --host 0.0.0.0 --port 4016",
+        "workdir": "/home/ubuntu-02/ai_project/NexusAI/apps/api",
+        "cmd": "uvicorn main:app --port 8008"
+    },
+    "patentforge": {
+        "workdir": "/home/ubuntu-02/ai_project/PatentForge",
+        "cmd": "python scripts/serve_api.py"
+    },
+    "crawling": {
+        "workdir": "/home/ubuntu-02/ai_project/Project_Crawling",
+        "cmd": "npm run server"
+    },
+    "selfsec": {
+        "workdir": "/home/ubuntu-02/ai_project/Self_Security_Consulting/platform",
+        "cmd": "python main.py serve"
+    },
+    "alphaforge": {
+        "workdir": "/home/ubuntu-02/ai_project/WDLAB-AlphaForge",
+        "cmd": "alphaforge-backend"
+    },
+    "llmops": {
+        "workdir": "/home/ubuntu-02/ai_project/WDLAB-LLMOps/apps/backend",
+        "cmd": "uvicorn wdlab_backend.main:app --port 18080"
+    },
+    "pokerface": {
+        "workdir": "/home/ubuntu-02/ai_project/PokerFace",
+        "cmd": "python main.py"
+    },
+    "truthlens": {
+        "workdir": "/home/ubuntu-02/ai_project/TruthLens/services/gateway",
+        "cmd": "node dist/main"
+    },
+    "jangforge": {
+        "workdir": "/home/ubuntu-02/ai_project/WDLAB-JangForge/jangforge-core",
+        "cmd": "python -m jangforge.main"
     },
     "ascm": {
-        "workdir": f"{_BASE}/ASCM/ASCM-main",
-        "cmd": "venv_ascm/bin/python run_services.py",
+        "workdir": "/home/ubuntu-02/ai_project/ASCM",
+        "cmd": "python3 run_services.py"
     },
-    "aimes_food": {
-        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Food",
-        "cmd": "docker compose up -d",
-        "docker": True,
+    "pi5_edge": {
+        "workdir": "/home/ubuntu-02/ai_project/Pi5-Edge-Device/pi5-gateway",
+        "cmd": "python -m src.main"
     },
-    "aimes_agricultural": {
-        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Agricultural/services/api-gateway",
-        "cmd": "env API_GATEWAY_PORT=28080 node src/index.js",
+    "pi5_aegis": {
+        "workdir": "/home/ubuntu-02/ai_project/Pi5-AEGIS/gateway",
+        "cmd": "python server.py"
     },
-    "aimes_automotive": {
-        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Automotive/services/api-gateway",
-        "cmd": "env PORT=58080 node src/index.js",
-    },
-    "aimes_battery": {
-        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Battery/services/api-gateway",
-        "cmd": "env PORT=40080 node index.js",
-    },
-    "aimes_chemical": {
-        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Chemical/services/api-gateway",
-        "cmd": "env API_GATEWAY_PORT=39080 node src/index.js",
-    },
-    "aimes_cosmetics": {
-        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Cosmetics/services/api-gateway",
-        "cmd": "env PORT=20080 node src/index.js",
-    },
-    "aimes_electronics": {
-        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Electronics/services/api-gateway",
-        "cmd": "env API_GATEWAY_PORT=48080 node src/index.js",
-    },
-    "aimes_medical": {
-        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Medical/services/api-gateway",
-        "cmd": "env PORT=29080 node src/index.js",
-    },
-    "aimes_metal": {
-        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Metal/services/api-gateway",
-        "cmd": "env PORT=49080 node src/index.js",
-    },
-    "aimes_pharmaceutical": {
-        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Pharmaceutical/services/api-gateway",
-        "cmd": "env API_GATEWAY_PORT=38080 node src/index.js",
-    },
-    "aimes_textile": {
-        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Textile/services/api-gateway",
-        "cmd": "env PORT=50080 node src/index.js",
-    },
-    "anti_deepfake": {
-        "workdir": f"{_BASE}/Anti-Deep-Fake",
-        "cmd": "venv/bin/python3 -m uvicorn api_server:app --host 0.0.0.0 --port 4017",
-    },
-    "autogit": {
-        "workdir": f"{_BASE}/AutoGit",
-        "cmd": ".venv/bin/python -m uvicorn api_server:app --host 0.0.0.0 --port 4018",
-    },
-    "stt_tts": {
-        "workdir": f"{_BASE}/STT-to-TTS",
-        "cmd": "venv/bin/python3 -m uvicorn api_server:app --host 0.0.0.0 --port 4019",
-    },
-    "truthlens_unified": {
-        "workdir": f"{_BASE}/TruthLens",
-        "cmd": "venv/bin/python3 src/unified_server.py",
-    },
-    # --- Frontend Services ---
-    "truthlens": {
-        "workdir": f"{_BASE}/webpage_truthlens",
-        "cmd": "python3 -m http.server 8001",
-    },
-    "webpage_ainex": {
-        "workdir": f"{_BASE}/webpage_AiNex",
-        "cmd": "python3 -m http.server 8002",
-    },
-    "ainex_home": {
-        "workdir": f"{_BASE}/webpage_ainex_forge",
-        "cmd": "npx next dev -p 3001",
-    },
-    "cluster_master_web": {
-        "workdir": f"{_BASE}/webpage_ai_cluster_master",
-        "cmd": "npx next dev -p 3002",
-    },
-    "aialbm_web": {
-        "workdir": f"{_BASE}/webpage_aialbm",
-        "cmd": "npx next dev -p 3003",
-    },
-    "carelink_web": {
-        "workdir": f"{_BASE}/webpage_carelink",
-        "cmd": "npx next dev -p 3004",
-    },
-    "carelink_frontend": {
-        "workdir": f"{_BASE}/AiCarelink/frontend",
-        "cmd": "npx next dev -p 5005",
-    },
-    "langgraph_frontend": {
-        "workdir": f"{_BASE}/AgentForge/frontend",
-        "cmd": "npx vite --port 5010 --host",
-    },
-    "enterprise_frontend": {
-        "workdir": f"{_BASE}/enterprise_factory/local-llm-os/frontend",
-        "cmd": "npx vite --port 5013 --host",
-    },
-    "unified_portal": {
-        "workdir": f"{_BASE}/Ai_Unified_Portal",
-        "cmd": "npx vite --port 5015 --host",
-    },
-    "a3de_frontend": {
-        "workdir": f"{_BASE}/a3de/frontend",
-        "cmd": "node node_modules/vite/bin/vite.js --port 5004 --host",
-    },
-    "aegis_frontend": {
-        "workdir": f"{_BASE}/AEGIS/apps/web",
-        "cmd": "npx next dev -p 4000 --hostname 0.0.0.0",
-    },
-    "nexusai_frontend": {
-        "workdir": f"{_BASE}/NexusAI/apps/web",
-        "cmd": "npx next dev -p 3007",
-    },
-    "webpage_aegis": {
-        "workdir": f"{_BASE}/webpage_AEGIS",
-        "cmd": "python3 -m http.server 8003",
-    },
-    "ascm_dashboard": {
-        "workdir": f"{_BASE}/ASCM/ASCM-main/admin-dashboard",
-        "cmd": "npx next dev -p 3010",
-    },
-    "webpage_aimes": {
-        "workdir": f"{_BASE}/webpage_AIMES",
-        "cmd": "python3 -m http.server 8004",
-    },
-    "webpage_eleven_aimes": {
-        "workdir": f"{_BASE}/webpage_Eleven_AIMES",
-        "cmd": "python3 -m http.server 8005",
-    },
-    "webpage_nexusai": {
-        "workdir": f"{_BASE}/webpage_NexusAI",
-        "cmd": "python3 -m http.server 8009",
-    },
-    "webpage_all_project": {
-        "workdir": f"{_BASE}/webpage_wdlab1958-all_project",
-        "cmd": "npx next dev -p 3008",
-    },
-    "aimes_agricultural_web": {
-        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Agricultural/frontend/web",
-        "cmd": "npx vite --port 5173 --host",
-    },
-    "aimes_automotive_web": {
-        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Automotive/frontend/web",
-        "cmd": "npx vite --port 5174 --host",
-    },
-    "aimes_battery_web": {
-        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Battery/frontend/web",
-        "cmd": "npx vite --port 5175 --host",
-    },
-    "aimes_chemical_web": {
-        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Chemical/frontend/web",
-        "cmd": "npx vite --port 5176 --host",
-    },
-    "aimes_cosmetics_web": {
-        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Cosmetics/frontend/web",
-        "cmd": "npx vite --port 5177 --host",
-    },
-    "aimes_electronics_web": {
-        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Electronics/frontend/web",
-        "cmd": "npx vite --port 5178 --host",
-    },
-    "aimes_food_web": {
-        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Food/frontend/web",
-        "cmd": "npx vite --port 5179 --host",
-    },
-    "aimes_medical_web": {
-        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Medical/frontend/web",
-        "cmd": "npx vite --port 5180 --host",
-    },
-    "aimes_metal_web": {
-        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Metal/frontend/web",
-        "cmd": "npx vite --port 5181 --host",
-    },
-    "aimes_pharmaceutical_web": {
-        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Pharmaceutical/frontend/web",
-        "cmd": "npx vite --port 5182 --host",
-    },
-    "aimes_textile_web": {
-        "workdir": f"{_BASE}/AIMES-Eleven/AIMES-Textile/frontend/web",
-        "cmd": "npx vite --port 5183 --host",
-    },
-    # truthlens_gradio shares port 8000 with truthlens_unified — no separate restart needed
 }
-
-# ============================================================
-# Auto-Recovery System
-# ============================================================
 
 RECOVERY_CHECK_INTERVAL = 30   # seconds between health checks
 RECOVERY_COOLDOWN = 120        # seconds between restart attempts per service
 RECOVERY_MAX_RETRIES = 5       # max consecutive restart attempts before pausing
 
+# Auto-recovery is OPT-IN. With ~60 downstream services registered, enabling it
+# by default would spawn dozens of dev servers (npm/uvicorn) that mostly fail to
+# bind, generating noise and stray processes. Set GATEWAY_AUTO_RECOVERY=1 to arm.
+RECOVERY_ENABLED = os.environ.get("GATEWAY_AUTO_RECOVERY", "0") == "1"
+
 _recovery_state = {
-    "enabled": True,
+    "enabled": RECOVERY_ENABLED,
     "last_check": None,
     "previous_status": {},
     "restart_cooldown": {},
@@ -1185,7 +1155,28 @@ async def restart_service(service_key: str) -> bool:
 
         subprocess.Popen(full_cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         logger.info("[Auto-Recovery] Restart command sent for '%s'", service_key)
-        return True
+
+        # Verify the service actually came up instead of blindly reporting
+        # success: poll its health for a few seconds. A command that dies
+        # immediately (missing deps, bad cwd) now correctly returns False so the
+        # retry counter is not consumed by a phantom "successful" restart.
+        svc = BACKEND_SERVICES.get(service_key) or FRONTEND_SERVICES.get(service_key) or {}
+        port = svc.get("port")
+        if not port:
+            return True  # no port to verify against; assume best-effort success
+        for _ in range(6):
+            await asyncio.sleep(2)
+            probe = await check_service_health(
+                port, timeout=2.0,
+                base_path=svc.get("basePath", ""),
+                scheme=svc.get("scheme", "http"),
+                health_path=svc.get("health", ""),
+            )
+            if probe.get("status") == "healthy":
+                logger.info("[Auto-Recovery] '%s' verified Online after restart", service_key)
+                return True
+        logger.warning("[Auto-Recovery] '%s' did not come Online within timeout", service_key)
+        return False
     except Exception as e:
         logger.error("[Auto-Recovery] Failed to restart '%s': %s", service_key, e)
         return False
@@ -1296,13 +1287,34 @@ async def _attempt_restart(skey: str, sname: str, now: datetime, reason: str):
 # FastAPI Application
 # ============================================================
 
+from contextlib import asynccontextmanager
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Modern FastAPI lifespan: arm/disarm the auto-recovery monitor."""
+    if RECOVERY_ENABLED:
+        _recovery_state["task"] = asyncio.create_task(auto_recovery_loop())
+        logger.info("[API Gateway] Auto-Recovery monitor started")
+    else:
+        logger.info("[API Gateway] Auto-Recovery disabled (set GATEWAY_AUTO_RECOVERY=1 to enable)")
+    try:
+        yield
+    finally:
+        _recovery_state["enabled"] = False
+        if _recovery_state["task"]:
+            _recovery_state["task"].cancel()
+        logger.info("[API Gateway] Auto-Recovery monitor stopped")
+
+
 app = FastAPI(
     title="AI Project API Gateway",
     description="Unified API Gateway for all AI Projects with Web UI Dashboard",
-    version="2.0.0",
+    version="2.2.0",
     docs_url="/swagger",
     redoc_url="/redoc",
-    openapi_url="/openapi.json"
+    openapi_url="/openapi.json",
+    lifespan=lifespan,
 )
 
 app.add_middleware(
@@ -1314,41 +1326,39 @@ app.add_middleware(
 )
 
 
-@app.on_event("startup")
-async def startup_event():
-    """Start the auto-recovery background monitor."""
-    _recovery_state["task"] = asyncio.create_task(auto_recovery_loop())
-    logger.info("[API Gateway] Auto-Recovery monitor started")
-
-
-@app.on_event("shutdown")
-async def shutdown_event():
-    """Stop the auto-recovery background monitor."""
-    _recovery_state["enabled"] = False
-    if _recovery_state["task"]:
-        _recovery_state["task"].cancel()
-    logger.info("[API Gateway] Auto-Recovery monitor stopped")
-
-
 # ============================================================
 # Helper Functions
 # ============================================================
 
-async def check_service_health(port: int, timeout: float = 2.0, base_path: str = "", scheme: str = "http") -> dict:
-    """Check service health status"""
-    endpoints_to_try = ["/health", "/api/health", "/", "/api/"]
+async def check_service_health(port: int, timeout: float = 2.0, base_path: str = "",
+                               scheme: str = "http", health_path: str = "") -> dict:
+    """Check service health status.
+
+    A response is considered healthy only when the upstream actually answers with
+    a non-error status (2xx) or an auth challenge (401/403 — service is up but
+    gated). 503 (Service Unavailable) is treated as UNHEALTHY so that a service
+    failing its dependencies is not silently reported green (and stays eligible
+    for auto-recovery). Redirects are followed rather than counted as healthy.
+    """
+    # Probe the service's declared health path first, then common fallbacks.
+    endpoints_to_try = [health_path] if health_path else []
+    endpoints_to_try += ["/health", "/api/health", "/", "/api/"]
     if base_path:
         endpoints_to_try = [base_path, f"{base_path}/health"] + endpoints_to_try
+    # De-dup while preserving order
+    seen = set()
+    endpoints_to_try = [e for e in endpoints_to_try if e and not (e in seen or seen.add(e))]
 
     for endpoint in endpoints_to_try:
         try:
-            async with httpx.AsyncClient(timeout=timeout, verify=False) as client:
+            async with httpx.AsyncClient(timeout=timeout, verify=False, follow_redirects=True) as client:
                 response = await client.get(f"{scheme}://localhost:{port}{endpoint}")
-                if response.status_code in [200, 207, 307, 503]:
+                if response.status_code < 400 or response.status_code in (401, 403):
                     return {
                         "status": "healthy",
                         "response_time": response.elapsed.total_seconds() * 1000,
-                        "endpoint": endpoint
+                        "endpoint": endpoint,
+                        "http_status": response.status_code,
                     }
         except Exception:
             continue
@@ -1362,7 +1372,7 @@ async def check_all_services() -> dict:
     # Check backend services
     backend_tasks = []
     for service_key, service_info in BACKEND_SERVICES.items():
-        backend_tasks.append(check_service_health(service_info["port"], scheme=service_info.get("scheme", "http")))
+        backend_tasks.append(check_service_health(service_info["port"], scheme=service_info.get("scheme", "http"), health_path=service_info.get("health", "")))
 
     backend_results = await asyncio.gather(*backend_tasks)
     for i, (service_key, service_info) in enumerate(BACKEND_SERVICES.items()):
@@ -1840,20 +1850,20 @@ DASHBOARD_HTML = """
                     </code>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
                         <div style="background:var(--bg-tertiary);border-radius:8px;padding:10px 14px;">
-                            <div style="font-size:0.7rem;color:var(--text-tertiary);margin-bottom:4px;">DeepFake Detection</div>
-                            <code style="font-size:0.8rem;color:var(--accent);font-family:'JetBrains Mono',monospace;">GET /api/deepfake/health</code>
+                            <div style="font-size:0.7rem;color:var(--text-tertiary);margin-bottom:4px;">TruthLens (DeepFake)</div>
+                            <code style="font-size:0.8rem;color:var(--accent);font-family:'JetBrains Mono',monospace;">GET /api/truthlens/health</code>
                         </div>
                         <div style="background:var(--bg-tertiary);border-radius:8px;padding:10px 14px;">
                             <div style="font-size:0.7rem;color:var(--text-tertiary);margin-bottom:4px;">AI CareLink</div>
-                            <code style="font-size:0.8rem;color:var(--accent);font-family:'JetBrains Mono',monospace;">POST /api/carelink/auth/login</code>
+                            <code style="font-size:0.8rem;color:var(--accent);font-family:'JetBrains Mono',monospace;">GET /api/carelink/health</code>
                         </div>
                         <div style="background:var(--bg-tertiary);border-radius:8px;padding:10px 14px;">
-                            <div style="font-size:0.7rem;color:var(--text-tertiary);margin-bottom:4px;">Cluster Master</div>
-                            <code style="font-size:0.8rem;color:var(--accent);font-family:'JetBrains Mono',monospace;">GET /api/cluster_master/api/workers</code>
+                            <div style="font-size:0.7rem;color:var(--text-tertiary);margin-bottom:4px;">ASCM</div>
+                            <code style="font-size:0.8rem;color:var(--accent);font-family:'JetBrains Mono',monospace;">GET /api/ascm/health</code>
                         </div>
                         <div style="background:var(--bg-tertiary);border-radius:8px;padding:10px 14px;">
                             <div style="font-size:0.7rem;color:var(--text-tertiary);margin-bottom:4px;">AgentForge</div>
-                            <code style="font-size:0.8rem;color:var(--accent);font-family:'JetBrains Mono',monospace;">POST /api/langgraph/chat</code>
+                            <code style="font-size:0.8rem;color:var(--accent);font-family:'JetBrains Mono',monospace;">GET /api/agentforge/api/health</code>
                         </div>
                     </div>
                 </div>
@@ -2552,7 +2562,12 @@ async def health_check_single(service_type: str, service_name: str):
     else:
         raise HTTPException(status_code=400, detail="Invalid service type. Use 'backend' or 'frontend'")
 
-    result = await check_service_health(port, scheme=scheme)
+    result = await check_service_health(
+        port,
+        base_path=service_info.get("basePath", ""),
+        scheme=scheme,
+        health_path=service_info.get("health", ""),
+    )
     return {
         "service": service_name,
         "type": service_type,
@@ -2622,8 +2637,10 @@ async def proxy_request(service: str, path: str, request: Request):
     if service not in BACKEND_SERVICES:
         raise HTTPException(status_code=404, detail=f"Service '{service}' not found. Available services: {list(BACKEND_SERVICES.keys())}")
 
-    port = BACKEND_SERVICES[service]["port"]
-    target_url = f"http://localhost:{port}/{path}"
+    svc = BACKEND_SERVICES[service]
+    port = svc["port"]
+    scheme = svc.get("scheme", "http")
+    target_url = f"{scheme}://localhost:{port}/{path}"
 
     # Handle query parameters
     if request.query_params:
@@ -2632,13 +2649,13 @@ async def proxy_request(service: str, path: str, request: Request):
     # Read request body
     body = await request.body()
 
-    # Copy headers (exclude host)
+    # Copy headers (exclude host + hop-by-hop / length headers that httpx recomputes)
     headers = dict(request.headers)
-    headers.pop("host", None)
-    headers.pop("content-length", None)
+    for h in ("host", "content-length", "connection", "transfer-encoding"):
+        headers.pop(h, None)
 
     try:
-        async with httpx.AsyncClient(timeout=60.0) as client:
+        async with httpx.AsyncClient(timeout=60.0, verify=False) as client:
             response = await client.request(
                 method=request.method,
                 url=target_url,
@@ -2646,23 +2663,23 @@ async def proxy_request(service: str, path: str, request: Request):
                 headers=headers,
             )
 
-            # Return response
-            content_type = response.headers.get("content-type", "")
-            if "application/json" in content_type:
-                try:
-                    return JSONResponse(
-                        content=response.json(),
-                        status_code=response.status_code,
-                        headers={"X-Proxied-From": f"localhost:{port}"}
-                    )
-                except Exception:
-                    pass
-
-            return JSONResponse(
-                content={"data": response.text, "status_code": response.status_code},
-                status_code=response.status_code,
-                headers={"X-Proxied-From": f"localhost:{port}"}
+        # Pass the upstream response through faithfully: preserve status,
+        # content-type and raw bytes so JSON, HTML, binary (images/audio/files)
+        # are not corrupted. Strip hop-by-hop headers before re-emitting.
+        passthrough = {
+            k: v for k, v in response.headers.items()
+            if k.lower() not in (
+                "content-length", "content-encoding", "transfer-encoding",
+                "connection", "keep-alive",
             )
+        }
+        passthrough["X-Proxied-From"] = f"{scheme}://localhost:{port}"
+        return Response(
+            content=response.content,
+            status_code=response.status_code,
+            headers=passthrough,
+            media_type=response.headers.get("content-type"),
+        )
 
     except httpx.ConnectError:
         raise HTTPException(
@@ -2675,7 +2692,8 @@ async def proxy_request(service: str, path: str, request: Request):
             detail=f"Request to '{service}' timed out"
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Proxy error: {str(e)}")
+        logger.exception("[Proxy] Error proxying to '%s': %s", service, e)
+        raise HTTPException(status_code=502, detail=f"Proxy error contacting service '{service}'")
 
 # ============================================================
 # Main Entry Point
@@ -2685,7 +2703,7 @@ if __name__ == "__main__":
     import uvicorn
     print(f"""
     ╔═══════════════════════════════════════════════════════════╗
-    ║           AI Project API Gateway v2.1.0                   ║
+    ║           AI Project API Gateway v2.2.0                   ║
     ║═══════════════════════════════════════════════════════════║
     ║  Dashboard:      http://{GATEWAY_HOST}:8080                   ║
     ║  Health Check:   http://{GATEWAY_HOST}:8080/health            ║
@@ -2694,7 +2712,12 @@ if __name__ == "__main__":
     ║  API Docs:       http://{GATEWAY_HOST}:8080/docs/api          ║
     ║  Services:       http://{GATEWAY_HOST}:8080/services          ║
     ╠═══════════════════════════════════════════════════════════╣
-    ║  Auto-Recovery: ON (interval={RECOVERY_CHECK_INTERVAL}s, cooldown={RECOVERY_COOLDOWN}s)     ║
+    ║  Auto-Recovery: {'ON ' if RECOVERY_ENABLED else 'OFF'} (interval={RECOVERY_CHECK_INTERVAL}s, cooldown={RECOVERY_COOLDOWN}s)    ║
     ╚═══════════════════════════════════════════════════════════╝
     """)
-    uvicorn.run(app, host=GATEWAY_BIND_HOST, port=8080, reload=False)
+    # NOTE: force the pure-Python asyncio loop + h11 HTTP implementation. Both
+    # uvloop and httptools segfault on start in this environment; the pure-Python
+    # stack is stable. Override via GATEWAY_LOOP / GATEWAY_HTTP if desired.
+    _loop = os.environ.get("GATEWAY_LOOP", "asyncio")
+    _http = os.environ.get("GATEWAY_HTTP", "h11")
+    uvicorn.run(app, host=GATEWAY_BIND_HOST, port=8080, reload=False, loop=_loop, http=_http)

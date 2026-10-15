@@ -11,9 +11,15 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LOG_FILE="/tmp/api_gateway.log"
 
 echo "╔═══════════════════════════════════════════════════════════╗"
-echo "║           AI Project API Gateway v2.0.0                   ║"
+echo "║           AI Project API Gateway v2.2.0                   ║"
 echo "╚═══════════════════════════════════════════════════════════╝"
 echo ""
+
+# The pyenv-shim python3 in this environment ships a broken asyncio/uvloop C
+# stack that segfaults under uvicorn. Prefer the stable system interpreter;
+# override with GATEWAY_PYTHON=/path/to/python.
+PYTHON="${GATEWAY_PYTHON:-/usr/bin/python3}"
+[ -x "$PYTHON" ] || PYTHON="python3"
 
 # Check if gateway is already running
 if pgrep -f "api_gateway_v2.py" > /dev/null 2>&1; then
@@ -23,17 +29,17 @@ if pgrep -f "api_gateway_v2.py" > /dev/null 2>&1; then
 fi
 
 # Check dependencies
-echo "[1/3] Checking dependencies..."
-python3 -c "import fastapi, httpx, uvicorn" 2>/dev/null
+echo "[1/3] Checking dependencies (using $PYTHON)..."
+"$PYTHON" -c "import fastapi, httpx, uvicorn" 2>/dev/null
 if [ $? -ne 0 ]; then
     echo "[INFO] Installing required packages..."
-    pip3 install --user fastapi httpx uvicorn[standard] --quiet
+    "$PYTHON" -m pip install --user fastapi httpx uvicorn --quiet
 fi
 
-# Start the gateway
+# Start the gateway (entrypoint forces loop=asyncio, http=h11 for stability)
 echo "[2/3] Starting API Gateway..."
 cd "$SCRIPT_DIR"
-nohup python3 api_gateway_v2.py > "$LOG_FILE" 2>&1 &
+nohup env -u PYTHONPATH -u VIRTUAL_ENV "$PYTHON" -u api_gateway_v2.py > "$LOG_FILE" 2>&1 &
 GATEWAY_PID=$!
 sleep 2
 
